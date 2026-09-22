@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem("slc_theme")==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Case — SLC Case Management System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<style>
+  .form-label-req::after { content: " *"; color: var(--slc-danger); }
+  .form-section-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .form-section-sub { font-size: 12px; color: var(--slc-muted); margin-bottom: 16px; }
+  .form-label { font-size: 12.2px; font-weight: 600; color:var(--slc-text); margin-bottom: 4px; }
+  .form-control, .form-select { font-size: 13px; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div id="__pageBody">
+
+  <div class="page-title-row">
+    <div>
+      <h1 class="page-title" data-en="New Case Registration" data-ar="تسجيل قضية جديدة">New Case Registration</h1>
+      <div class="page-subtitle">Fields marked with <span class="text-danger">*</span> are required to save the case as pending. Additional fields are required to complete registration.</div>
+    </div>
+    <div class="page-title-actions">
+      <span class="badge-status badge-muted"><i class="bi bi-hourglass-split"></i>Status: Draft (Not Yet Saved)</span>
+    </div>
+  </div>
+
+  <form id="newCaseForm" onsubmit="return false;">
+
+    <!-- Case Details -->
+    <div class="section-card">
+      <div class="sc-header"><span><i class="bi bi-1-circle me-2"></i>Case Details</span></div>
+      <div class="sc-body">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <div class="form-check form-switch mt-4">
+              <input class="form-check-input" type="checkbox" id="fClassified">
+              <label class="form-check-label form-label mb-0" for="fClassified">Classified Case</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Case Ref. No.</label>
+            <input type="text" class="form-control" value="Auto-generated on registration" disabled>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Case Start Date (CSD)</label>
+            <input type="text" class="form-control" value="21-Sep-2026 (auto)" disabled>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label form-label-req">Case Receipt Date (CRD)</label>
+            <input type="date" class="form-control" value="2026-09-21">
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label form-label-req">Work Source</label>
+            <select class="form-select">
+              <option>Email</option><option>Fax</option><option>In Person</option><option>Internal</option><option>Post</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label form-label-req">Work Type</label>
+            <select class="form-select" id="fWorkType" onchange="onWorkTypeChange()">
+              <option value="">Select work type...</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label form-label-req">Case Type</label>
+            <select class="form-select" id="fCaseType"><option value="">Select work type first...</option></select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label form-label-req">Urgency</label>
+            <select class="form-select" id="fUrgency">
+              <option>Very High</option><option>High</option><option selected>Medium</option><option>Low</option>
+            </select>
+          </div>
+
+          <div class="col-md-8">
+            <label class="form-label form-label-req">Case Title</label>
+            <input type="text" class="form-control" placeholder="Enter case title...">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label form-label-req">Task</label>
+            <select class="form-select" id="fTask"><option value="">Select work type first...</option></select>
+          </div>
+
+          <div class="col-12" id="aiDraftAssist"></div>
+
+          <div class="col-md-4">
+            <label class="form-label">Related Cases</label>
+            <input type="text" class="form-control" placeholder="Search case reference or title...">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Case Milestone</label>
+            <select class="form-select"><option>Case Opened</option></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label form-label-req">Physical Case File Location</label>
+            <input type="text" class="form-control" placeholder="Search user or location...">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">System No.</label>
+            <input type="text" class="form-control" value="Auto-generated" disabled>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Old Reference No.</label>
+            <input type="text" class="form-control" placeholder="For migrated cases only">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Milestone Comments</label>
+            <textarea class="form-control" rows="2" placeholder="Enter milestone comments..."></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Other Details</label>
+            <textarea class="form-control" rows="2" placeholder="Additional notes..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Details -->
+    <div class="section-card">
+      <div class="sc-header"><span><i class="bi bi-2-circle me-2"></i>Team Details</span></div>
+      <div class="sc-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label form-label-req">Head of Directorate</label>
+            <select class="form-select" id="fHod"></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label form-label-req">Lead Member</label>
+            <select class="form-select" id="fLead"></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Team Members</label>
+            <select class="form-select" multiple id="fTeam" size="3"></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Associate Members</label>
+            <select class="form-select" multiple id="fAssoc" size="3"></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label form-label-req">Administrators</label>
+            <select class="form-select" multiple id="fAdmin" size="3"></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Comments / Notes</label>
+            <textarea class="form-control" rows="3" placeholder="Team notes..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Requesting Entity -->
+    <div class="section-card">
+      <div class="sc-header"><span><i class="bi bi-3-circle me-2"></i>Requesting Entity Details</span></div>
+      <div class="sc-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label form-label-req">Requesting Entity Type</label>
+            <select class="form-select">
+              <option>Government Entity</option><option>Federal Entity</option><option>Legal Firm</option><option>Individual</option><option>Internal</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label form-label-req">Requesting Entity Name</label>
+            <select class="form-select" id="fEntity"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Entity Contact</label>
+            <input type="text" class="form-control" placeholder="Search entity contact...">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Comments</label>
+            <textarea class="form-control" rows="2" placeholder="Requesting entity notes..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other Parties -->
+    <div class="section-card">
+      <div class="sc-header"><span><i class="bi bi-4-circle me-2"></i>Other Parties</span></div>
+      <div class="sc-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Related Entity Name</label>
+            <select class="form-select" id="fRelEntity"></select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Related Entity Contact</label>
+            <input type="text" class="form-control" placeholder="Search entity contact...">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Expert</label>
+            <input type="text" class="form-control" placeholder="Search expert...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completion Details -->
+    <div class="section-card">
+      <div class="sc-header"><span><i class="bi bi-5-circle me-2"></i>Completion Details</span></div>
+      <div class="sc-body">
+        <div class="row g-3">
+          <div class="col-md-3">
+            <label class="form-label form-label-req">Proposed Completion Date (PCD)</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Actual Completion Date (ACD)</label>
+            <input type="text" class="form-control" value="Auto-populated on completion" disabled>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Instructed Completion Date (ICD)</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">ICD Requesting Party</label>
+            <input type="text" class="form-control" placeholder="Search entity...">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Comments / Notes</label>
+            <textarea class="form-control" rows="2" placeholder="Completion notes..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="formAlertBox"></div>
+
+    <div class="d-flex gap-2 justify-content-end flex-wrap pb-4">
+      <button type="button" class="btn btn-light border" id="btnReset"><i class="bi bi-arrow-counterclockwise"></i>Reset</button>
+      <button type="button" class="btn btn-light border" onclick="window.location.href='my-cases.html'"><i class="bi bi-x-lg"></i>Cancel</button>
+      <button type="button" class="btn btn-outline-primary" id="btnSave"><i class="bi bi-save"></i>Save</button>
+      <button type="button" class="btn btn-primary" id="btnSaveRegister"><i class="bi bi-check2-circle"></i>Save & Register</button>
+    </div>
+
+  </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/new-case.js"></script>
+</body>
+</html>

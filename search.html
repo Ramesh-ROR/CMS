@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem("slc_theme")==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search — SLC Case Management System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+<style>
+  .search-hero {
+    background: linear-gradient(135deg, #06355F 0%, #0F6CBD 55%, #0078D4 100%);
+    border-radius: var(--slc-radius); padding: 32px 32px 26px; margin-bottom: 18px; position: relative; overflow: hidden;
+  }
+  .search-hero::before {
+    content: ""; position: absolute; inset: 0; opacity: .12;
+    background-image: radial-gradient(circle at 15% 25%, #fff 1px, transparent 1px), radial-gradient(circle at 85% 65%, #fff 1px, transparent 1px);
+    background-size: 38px 38px;
+  }
+  .search-hero-inner { position: relative; z-index: 1; }
+  .search-hero h1 { color: #fff; font-size: 21px; font-weight: 700; margin-bottom: 4px; }
+  .search-hero p { color: rgba(255,255,255,.85); font-size: 12.8px; margin-bottom: 18px; }
+  .search-hero-box { background: #fff; border-radius: 12px; padding: 6px; display: flex; align-items: center; gap: 8px; box-shadow: var(--slc-shadow-lg); }
+  .search-hero-box i.bi-search { color: var(--slc-muted); font-size: 18px; margin-left: 10px; }
+  .search-hero-box input { flex: 1; border: none; outline: none; font-size: 15px; padding: 10px 4px; }
+  .search-mode-tabs { display: flex; gap: 8px; margin-top: 14px; }
+  .search-mode-tabs .nav-link {
+    border-radius: 20px; padding: 6px 16px; font-size: 12.5px; font-weight: 600;
+    background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.3); cursor: pointer;
+  }
+  .search-mode-tabs .nav-link.active { background: #fff; color: var(--slc-primary-darker); border-color: #fff; }
+  .search-mode-tabs .nav-link i { margin-right: 5px; }
+
+  .ai-example-card {
+    background: linear-gradient(135deg, #F5F3FF, #EFF6FF); border: 1px solid #E0E7FF; border-radius: var(--slc-radius);
+    padding: 18px 20px; margin-bottom: 16px;
+  }
+  .ai-example-query { font-style: italic; font-size: 14px; color:var(--slc-text); margin: 8px 0 14px; }
+  .ai-match-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; color: #6D28D9; background: #EDE9FE; padding: 2px 9px; border-radius: 20px; border: 1px solid #DDD6FE; }
+  .result-count { font-size: 12.5px; color: var(--slc-muted); }
+  .filter-toggle-btn { font-size: 12.5px; }
+
+  [data-theme="dark"] .ai-example-card { background: linear-gradient(135deg, rgba(124,58,237,.14), rgba(37,99,235,.12)); border-color: rgba(139,92,246,.3); }
+  [data-theme="dark"] .ai-match-chip { background: rgba(124,58,237,.26); color: #D8B4FE; border-color: rgba(139,92,246,.4); }
+  .ai-match-chip-related { color: #0F5FA6; background: #E8F1FC; border-color: #BFDDF6; }
+  [data-theme="dark"] .ai-match-chip-related { color: #7CC4F5; background: rgba(59,158,245,.16); border-color: rgba(59,158,245,.4); }
+</style>
+</head>
+<body>
+
+<div id="__pageBody">
+
+  <div class="search-hero">
+    <div class="search-hero-inner">
+      <h1>Global Case &amp; Document Search</h1>
+      <p>Search across all SLC cases, documents, activities and entities.</p>
+      <div class="search-hero-box">
+        <i class="bi bi-search"></i>
+        <input type="text" id="heroSearchInput" placeholder="Search by case reference, title, entity, keyword...">
+        <button class="btn btn-primary" id="heroSearchBtn"><i class="bi bi-search"></i>Search</button>
+      </div>
+      <ul class="nav search-mode-tabs" id="searchModeTabs">
+        <li class="nav-item"><a class="nav-link active" data-mode="standard" href="#"><i class="bi bi-sliders"></i>Standard Search</a></li>
+        <li class="nav-item"><a class="nav-link" data-mode="ai" href="#"><i class="bi bi-stars"></i>AI-Assisted Search</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ================= Standard Search Pane ================= -->
+  <div id="standardPane">
+
+    <div class="filter-bar">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="fw-bold" style="font-size:13.5px;"><i class="bi bi-funnel me-1"></i>Advanced Filters</div>
+        <button class="btn btn-sm btn-light border filter-toggle-btn" id="clearFiltersBtn"><i class="bi bi-x-circle"></i>Clear Filters</button>
+      </div>
+      <div class="row g-2">
+        <div class="col-md-3">
+          <label>Case Ref. No.</label>
+          <input type="text" class="form-control" id="fRef" placeholder="e.g. SLC-LEG-2026-00128">
+        </div>
+        <div class="col-md-3">
+          <label>Case Title</label>
+          <input type="text" class="form-control" id="fTitle" placeholder="Keyword in title">
+        </div>
+        <div class="col-md-3">
+          <label>Work Type</label>
+          <select class="form-select" id="fWorkType"><option value="">All Work Types</option></select>
+        </div>
+        <div class="col-md-3">
+          <label>Case Type</label>
+          <select class="form-select" id="fCaseType"><option value="">All Case Types</option></select>
+        </div>
+        <div class="col-md-3">
+          <label>Requesting Entity</label>
+          <select class="form-select" id="fEntity"><option value="">All Entities</option></select>
+        </div>
+        <div class="col-md-3">
+          <label>Case Activities Keyword</label>
+          <input type="text" class="form-control" id="fActivity" placeholder="e.g. translation, review">
+        </div>
+        <div class="col-md-3">
+          <label>Documents Keyword</label>
+          <input type="text" class="form-control" id="fDoc" placeholder="e.g. draft, gazette">
+        </div>
+        <div class="col-md-3">
+          <label>Team Members</label>
+          <select class="form-select" id="fTeam"><option value="">Any Team Member</option></select>
+        </div>
+        <div class="col-md-3">
+          <label>Old Reference No.</label>
+          <input type="text" class="form-control" id="fOldRef" placeholder="Not tracked for pre-migration cases">
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+          <button class="btn btn-primary w-100" id="runSearchBtn"><i class="bi bi-search"></i>Search</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="d-flex align-items-center justify-content-between px-3 pt-3">
+        <div class="result-count" id="resultCount">— cases found</div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-light border" onclick="SLCApp.demoActionModal('Search saved successfully in prototype mode.')"><i class="bi bi-bookmark"></i>Save Search</button>
+          <button class="btn btn-sm btn-light border" onclick="SLCApp.demoActionModal('Results exported successfully in prototype mode.')"><i class="bi bi-download"></i>Export</button>
+        </div>
+      </div>
+      <div class="table-scroll mt-2">
+        <table class="table-modern mb-0" id="resultsTable">
+          <thead>
+            <tr>
+              <th>Case Ref.</th><th>Title</th><th>Work Type / Case Type</th><th>Requesting Entity</th>
+              <th>Milestone</th><th>Urgency</th><th>PCD</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= AI-Assisted Search Pane ================= -->
+  <div id="aiPane" style="display:none;">
+
+    <div class="ai-example-card">
+      <span class="ai-chip"><i class="bi bi-stars"></i>AI-Assisted Search — Demo AI capability – no real AI service connected</span>
+      <div class="ai-example-query">"Find legislation cases related to environmental regulation that are approaching their completion date"</div>
+      <button class="btn btn-primary btn-sm" id="tryAiExampleBtn"><i class="bi bi-play-fill"></i>Try It</button>
+      <div class="text-muted-soft mt-2" style="font-size:11.5px;">
+        This demonstrates how natural-language search could surface relevant cases. Results below are curated from existing demo case data to illustrate the concept — no live NLP model is connected in this prototype.
+      </div>
+    </div>
+
+    <div class="table-card" id="aiResultsCard" style="display:none;">
+      <div class="d-flex align-items-center justify-content-between px-3 pt-3">
+        <div class="result-count" id="aiResultCount">AI-curated results</div>
+        <span class="ai-chip"><i class="bi bi-stars"></i>AI Match</span>
+      </div>
+      <div class="table-scroll mt-2">
+        <table class="table-modern mb-0" id="aiResultsTable">
+          <thead>
+            <tr>
+              <th>Match</th><th>Case Ref.</th><th>Title</th><th>Work Type / Case Type</th>
+              <th>Milestone</th><th>PCD</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/search.js"></script>
+</body>
+</html>

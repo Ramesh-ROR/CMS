@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem("slc_theme")==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Dashboard — SLC Case Management System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div id="__pageBody">
+
+  <div class="page-title-row">
+    <div>
+      <h1 class="page-title" data-en="Executive Dashboard" data-ar="لوحة المعلومات التنفيذية">Executive Dashboard</h1>
+      <div class="page-subtitle">Welcome back, Ahmed. Here is what's happening across SLC directorates today, 21 September 2026.</div>
+    </div>
+    <div class="page-title-actions">
+      <button class="btn btn-light border" onclick="window.print()"><i class="bi bi-printer"></i>Print</button>
+      <a href="new-case.html" class="btn btn-primary"><i class="bi bi-plus-lg"></i>New Case</a>
+    </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="row g-3 mb-2">
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#EAF3FC;color:#0078D4;"><i class="bi bi-activity"></i></div>
+        <div class="kpi-value">1,248</div>
+        <div class="kpi-label">Live Cases</div>
+        <div class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>4.2% vs last month</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#FEF3C7;color:#B45309;"><i class="bi bi-hourglass-split"></i></div>
+        <div class="kpi-value">86</div>
+        <div class="kpi-label">Pending Cases</div>
+        <div class="kpi-trend down"><i class="bi bi-arrow-down-short"></i>2.1% vs last month</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#DBEAFE;color:#1D4ED8;"><i class="bi bi-calendar-week"></i></div>
+        <div class="kpi-value">74</div>
+        <div class="kpi-label">Due This Week</div>
+        <div class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>6 more than last week</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-exclamation-triangle"></i></div>
+        <div class="kpi-value">19</div>
+        <div class="kpi-label">Overdue Cases</div>
+        <div class="kpi-trend down"><i class="bi bi-arrow-down-short"></i>3 fewer than last week</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#DCFCE7;color:#15803D;"><i class="bi bi-check2-circle"></i></div>
+        <div class="kpi-value">156</div>
+        <div class="kpi-label">Completed This Month</div>
+        <div class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>11% vs last month</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#F3E8FF;color:#7C3AED;"><i class="bi bi-clock-history"></i></div>
+        <div class="kpi-value">63</div>
+        <div class="kpi-label">Cases Awaiting Action</div>
+        <div class="kpi-trend down"><i class="bi bi-dash"></i>Stable vs last week</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#FFE8D1;color:#C2540A;"><i class="bi bi-flag"></i></div>
+        <div class="kpi-value">41</div>
+        <div class="kpi-label">High Priority Cases</div>
+        <div class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>5 new this week</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="kpi-card">
+        <div class="kpi-icon" style="background:#E8F1FC;color:#0F5FA6;"><i class="bi bi-shield-lock"></i></div>
+        <div class="kpi-value">57</div>
+        <div class="kpi-label">Classified Cases</div>
+        <div class="kpi-trend down"><i class="bi bi-dash"></i>Restricted visibility</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <!-- Main column -->
+    <div class="col-xl-8">
+
+      <div class="row g-3">
+        <div class="col-md-7">
+          <div class="section-card h-100">
+            <div class="sc-header">
+              <span>Monthly Case Trend</span>
+              <span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Registered vs. Closed — last 12 months</span>
+            </div>
+            <div class="sc-body"><div class="chart-box"><canvas id="chartTrend"></canvas></div></div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="section-card h-100">
+            <div class="sc-header"><span>Cases by Work Type</span></div>
+            <div class="sc-body"><div class="chart-box"><canvas id="chartWorkType"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <div class="section-card h-100">
+            <div class="sc-header"><span>Cases by Directorate</span></div>
+            <div class="sc-body"><div class="chart-box sm"><canvas id="chartDirectorate"></canvas></div></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="section-card h-100">
+            <div class="sc-header"><span>Case Status Distribution</span></div>
+            <div class="sc-body"><div class="chart-box sm"><canvas id="chartStatus"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <div class="section-card h-100">
+            <div class="sc-header"><span>Case Aging</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Days open — live cases</span></div>
+            <div class="sc-body"><div class="chart-box sm"><canvas id="chartAging"></canvas></div></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="section-card h-100">
+            <div class="sc-header"><span>Case Completion Performance</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">On-time vs delayed</span></div>
+            <div class="sc-body"><div class="chart-box sm"><canvas id="chartCompletion"></canvas></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card mt-1">
+        <div class="sc-header">
+          <span>Recent Cases</span>
+          <a href="my-cases.html" style="font-size:12px;font-weight:600;">View All <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="table-scroll">
+          <table class="table-modern mb-0" id="recentCasesTable">
+            <thead><tr><th>Case Ref.</th><th>Title</th><th>Work Type</th><th>Milestone</th><th>Urgency</th><th>PCD</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right column: widgets -->
+    <div class="col-xl-4">
+
+      <div class="section-card">
+        <div class="sc-header">
+          <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>AI Insights</span>
+          <span class="ai-chip"><i class="bi bi-stars"></i>Demo</span>
+        </div>
+        <div class="sc-body pt-2">
+          <div class="ai-insight-box" id="aiInsightsBox"></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc-header"><span>Cases Requiring Attention</span></div>
+        <div class="sc-body pt-2" id="attentionList"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc-header"><span>Upcoming Milestones</span></div>
+        <div class="sc-body pt-2" id="milestoneList"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc-header"><span>Pending Approvals</span></div>
+        <div class="sc-body pt-2" id="approvalsList"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc-header"><span>Recent Activities</span></div>
+        <div class="sc-body pt-2" id="recentActivitiesList"></div>
+      </div>
+
+      <div class="section-card">
+        <div class="sc-header"><span>Upcoming Reminders</span><a href="reminders.html" style="font-size:11.5px;">View all</a></div>
+        <div class="sc-body pt-2" id="reminderList"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

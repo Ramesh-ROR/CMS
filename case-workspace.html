@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem("slc_theme")==="dark"){document.documentElement.setAttribute("data-theme","dark");}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Workspace — SLC Case Management System</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div id="__pageBody">
+
+  <!-- Case header -->
+  <div class="section-card">
+    <div class="sc-body" id="caseHeaderBox">
+      <div class="d-flex justify-content-center py-5"><div class="spinner-border text-primary"></div></div>
+    </div>
+  </div>
+
+  <!-- Progress tracker -->
+  <div class="section-card">
+    <div class="sc-header">
+      <span>Case Progress</span>
+      <button class="btn btn-sm btn-light border" onclick="window.print()"><i class="bi bi-printer"></i>Print Workspace</button>
+    </div>
+    <div class="sc-body">
+      <div class="milestone-tracker" id="wsTracker"></div>
+      <div class="ai-insight-box mt-3 d-flex align-items-start gap-2" style="padding:12px 16px;">
+        <i class="bi bi-stars mt-1" style="color:#7C3AED;"></i>
+        <div style="font-size:12.6px;">
+          <strong>AI Timeline Alert</strong> — Current milestone is <strong>3 days behind</strong> the planned completion date based on historical case velocity for this case type.
+          <div class="mt-1"><span class="ai-chip"><i class="bi bi-info-circle"></i>AI-Assisted Insight – Demo</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Case Summary -->
+  <div class="section-card">
+    <div class="sc-header">
+      <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>AI Case Summary</span>
+      <span class="ai-chip"><i class="bi bi-stars"></i>Demo</span>
+    </div>
+    <div class="sc-body" id="aiCaseSummaryBox" style="font-size:13px;color:var(--slc-text);"></div>
+  </div>
+
+  <!-- 1. General Details -->
+  <div class="ws-section open" id="secGeneral">
+    <div class="ws-section-head" onclick="toggleSection('secGeneral')">
+      <div class="ws-icon"><i class="bi bi-file-earmark-text"></i></div>
+      <div class="ws-title">General Details</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="generalDetailsBody"></div>
+  </div>
+
+  <!-- 2. Work Type Details -->
+  <div class="ws-section" id="secWorkType">
+    <div class="ws-section-head" onclick="toggleSection('secWorkType')">
+      <div class="ws-icon"><i class="bi bi-diagram-3"></i></div>
+      <div class="ws-title">Work Type Details</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="workTypeDetailsBody"></div>
+  </div>
+
+  <!-- 3. Case Activities -->
+  <div class="ws-section" id="secActivities">
+    <div class="ws-section-head" onclick="toggleSection('secActivities')">
+      <div class="ws-icon"><i class="bi bi-activity"></i></div>
+      <div class="ws-title">Case Activities</div>
+      <span class="ws-meta" id="activityCount"></span>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body">
+      <div id="activitySummarySlot"></div>
+      <div class="d-flex justify-content-end mb-2">
+        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();SLCApp.demoActionModal('Activity added successfully in prototype mode.')"><i class="bi bi-plus-lg"></i>Add Activity</button>
+      </div>
+      <div class="timeline" id="activityTimeline"></div>
+    </div>
+  </div>
+
+  <!-- 4. Case Milestone -->
+  <div class="ws-section" id="secMilestone">
+    <div class="ws-section-head" onclick="toggleSection('secMilestone')">
+      <div class="ws-icon"><i class="bi bi-signpost-split"></i></div>
+      <div class="ws-title">Case Milestone</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="milestoneDetailBody"></div>
+  </div>
+
+  <!-- 5. Case Checklist -->
+  <div class="ws-section" id="secChecklist">
+    <div class="ws-section-head" onclick="toggleSection('secChecklist')">
+      <div class="ws-icon"><i class="bi bi-list-check"></i></div>
+      <div class="ws-title">Case Checklist</div>
+      <span class="ws-meta" id="checklistPct"></span>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="checklistBody"></div>
+  </div>
+
+  <!-- 6. Case Attachments -->
+  <div class="ws-section" id="secAttachments">
+    <div class="ws-section-head" onclick="toggleSection('secAttachments')">
+      <div class="ws-icon"><i class="bi bi-paperclip"></i></div>
+      <div class="ws-title">Case Attachments</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body">
+      <div class="dropzone" onclick="SLCApp.demoActionModal('Document uploaded successfully in prototype mode.')">
+        <i class="bi bi-cloud-arrow-up"></i>
+        <div style="font-weight:600;font-size:13px;color:var(--slc-text);">Drag & drop documents here, or click to browse</div>
+        <div style="font-size:11.5px;">or select from Document Bank</div>
+      </div>
+      <div id="attachmentsBody"></div>
+    </div>
+  </div>
+
+  <!-- 7. Case Team -->
+  <div class="ws-section" id="secTeam">
+    <div class="ws-section-head" onclick="toggleSection('secTeam')">
+      <div class="ws-icon"><i class="bi bi-people"></i></div>
+      <div class="ws-title">Case Team</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="teamBody"></div>
+  </div>
+
+  <!-- 8. Related Cases -->
+  <div class="ws-section" id="secRelated">
+    <div class="ws-section-head" onclick="toggleSection('secRelated')">
+      <div class="ws-icon"><i class="bi bi-diagram-2"></i></div>
+      <div class="ws-title">Related Cases</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="relatedBody"></div>
+  </div>
+
+  <!-- 9. Tasks -->
+  <div class="ws-section" id="secTasks">
+    <div class="ws-section-head" onclick="toggleSection('secTasks')">
+      <div class="ws-icon"><i class="bi bi-list-task"></i></div>
+      <div class="ws-title">Tasks</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="tasksBody"></div>
+  </div>
+
+  <!-- 10. Reminders -->
+  <div class="ws-section" id="secReminders">
+    <div class="ws-section-head" onclick="toggleSection('secReminders')">
+      <div class="ws-icon"><i class="bi bi-alarm"></i></div>
+      <div class="ws-title">Reminders</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="remindersBody"></div>
+  </div>
+
+  <!-- 11. Audit Trail -->
+  <div class="ws-section" id="secAudit">
+    <div class="ws-section-head" onclick="toggleSection('secAudit')">
+      <div class="ws-icon"><i class="bi bi-shield-check"></i></div>
+      <div class="ws-title">Audit Trail</div>
+      <i class="bi bi-chevron-down chevron"></i>
+    </div>
+    <div class="ws-section-body" id="auditBody"></div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/demo-data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/case-workspace.js"></script>
+</body>
+</html>
