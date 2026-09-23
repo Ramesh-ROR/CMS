@@ -43,8 +43,9 @@
   function buildSidebar(active) {
     let html = `
     <div class="sidebar-brand">
-      <img src="assets/dubai-crest-icon.png" alt="Government of Dubai" class="sidebar-brand-mark">
-      <img src="assets/slc-logo-red.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo">
+      <img src="assets/dubai-crest-icon.png" alt="Government of Dubai" class="sidebar-brand-mark" width="38" height="38">
+      <img src="assets/slc-logo-red.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-light" width="87" height="30">
+      <img src="assets/slc-logo-white.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-dark" width="87" height="30">
     </div>
     <nav class="sidebar-nav">`;
     NAV.forEach(sec => {

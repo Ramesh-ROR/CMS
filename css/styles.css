@@ -97,10 +97,16 @@ a:hover { color: var(--slc-primary-darker); }
   min-height: var(--slc-header-h);
 }
 .sidebar-brand-mark {
-  width: 38px; height: 38px; object-fit: contain; flex-shrink: 0;
+  width: 38px; height: 38px; max-width: 38px; max-height: 38px; object-fit: contain; flex-shrink: 0;
   background: #fff; border-radius: 8px; padding: 3px; box-shadow: var(--slc-shadow-sm);
 }
-.sidebar-brand-logo { height: 30px; width: auto; max-width: 172px; object-fit: contain; object-position: left center; }
+.sidebar-brand-logo {
+  height: 30px; width: auto; max-width: 150px; max-height: 30px;
+  object-fit: contain; object-position: left center;
+}
+.sidebar-brand-logo.logo-on-dark { display: none; }
+[data-theme="dark"] .sidebar-brand-logo.logo-on-light { display: none; }
+[data-theme="dark"] .sidebar-brand-logo.logo-on-dark { display: inline-block; }
 .app-shell.sidebar-collapsed .sidebar-brand-logo { display: none; }
 .sidebar-brand-text { line-height: 1.2; overflow: hidden; white-space: nowrap; }
 .sidebar-brand-text .t1 { font-weight: 700; font-size: 14.5px; color: var(--slc-text); }
