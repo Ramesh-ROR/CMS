@@ -6,7 +6,7 @@
   const D = window.SLC, A = window.SLCApp;
 
   const CHART_ICON = {
-    doughnut: { icon: "bi-pie-chart-fill", bg: "#EAF3FC", color: "#0078D4" },
+    doughnut: { icon: "bi-pie-chart-fill", bg: "#F5EBD8", color: "#8A6A3A" },
     bar: { icon: "bi-bar-chart-fill", bg: "#E9F7EF", color: "#107C10" },
     horizontalBar: { icon: "bi-bar-chart-steps", bg: "#F3E8FF", color: "#7C3AED" },
     line: { icon: "bi-graph-up", bg: "#FFF4E5", color: "#C2540A" },

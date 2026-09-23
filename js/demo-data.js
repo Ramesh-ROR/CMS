@@ -26,7 +26,7 @@
     {
       id: "Legislation",
       code: "LEG",
-      color: "#0078D4",
+      color: "#B8863E",
       caseTypes: ["Local Legislations", "Federal Legislations", "Treaties & Conventions"],
     },
     {

@@ -161,7 +161,7 @@
     document.getElementById("mcSummaryStrip").innerHTML = `
       <div class="item"><span class="dot" style="background:var(--slc-primary);"></span>${total} cases in view</div>
       <div class="item"><span class="dot" style="background:#16A34A;"></span>${mine} directly assigned to you</div>
-      <div class="item"><span class="dot" style="background:#0F5FA6;"></span>${classified} classified</div>
+      <div class="item"><span class="dot" style="background:#8A6A3A;"></span>${classified} classified</div>
       <div class="item"><span class="dot" style="background:#DC2626;"></span>${overdue} overdue</div>`;
   }
 

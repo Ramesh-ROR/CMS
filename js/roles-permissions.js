@@ -5,9 +5,9 @@
 
   /* Visual treatment for each of the 8 permission action columns */
   const ACTION_STYLE = {
-    "View": { icon: "bi-eye", color: "#2563EB" },
+    "View": { icon: "bi-eye", color: "#8A6A3A" },
     "Create": { icon: "bi-plus-circle", color: "#16A34A" },
-    "Edit": { icon: "bi-pencil", color: "#0F6CBD" },
+    "Edit": { icon: "bi-pencil", color: "#BF9A5E" },
     "Delete": { icon: "bi-trash", color: "#DC2626" },
     "Approve": { icon: "bi-check2-circle", color: "#7C3AED" },
     "Register": { icon: "bi-clipboard-check", color: "#C2410C" },
@@ -17,7 +17,7 @@
 
   const CASE_ROLE_STYLE = {
     LEAD: { icon: "bi-star-fill", color: "#B45309", bg: "#FEF3C7" },
-    TEAM: { icon: "bi-people-fill", color: "#0F6CBD", bg: "#DCEAFB" },
+    TEAM: { icon: "bi-people-fill", color: "#6B4F24", bg: "#EFE4D0" },
     ASSOC: { icon: "bi-person-plus-fill", color: "#8764B8", bg: "#F1E9FE" },
     ADMIN: { icon: "bi-clipboard-data-fill", color: "#15803D", bg: "#DCFCE7" },
   };
@@ -49,7 +49,7 @@
       (D.ROLE_PERMISSIONS[b.name] || []).length - (D.ROLE_PERMISSIONS[a.name] || []).length
     )[0];
     const kpis = [
-      { icon: "bi-person-badge", bg: "#EAF3FC", color: "#0078D4", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: "Defined per BRD 6.1.1.2" },
+      { icon: "bi-person-badge", bg: "#F5EBD8", color: "#8A6A3A", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: "Defined per BRD 6.1.1.2" },
       { icon: "bi-shield-exclamation", bg: "#F3E8FF", color: "#6D28D9", value: elevatedCount, label: "Elevated Roles", sub: "Require special authority" },
       { icon: "bi-grid-3x3-gap", bg: "#FFE8D1", color: "#C2540A", value: D.PERMISSION_ACTIONS.length, label: "Permission Actions", sub: "View, Create, Edit and more" },
       { icon: "bi-person-workspace", bg: "#DCFCE7", color: "#15803D", value: D.CASE_ROLES.length, label: "Case Roles", sub: "Per-case activity based" },

@@ -23,7 +23,7 @@
     Chart.defaults.color = t.text;
     Chart.defaults.font.size = 11.5;
 
-    const palette = { blue: "#0078D4", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626" };
+    const palette = { blue: "#B8863E", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626" };
 
     /* --- Monthly Trend --- */
     charts.push(new Chart(document.getElementById("chartTrend"), {
@@ -31,7 +31,7 @@
       data: {
         labels: ["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"],
         datasets: [
-          { label: "Registered", data: [92,101,88,110,122,118,131,127,140,135,148,156], borderColor: palette.blue, backgroundColor: "rgba(0,120,212,.08)", fill: true, tension: .35, pointRadius: 3 },
+          { label: "Registered", data: [92,101,88,110,122,118,131,127,140,135,148,156], borderColor: palette.blue, backgroundColor: "rgba(184,134,62,.08)", fill: true, tension: .35, pointRadius: 3 },
           { label: "Closed", data: [80,95,84,99,108,112,120,119,126,124,138,142], borderColor: palette.green, backgroundColor: "rgba(22,163,74,.06)", fill: true, tension: .35, pointRadius: 3 },
         ],
       },

@@ -49,7 +49,7 @@
       const items = D.REMINDERS.filter(r => r.date === d);
       const worstStatus = items.some(r => r.status === "Overdue") ? "Overdue"
         : items.some(r => r.status === "Due Today") ? "Due Today" : "Upcoming";
-      const color = worstStatus === "Overdue" ? "#B91C1C" : worstStatus === "Due Today" ? "#B45309" : "#1D4ED8";
+      const color = worstStatus === "Overdue" ? "#B91C1C" : worstStatus === "Due Today" ? "#B45309" : "#8A6A3A";
       const isToday = d === "2026-09-21";
       return `
       <div class="date-chip ${activeDate === d ? "active" : ""} ${isToday ? "is-today" : ""}" data-date="${d}">

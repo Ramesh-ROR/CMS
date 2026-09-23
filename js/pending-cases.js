@@ -111,7 +111,7 @@
       <div class="col-6 col-md-3">
         <div class="kpi-card compact">
           <div class="kpi-top">
-          <div class="kpi-icon" style="background:#E8F1FC;color:#0F5FA6;"><i class="bi bi-shield-lock"></i></div>
+          <div class="kpi-icon" style="background:#F5EBD8;color:#6B4F24;"><i class="bi bi-shield-lock"></i></div>
           <div class="kpi-value">${classified}</div>
         </div>
           <div class="kpi-label">Classified Pending</div>

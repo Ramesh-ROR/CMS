@@ -102,16 +102,16 @@
 
   /* Module tile config for the top index grid */
   const MODULES = [
-    { id: "sec-users", icon: "bi-people", color: "#0078D4", bg: "#EAF3FC", title: "User Management", desc: "Manage SLC user accounts, system roles and directorate assignment.", count: () => D.USERS.length + " users" },
+    { id: "sec-users", icon: "bi-people", color: "#8A6A3A", bg: "#F5EBD8", title: "User Management", desc: "Manage SLC user accounts, system roles and directorate assignment.", count: () => D.USERS.length + " users" },
     { id: "sec-roles-summary", icon: "bi-shield-lock", color: "#6D28D9", bg: "#F3E8FF", title: "Roles & Permissions", desc: "System role and case role summary — links to the full permissions matrix.", count: () => D.SYSTEM_ROLES.length + " + " + D.CASE_ROLES.length + " roles" },
-    { id: "sec-system-roles", icon: "bi-person-badge", color: "#0F5FA6", bg: "#DCEAFB", title: "System Roles", desc: "The 13 BRD-defined system roles and their elevated authority flags.", count: () => D.SYSTEM_ROLES.length + " roles" },
+    { id: "sec-system-roles", icon: "bi-person-badge", color: "#6B4F24", bg: "#EFE4D0", title: "System Roles", desc: "The 13 BRD-defined system roles and their elevated authority flags.", count: () => D.SYSTEM_ROLES.length + " roles" },
     { id: "sec-case-roles", icon: "bi-person-workspace", color: "#107C10", bg: "#DCFCE7", title: "Case Roles", desc: "Per-case team roles: Lead, Team, Associate and Admin Member.", count: () => D.CASE_ROLES.length + " roles" },
     { id: "sec-work-types", icon: "bi-diagram-3", color: "#8764B8", bg: "#F1E9FE", title: "Work Type Masters", desc: "The 5 SLC work types and their configured case types.", count: () => D.WORK_TYPES.length + " work types" },
     { id: "sec-case-types", icon: "bi-tags", color: "#C2410C", bg: "#FFEDD5", title: "Case Type Masters", desc: "Flattened list of every case type across all work types.", count: () => CASE_TYPE_ROWS.length + " case types" },
     { id: "sec-milestones", icon: "bi-flag", color: "#B45309", bg: "#FEF3C7", title: "Milestone Masters", desc: "Case lifecycle milestones, colours, badges and how they are set.", count: () => D.MILESTONES.length + " milestones" },
-    { id: "sec-entities", icon: "bi-building", color: "#0369A1", bg: "#E0F2FE", title: "Entity Masters", desc: "Requesting and related government entities on file.", count: () => D.ENTITIES.length + " entities" },
+    { id: "sec-entities", icon: "bi-building", color: "#A9803D", bg: "#F7EFD9", title: "Entity Masters", desc: "Requesting and related government entities on file.", count: () => D.ENTITIES.length + " entities" },
     { id: "sec-experts", icon: "bi-mortarboard", color: "#BE185D", bg: "#FCE7F3", title: "Expert Masters", desc: "Subject-matter and legal experts available for case consultation.", count: () => EXPERTS.length + " experts" },
-    { id: "sec-doc-bank", icon: "bi-file-earmark-text", color: "#1D4ED8", bg: "#DBEAFE", title: "Document Bank", desc: "Reusable template documents for case activities and correspondence.", count: () => DOC_BANK.length + " templates" },
+    { id: "sec-doc-bank", icon: "bi-file-earmark-text", color: "#967234", bg: "#F2E6CC", title: "Document Bank", desc: "Reusable template documents for case activities and correspondence.", count: () => DOC_BANK.length + " templates" },
     { id: "sec-reports-rights", icon: "bi-bar-chart-line", color: "#15803D", bg: "#DCFCE7", title: "Reports User Rights", desc: "Which system roles can access Case and Operational report categories.", count: () => REPORT_RIGHT_ROLES.length + " roles shown" },
     { id: "sec-console-rights", icon: "bi-key", color: "#7C2D12", bg: "#FCE7E3", title: "Console User Rights", desc: "Which system roles can access each Management Console module.", count: () => CONSOLE_MODULES.length + " modules" },
     { id: "sec-audit", icon: "bi-clock-history", color: "#374151", bg: "#F3F4F6", title: "Audit Trail", desc: "Recent administrative and case-level actions across the system.", count: () => AUDIT_TRAIL.length + " recent events" },
@@ -123,7 +123,7 @@
     /* --- KPI row --- */
     const inactiveCount = Object.keys(USER_STATUS).length;
     const kpis = [
-      { icon: "bi-people", bg: "#EAF3FC", color: "#0078D4", value: D.USERS.length, label: "Total Users", sub: `${D.USERS.length - inactiveCount} active / ${inactiveCount} inactive` },
+      { icon: "bi-people", bg: "#F5EBD8", color: "#8A6A3A", value: D.USERS.length, label: "Total Users", sub: `${D.USERS.length - inactiveCount} active / ${inactiveCount} inactive` },
       { icon: "bi-person-badge", bg: "#F3E8FF", color: "#6D28D9", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: D.SYSTEM_ROLES.filter(r => r.elevated).length + " elevated" },
       { icon: "bi-diagram-3", bg: "#DCFCE7", color: "#15803D", value: D.WORK_TYPES.length, label: "Work Types", sub: CASE_TYPE_ROWS.length + " case types" },
       { icon: "bi-building", bg: "#FFE8D1", color: "#C2540A", value: D.ENTITIES.length, label: "Registered Entities", sub: "Requesting / related bodies" },
