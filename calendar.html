@@ -17,7 +17,7 @@
   .cal-legend { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; font-size: 12px; color:var(--slc-muted); }
   .cal-legend .item { display: flex; align-items: center; gap: 6px; }
   .cal-legend .dot { width: 9px; height: 9px; border-radius: 3px; display: inline-block; }
-  .cal-legend .dot.pcd { background: #0078D4; }
+  .cal-legend .dot.pcd { background: #8A6A3A; }
   .cal-legend .dot.task { background: #F08C1A; }
   .cal-legend .dot.reminder { background: #8764B8; }
 
@@ -29,10 +29,10 @@
     min-height: 108px; background: #fff; border: 1px solid var(--slc-border); border-radius: 10px;
     padding: 8px; cursor: pointer; transition: border-color .15s, box-shadow .15s; display: flex; flex-direction: column;
   }
-  .cal-cell:hover { border-color: #BFE0F7; box-shadow: var(--slc-shadow-sm); }
+  .cal-cell:hover { border-color: #E3CFA0; box-shadow: var(--slc-shadow-sm); }
   .cal-cell.other-month { background: #FAFBFD; }
   .cal-cell.other-month .cal-daynum { color: #C7D2E0; }
-  .cal-cell.today { border-color: var(--slc-primary); box-shadow: 0 0 0 2px rgba(0,120,212,.14); }
+  .cal-cell.today { border-color: var(--slc-primary); box-shadow: 0 0 0 2px rgba(107,79,36,.14); }
   .cal-daynum { font-size: 12.5px; font-weight: 700; color: var(--slc-text); margin-bottom: 6px; }
   .cal-cell.today .cal-daynum {
     background: var(--slc-primary); color: #fff; width: 22px; height: 22px; border-radius: 50%;
@@ -43,7 +43,7 @@
     font-size: 10.3px; font-weight: 600; padding: 2px 6px; border-radius: 5px; white-space: nowrap;
     overflow: hidden; text-overflow: ellipsis; border-left: 3px solid transparent;
   }
-  .cal-chip-pcd { background: #EAF3FC; color: #0F5FA6; border-left-color: #0078D4; }
+  .cal-chip-pcd { background: #F5EBD8; color: #6B4F24; border-left-color: #8A6A3A; }
   .cal-chip-task { background: #FFF1E0; color: #C2540A; border-left-color: #F08C1A; }
   .cal-chip-reminder { background: #F1E9FE; color: #6B3FA0; border-left-color: #8764B8; }
   .cal-more { font-size: 10px; color: var(--slc-muted); font-weight: 600; padding: 1px 6px; }
@@ -51,7 +51,7 @@
   .dd-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F1F3F6; }
   .dd-item:last-child { border-bottom: none; }
   .dd-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-  .dd-icon.pcd { background: #EAF3FC; color: #0078D4; }
+  .dd-icon.pcd { background: #F5EBD8; color: #8A6A3A; }
   .dd-icon.task { background: #FFF1E0; color: #F08C1A; }
   .dd-icon.reminder { background: #F1E9FE; color: #8764B8; }
   .dd-title { font-size: 13px; font-weight: 700; color: var(--slc-text); }
@@ -59,14 +59,14 @@
 
   [data-theme="dark"] .cal-legend { color: var(--slc-muted); }
   [data-theme="dark"] .cal-cell { background: var(--slc-card); }
-  [data-theme="dark"] .cal-cell:hover { border-color: rgba(59,158,245,.4); }
+  [data-theme="dark"] .cal-cell:hover { border-color: rgba(217,184,118,.4); }
   [data-theme="dark"] .cal-cell.other-month { background: rgba(255,255,255,.02); }
   [data-theme="dark"] .cal-cell.other-month .cal-daynum { color: #45566F; }
-  [data-theme="dark"] .cal-chip-pcd { background: rgba(59,158,245,.16); color: #7CC4F5; border-left-color: #3B9EF5; }
+  [data-theme="dark"] .cal-chip-pcd { background: rgba(217,184,118,.16); color: #E8CB94; border-left-color: #D9B876; }
   [data-theme="dark"] .cal-chip-task { background: rgba(240,140,26,.18); color: #FDBA74; border-left-color: #F08C1A; }
   [data-theme="dark"] .cal-chip-reminder { background: rgba(135,100,184,.22); color: #D8B4FE; border-left-color: #8764B8; }
   [data-theme="dark"] .dd-item { border-bottom-color: var(--slc-border); }
-  [data-theme="dark"] .dd-icon.pcd { background: rgba(59,158,245,.16); color: #7CC4F5; }
+  [data-theme="dark"] .dd-icon.pcd { background: rgba(217,184,118,.16); color: #E8CB94; }
   [data-theme="dark"] .dd-icon.task { background: rgba(240,140,26,.18); color: #FDBA74; }
   [data-theme="dark"] .dd-icon.reminder { background: rgba(135,100,184,.22); color: #D8B4FE; }
 </style>

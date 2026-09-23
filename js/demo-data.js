@@ -94,9 +94,9 @@
     { id: "registered", name: "Case Registered", color: "#F3F4F6", badge: "muted", order: 2, how: "Auto (after Case Registration)" },
     { id: "first_review", name: "First Review", color: "#F5C242", badge: "warning", order: 3, how: "Manual" },
     { id: "first_draft", name: "First Draft", color: "#F08C1A", badge: "orange", order: 4, how: "Manual" },
-    { id: "further_review", name: "Further Review", color: "#4FA8E0", badge: "info", order: 5, how: "Manual" },
-    { id: "further_draft", name: "Further Draft/Amendment", color: "#0F5FA6", badge: "primary-dark", order: 6, how: "Manual" },
-    { id: "final_draft", name: "Final Draft/Amendment", color: "#0B3D74", badge: "navy", order: 7, how: "Manual" },
+    { id: "further_review", name: "Further Review", color: "#8A6A3A", badge: "info", order: 5, how: "Manual" },
+    { id: "further_draft", name: "Further Draft/Amendment", color: "#6B4F24", badge: "primary-dark", order: 6, how: "Manual" },
+    { id: "final_draft", name: "Final Draft/Amendment", color: "#3D2C13", badge: "navy", order: 7, how: "Manual" },
     { id: "final_review", name: "Final Review", color: "#6B3FA0", badge: "purple-dark", order: 8, how: "Manual" },
     { id: "signoff", name: "Sign Off/Acceptance", color: "#8B5CF6", badge: "purple", order: 9, how: "Manual" },
     { id: "awaiting_customer", name: "Awaiting Customer Response", color: "#FDE68A", badge: "pale-yellow", order: 10, how: "Manual" },
@@ -119,18 +119,18 @@
   /*  Users                                                                  */
   /* ---------------------------------------------------------------------- */
   const USERS = [
-    { id: "u1", name: "Ahmed Al Mansoori", nameAr: "أحمد المنصوري", role: "Head of Directorate", directorate: "LEG", email: "ahmed.almansoori@slc.gov.ae", initials: "AM", color: "#0078D4" },
+    { id: "u1", name: "Ahmed Al Mansoori", nameAr: "أحمد المنصوري", role: "Head of Directorate", directorate: "LEG", email: "ahmed.almansoori@slc.gov.ae", initials: "AM", color: "#A9803D" },
     { id: "u2", name: "Fatima Al Hashimi", nameAr: "فاطمة الهاشمي", role: "Directorate Legal Staff", directorate: "LEG", email: "fatima.alhashimi@slc.gov.ae", initials: "FH", color: "#107C10" },
     { id: "u3", name: "Mohammed Al Nuaimi", nameAr: "محمد النعيمي", role: "Directorate Legal Staff", directorate: "LAO", email: "mohammed.alnuaimi@slc.gov.ae", initials: "MN", color: "#8764B8" },
     { id: "u4", name: "Sara Al Mazrouei", nameAr: "سارة المزروعي", role: "Registration Team", directorate: "GEN", email: "sara.almazrouei@slc.gov.ae", initials: "SM", color: "#C239B3" },
-    { id: "u5", name: "Khalid Al Mansouri", nameAr: "خالد المنصوري", role: "System Admin", directorate: "GEN", email: "khalid.almansouri@slc.gov.ae", initials: "KM", color: "#0F6CBD" },
+    { id: "u5", name: "Khalid Al Mansouri", nameAr: "خالد المنصوري", role: "System Admin", directorate: "GEN", email: "khalid.almansouri@slc.gov.ae", initials: "KM", color: "#B45309" },
     { id: "u6", name: "Mariam Al Suwaidi", nameAr: "مريم السويدي", role: "Directorate Admin Staff", directorate: "TRN", email: "mariam.alsuwaidi@slc.gov.ae", initials: "MS", color: "#F08C1A" },
     { id: "u7", name: "Rashid Al Falasi", nameAr: "راشد الفلاسي", role: "Head of Directorate", directorate: "LAO", email: "rashid.alfalasi@slc.gov.ae", initials: "RF", color: "#16A34A" },
     { id: "u8", name: "Noura Al Shamsi", nameAr: "نورة الشامسي", role: "Directorate Legal Staff", directorate: "LEG", email: "noura.alshamsi@slc.gov.ae", initials: "NS", color: "#DC2626" },
-    { id: "u9", name: "Omar Al Zaabi", nameAr: "عمر الزعابي", role: "Power System Admin", directorate: "GEN", email: "omar.alzaabi@slc.gov.ae", initials: "OZ", color: "#0B3D74" },
+    { id: "u9", name: "Omar Al Zaabi", nameAr: "عمر الزعابي", role: "Power System Admin", directorate: "GEN", email: "omar.alzaabi@slc.gov.ae", initials: "OZ", color: "#7C2D12" },
     { id: "u10", name: "Hessa Al Marri", nameAr: "حصة المري", role: "Directorate Legal Staff", directorate: "RP", email: "hessa.almarri@slc.gov.ae", initials: "HM", color: "#6B3FA0" },
     { id: "u11", name: "Abdulla Al Kaabi", nameAr: "عبدالله الكعبي", role: "Secretary General", directorate: "GEN", email: "abdulla.alkaabi@slc.gov.ae", initials: "AK", color: "#1F2937" },
-    { id: "u12", name: "Layla Al Qassimi", nameAr: "ليلى القاسمي", role: "Directorate Legal Staff", directorate: "TRN", email: "layla.alqassimi@slc.gov.ae", initials: "LQ", color: "#0078D4" },
+    { id: "u12", name: "Layla Al Qassimi", nameAr: "ليلى القاسمي", role: "Directorate Legal Staff", directorate: "TRN", email: "layla.alqassimi@slc.gov.ae", initials: "LQ", color: "#92400E" },
   ];
 
   const CURRENT_USER = { ...USERS[0], titleLine: "Head of Directorate — Legislation Directorate" };
