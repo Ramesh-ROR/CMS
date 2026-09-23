@@ -101,30 +101,38 @@
     const overdue = all.filter(c => c.overdue).length;
     document.getElementById("lcKpiRow").innerHTML = `
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#EAF3FC;color:#0078D4;"><i class="bi bi-activity"></i></div>
           <div class="kpi-value">${total}</div>
+        </div>
           <div class="kpi-label">Live Cases</div>
         </div>
       </div>
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#FFE8D1;color:#C2540A;"><i class="bi bi-flag"></i></div>
           <div class="kpi-value">${highUrgency}</div>
+        </div>
           <div class="kpi-label">High / Very High Urgency</div>
         </div>
       </div>
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#E8F1FC;color:#0F5FA6;"><i class="bi bi-shield-lock"></i></div>
           <div class="kpi-value">${classified}</div>
+        </div>
           <div class="kpi-label">Classified Cases</div>
         </div>
       </div>
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-exclamation-triangle"></i></div>
           <div class="kpi-value">${overdue}</div>
+        </div>
           <div class="kpi-label">Overdue Cases</div>
         </div>
       </div>`;

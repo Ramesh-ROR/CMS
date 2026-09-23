@@ -130,9 +130,11 @@
     ];
     document.getElementById("mgmtKpiRow").innerHTML = kpis.map(k => `
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:${k.bg};color:${k.color};"><i class="bi ${k.icon}"></i></div>
           <div class="kpi-value">${k.value}</div>
+        </div>
           <div class="kpi-label">${k.label}</div>
           <div class="kpi-trend up" style="color:var(--slc-muted);"><i class="bi bi-dash"></i>${k.sub}</div>
         </div>

@@ -91,30 +91,38 @@
     const oldest = rows.slice().sort((a, b) => new Date(a.csd) - new Date(b.csd))[0];
     document.getElementById("pcKpiRow").innerHTML = `
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#FEF3C7;color:#B45309;"><i class="bi bi-hourglass-split"></i></div>
           <div class="kpi-value">${total}</div>
+        </div>
           <div class="kpi-label">Pending Cases</div>
         </div>
       </div>
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#FFE8D1;color:#C2540A;"><i class="bi bi-list-check"></i></div>
           <div class="kpi-value">${avgMissing}</div>
+        </div>
           <div class="kpi-label">Avg. Missing Fields / Case</div>
         </div>
       </div>
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#E8F1FC;color:#0F5FA6;"><i class="bi bi-shield-lock"></i></div>
           <div class="kpi-value">${classified}</div>
+        </div>
           <div class="kpi-label">Classified Pending</div>
         </div>
       </div>
       <div class="col-6 col-md-3">
-        <div class="kpi-card">
+        <div class="kpi-card compact">
+          <div class="kpi-top">
           <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-calendar-x"></i></div>
           <div class="kpi-value">${oldest ? A.fmtDate(oldest.csd) : "—"}</div>
+        </div>
           <div class="kpi-label">Oldest Awaiting Registration</div>
         </div>
       </div>`;
