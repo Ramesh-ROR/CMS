@@ -44,8 +44,8 @@
     let html = `
     <div class="sidebar-brand">
      <img src="assets/dubai-crest-icon.png" alt="Government of Dubai" class="sidebar-brand-mark" width="38" height="38" display="none">
-      <img src="assets/slc-logo-red.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-light" width="200" height="70">
-      <img src="assets/slc-logo-white.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-dark" width="200" height="70">
+      <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-light" width="167" height="40">
+      <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-dark" width="167" height="40">
     </div>
     <nav class="sidebar-nav">`;
     NAV.forEach(sec => {
