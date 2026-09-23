@@ -437,9 +437,20 @@
     return `<div class="ai-inline-note"><i class="bi bi-stars"></i><span>${text}</span> <span class="ai-chip ms-1"><i class="bi bi-info-circle"></i>Demo</span></div>`;
   }
 
+  /* Smooth-scroll to a same-page section and briefly flash it, used by clickable KPI/data cards
+     that drill into a section further down the same page rather than to another page. */
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    el.classList.add("section-flash");
+    setTimeout(() => el.classList.remove("section-flash"), 1200);
+  }
+
   global.SLCApp = {
     NAV, renderShell, toast, demoAction, demoActionModal, applyLang, avatarHtml,
     urgencyBadge, milestoneBadge, classifiedFlag, fmtDate, userChip, sendAI,
     applyTheme, currentTheme, chartTheme, onThemeChange, aiInsightCard, aiInlineNote,
+    scrollToSection,
   };
 })(window);

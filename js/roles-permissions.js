@@ -49,13 +49,14 @@
       (D.ROLE_PERMISSIONS[b.name] || []).length - (D.ROLE_PERMISSIONS[a.name] || []).length
     )[0];
     const kpis = [
-      { icon: "bi-person-badge", bg: "#F5EBD8", color: "#8A6A3A", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: "Defined per BRD 6.1.1.2" },
-      { icon: "bi-shield-exclamation", bg: "#F3E8FF", color: "#6D28D9", value: elevatedCount, label: "Elevated Roles", sub: "Require special authority" },
-      { icon: "bi-grid-3x3-gap", bg: "#FFE8D1", color: "#C2540A", value: D.PERMISSION_ACTIONS.length, label: "Permission Actions", sub: "View, Create, Edit and more" },
-      { icon: "bi-person-workspace", bg: "#DCFCE7", color: "#15803D", value: D.CASE_ROLES.length, label: "Case Roles", sub: "Per-case activity based" },
+      { icon: "bi-person-badge", bg: "#F5EBD8", color: "#8A6A3A", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: "Defined per BRD 6.1.1.2", target: "matrixSection" },
+      { icon: "bi-shield-exclamation", bg: "#F3E8FF", color: "#6D28D9", value: elevatedCount, label: "Elevated Roles", sub: "Require special authority", target: "matrixSection" },
+      { icon: "bi-grid-3x3-gap", bg: "#FFE8D1", color: "#C2540A", value: D.PERMISSION_ACTIONS.length, label: "Permission Actions", sub: "View, Create, Edit and more", target: "matrixSection" },
+      { icon: "bi-person-workspace", bg: "#DCFCE7", color: "#15803D", value: D.CASE_ROLES.length, label: "Case Roles", sub: "Per-case activity based", target: "caseRolesSection" },
     ];
     document.getElementById("rpKpiRow").innerHTML = kpis.map(k => `
       <div class="col-6 col-md-3">
+        <a href="#${k.target}" class="kpi-card-link" onclick="SLCApp.scrollToSection('${k.target}');return false;">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:${k.bg};color:${k.color};"><i class="bi ${k.icon}"></i></div>
@@ -64,6 +65,7 @@
           <div class="kpi-label">${k.label}</div>
           <div class="kpi-trend up" style="color:var(--slc-muted);"><i class="bi bi-dash"></i>${k.sub}</div>
         </div>
+        </a>
       </div>`).join("");
 
     /* --- AI access review insight --- */

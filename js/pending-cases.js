@@ -36,6 +36,7 @@
     const workType = document.getElementById("fWorkType").value;
     const workSource = document.getElementById("fWorkSource").value;
     const directorate = document.getElementById("fDirectorate").value;
+    const classifiedOnly = document.getElementById("fClassified").checked;
     return rows.filter(c => {
       if (search) {
         const hay = `${c.ref} ${c.systemNo} ${c.title} ${c.requestingEntity}`.toLowerCase();
@@ -44,6 +45,7 @@
       if (workType && c.workType !== workType) return false;
       if (workSource && c.workSource !== workSource) return false;
       if (directorate && c.directorate !== directorate) return false;
+      if (classifiedOnly && !c.classified) return false;
       return true;
     });
   }
@@ -91,6 +93,7 @@
     const oldest = rows.slice().sort((a, b) => new Date(a.csd) - new Date(b.csd))[0];
     document.getElementById("pcKpiRow").innerHTML = `
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__pcKpiClick('all')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#FEF3C7;color:#B45309;"><i class="bi bi-hourglass-split"></i></div>
@@ -98,8 +101,10 @@
         </div>
           <div class="kpi-label">Pending Cases</div>
         </div>
+        </a>
       </div>
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__pcKpiClick('table')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#FFE8D1;color:#C2540A;"><i class="bi bi-list-check"></i></div>
@@ -107,8 +112,10 @@
         </div>
           <div class="kpi-label">Avg. Missing Fields / Case</div>
         </div>
+        </a>
       </div>
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__pcKpiClick('classified')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#F5EBD8;color:#6B4F24;"><i class="bi bi-shield-lock"></i></div>
@@ -116,8 +123,10 @@
         </div>
           <div class="kpi-label">Classified Pending</div>
         </div>
+        </a>
       </div>
       <div class="col-6 col-md-3">
+        <a href="${oldest ? `case-workspace.html?ref=${oldest.ref}` : "javascript:void(0)"}" class="kpi-card-link">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-calendar-x"></i></div>
@@ -125,6 +134,7 @@
         </div>
           <div class="kpi-label">Oldest Awaiting Registration</div>
         </div>
+        </a>
       </div>`;
   }
 
@@ -154,23 +164,38 @@
     document.getElementById("pcResultCount").textContent = `Showing ${filtered.length} of ${all.length} pending cases`;
   }
 
+  function resetFilters() {
+    document.getElementById("fSearch").value = "";
+    document.getElementById("fWorkType").value = "";
+    document.getElementById("fWorkSource").value = "";
+    document.getElementById("fDirectorate").value = "";
+    document.getElementById("fClassified").checked = false;
+    render();
+  }
+
+  /* Clicking a KPI card jumps straight to the matching slice of this same table */
+  window.__pcKpiClick = function (type) {
+    if (type === "classified") {
+      resetFilters();
+      document.getElementById("fClassified").checked = true;
+      render();
+    } else {
+      resetFilters();
+    }
+    document.querySelector(".filter-bar, .table-card").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("pending-cases", [{ label: "Pending Cases" }]);
     const all = pendingCases();
     renderKpis(all);
     populateFilterOptions(all);
 
-    ["fSearch", "fWorkType", "fWorkSource", "fDirectorate"].forEach(id => {
+    ["fSearch", "fWorkType", "fWorkSource", "fDirectorate", "fClassified"].forEach(id => {
       document.getElementById(id).addEventListener("input", render);
       document.getElementById(id).addEventListener("change", render);
     });
-    document.getElementById("fResetBtn").addEventListener("click", () => {
-      document.getElementById("fSearch").value = "";
-      document.getElementById("fWorkType").value = "";
-      document.getElementById("fWorkSource").value = "";
-      document.getElementById("fDirectorate").value = "";
-      render();
-    });
+    document.getElementById("fResetBtn").addEventListener("click", resetFilters);
     document.getElementById("exportBtn").addEventListener("click", () => {
       A.demoActionModal("Pending case list exported successfully (CSV) in prototype mode.");
     });

@@ -29,6 +29,7 @@
 
     const uSel = document.getElementById("fUrgency");
     ["Low", "Medium", "High", "Very High"].forEach(u => uSel.insertAdjacentHTML("beforeend", `<option value="${u}">${u}</option>`));
+    uSel.insertAdjacentHTML("beforeend", `<option value="High,Very High">High &amp; Very High</option>`);
 
     const mSel = document.getElementById("fMilestone");
     const usedMilestones = Array.from(new Set(liveCases().map(c => c.milestone)));
@@ -56,7 +57,7 @@
       if (workType && c.workType !== workType) return false;
       if (caseType && c.caseType !== caseType) return false;
       if (directorate && c.directorate !== directorate) return false;
-      if (urgency && c.urgency !== urgency) return false;
+      if (urgency && !urgency.split(",").includes(c.urgency)) return false;
       if (milestone && c.milestone !== milestone) return false;
       if (classifiedOnly && !c.classified) return false;
       if (overdueOnly && !c.overdue) return false;
@@ -101,6 +102,7 @@
     const overdue = all.filter(c => c.overdue).length;
     document.getElementById("lcKpiRow").innerHTML = `
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('all')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#F5EBD8;color:#8A6A3A;"><i class="bi bi-activity"></i></div>
@@ -108,8 +110,10 @@
         </div>
           <div class="kpi-label">Live Cases</div>
         </div>
+        </a>
       </div>
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('urgency')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#FFE8D1;color:#C2540A;"><i class="bi bi-flag"></i></div>
@@ -117,8 +121,10 @@
         </div>
           <div class="kpi-label">High / Very High Urgency</div>
         </div>
+        </a>
       </div>
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('classified')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#F5EBD8;color:#6B4F24;"><i class="bi bi-shield-lock"></i></div>
@@ -126,8 +132,10 @@
         </div>
           <div class="kpi-label">Classified Cases</div>
         </div>
+        </a>
       </div>
       <div class="col-6 col-md-3">
+        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('overdue')">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-exclamation-triangle"></i></div>
@@ -135,6 +143,7 @@
         </div>
           <div class="kpi-label">Overdue Cases</div>
         </div>
+        </a>
       </div>`;
   }
 
@@ -196,6 +205,34 @@
     if (params.has("urgency")) document.getElementById("fUrgency").value = params.get("urgency");
   }
 
+  function resetFilters() {
+    document.getElementById("fSearch").value = "";
+    document.getElementById("fWorkType").value = "";
+    document.getElementById("fCaseType").innerHTML = `<option value="">All Case Types</option>`;
+    Array.from(new Set(D.WORK_TYPES.flatMap(w => w.caseTypes))).forEach(t =>
+      document.getElementById("fCaseType").insertAdjacentHTML("beforeend", `<option value="${t}">${t}</option>`));
+    document.getElementById("fDirectorate").value = "";
+    document.getElementById("fUrgency").value = "";
+    document.getElementById("fMilestone").value = "";
+    document.getElementById("fDateFrom").value = "";
+    document.getElementById("fDateTo").value = "";
+    document.getElementById("fClassified").checked = false;
+    document.getElementById("fOverdue").checked = false;
+    currentPage = 1;
+    render();
+  }
+
+  /* Clicking a KPI card jumps straight to the matching slice of this same table */
+  window.__lcKpiClick = function (type) {
+    resetFilters();
+    if (type === "urgency") document.getElementById("fUrgency").value = "High,Very High";
+    if (type === "classified") document.getElementById("fClassified").checked = true;
+    if (type === "overdue") document.getElementById("fOverdue").checked = true;
+    currentPage = 1;
+    render();
+    document.querySelector(".filter-bar, .table-card").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("live-cases", [{ label: "Live Cases" }]);
     renderKpis(liveCases());
@@ -207,22 +244,7 @@
       document.getElementById(id).addEventListener("input", () => { currentPage = 1; render(); });
       document.getElementById(id).addEventListener("change", () => { currentPage = 1; render(); });
     });
-    document.getElementById("fResetBtn").addEventListener("click", () => {
-      document.getElementById("fSearch").value = "";
-      document.getElementById("fWorkType").value = "";
-      document.getElementById("fCaseType").innerHTML = `<option value="">All Case Types</option>`;
-      Array.from(new Set(D.WORK_TYPES.flatMap(w => w.caseTypes))).forEach(t =>
-        document.getElementById("fCaseType").insertAdjacentHTML("beforeend", `<option value="${t}">${t}</option>`));
-      document.getElementById("fDirectorate").value = "";
-      document.getElementById("fUrgency").value = "";
-      document.getElementById("fMilestone").value = "";
-      document.getElementById("fDateFrom").value = "";
-      document.getElementById("fDateTo").value = "";
-      document.getElementById("fClassified").checked = false;
-      document.getElementById("fOverdue").checked = false;
-      currentPage = 1;
-      render();
-    });
+    document.getElementById("fResetBtn").addEventListener("click", resetFilters);
     document.getElementById("exportBtn").addEventListener("click", () => {
       A.demoActionModal("Live case list exported successfully (CSV) in prototype mode.");
     });

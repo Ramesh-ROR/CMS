@@ -273,7 +273,8 @@ a:hover { color: var(--slc-primary-darker); }
 .kpi-card .kpi-trend.up { color: var(--slc-success); }
 .kpi-card .kpi-trend.down { color: var(--slc-danger); }
 
-.section-card { background: #fff; border: 1px solid var(--slc-border); border-radius: var(--slc-radius); box-shadow: var(--slc-shadow-sm); margin-bottom: 18px; }
+.section-card { background: #fff; border: 1px solid var(--slc-border); border-radius: var(--slc-radius); box-shadow: var(--slc-shadow-sm); margin-bottom: 18px; scroll-margin-top: 84px; transition: box-shadow .3s ease, border-color .3s ease; }
+.section-card.section-flash { border-color: #BF9A5E; box-shadow: 0 0 0 3px rgba(191,154,94,.35); }
 .section-card .sc-header {
   display: flex; align-items: center; justify-content: space-between; padding: 15px 18px;
   border-bottom: 1px solid var(--slc-border); font-weight: 700; font-size: 14.5px;

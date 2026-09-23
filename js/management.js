@@ -123,13 +123,14 @@
     /* --- KPI row --- */
     const inactiveCount = Object.keys(USER_STATUS).length;
     const kpis = [
-      { icon: "bi-people", bg: "#F5EBD8", color: "#8A6A3A", value: D.USERS.length, label: "Total Users", sub: `${D.USERS.length - inactiveCount} active / ${inactiveCount} inactive` },
-      { icon: "bi-person-badge", bg: "#F3E8FF", color: "#6D28D9", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: D.SYSTEM_ROLES.filter(r => r.elevated).length + " elevated" },
-      { icon: "bi-diagram-3", bg: "#DCFCE7", color: "#15803D", value: D.WORK_TYPES.length, label: "Work Types", sub: CASE_TYPE_ROWS.length + " case types" },
-      { icon: "bi-building", bg: "#FFE8D1", color: "#C2540A", value: D.ENTITIES.length, label: "Registered Entities", sub: "Requesting / related bodies" },
+      { icon: "bi-people", bg: "#F5EBD8", color: "#8A6A3A", value: D.USERS.length, label: "Total Users", sub: `${D.USERS.length - inactiveCount} active / ${inactiveCount} inactive`, target: "sec-users" },
+      { icon: "bi-person-badge", bg: "#F3E8FF", color: "#6D28D9", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: D.SYSTEM_ROLES.filter(r => r.elevated).length + " elevated", target: "sec-system-roles" },
+      { icon: "bi-diagram-3", bg: "#DCFCE7", color: "#15803D", value: D.WORK_TYPES.length, label: "Work Types", sub: CASE_TYPE_ROWS.length + " case types", target: "sec-work-types" },
+      { icon: "bi-building", bg: "#FFE8D1", color: "#C2540A", value: D.ENTITIES.length, label: "Registered Entities", sub: "Requesting / related bodies", target: "sec-entities" },
     ];
     document.getElementById("mgmtKpiRow").innerHTML = kpis.map(k => `
       <div class="col-6 col-md-3">
+        <a href="#${k.target}" class="kpi-card-link" onclick="openModule('${k.target}');return false;">
         <div class="kpi-card compact">
           <div class="kpi-top">
           <div class="kpi-icon" style="background:${k.bg};color:${k.color};"><i class="bi ${k.icon}"></i></div>
@@ -138,6 +139,7 @@
           <div class="kpi-label">${k.label}</div>
           <div class="kpi-trend up" style="color:var(--slc-muted);"><i class="bi bi-dash"></i>${k.sub}</div>
         </div>
+        </a>
       </div>`).join("");
 
     /* --- AI Management Insights --- */
