@@ -518,7 +518,7 @@ tr.row-classified:hover { background: #F5EBD8 !important; }
 /* Login page */
 .login-shell { min-height: 100vh; display: flex; }
 .login-aside {
-  flex: 1.1; background: linear-gradient(160deg, #241B0E 0%, #5C431F 50%, #8A6A3A 75%, #BF9A5E 100%);
+  flex: 1.1; background: #BF9A5E;
   color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 60px 64px; position: relative; overflow: hidden;
 }
 .login-aside::before {
