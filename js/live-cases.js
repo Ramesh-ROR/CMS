@@ -189,11 +189,19 @@
     document.getElementById("lcResultCount").textContent = `Showing ${shownFrom}–${shownTo} of ${filtered.length} live cases`;
   }
 
+  function applyParamsFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("overdue")) document.getElementById("fOverdue").checked = true;
+    if (params.has("classified")) document.getElementById("fClassified").checked = true;
+    if (params.has("urgency")) document.getElementById("fUrgency").value = params.get("urgency");
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("live-cases", [{ label: "Live Cases" }]);
     renderKpis(liveCases());
     renderAIInsights(liveCases());
     populateFilterOptions();
+    applyParamsFromUrl();
 
     ["fSearch", "fCaseType", "fDirectorate", "fUrgency", "fMilestone", "fDateFrom", "fDateTo", "fClassified", "fOverdue"].forEach(id => {
       document.getElementById(id).addEventListener("input", () => { currentPage = 1; render(); });
