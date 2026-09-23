@@ -210,6 +210,10 @@ a:hover { color: var(--slc-primary-darker); }
 .breadcrumb-row { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--slc-muted); margin-bottom: 6px; }
 .breadcrumb-row a { color: var(--slc-muted); }
 .breadcrumb-row a:hover { color: var(--slc-primary); }
+
+.form-check-input:checked { background-color: var(--slc-primary); border-color: var(--slc-primary); }
+.form-check-input:focus { border-color: var(--slc-primary); box-shadow: 0 0 0 3px rgba(107, 79, 36, .18); }
+.form-control:focus, .form-select:focus { border-color: var(--slc-primary); box-shadow: 0 0 0 3px rgba(107, 79, 36, .18); }
 .breadcrumb-row .sep { opacity: .5; }
 .breadcrumb-row .current { color: var(--slc-text); font-weight: 600; }
 
@@ -713,7 +717,7 @@ tr.row-classified:hover { background: #F5EBD8 !important; }
   background-color: var(--slc-card-alt);
   color: var(--slc-text);
   border-color: var(--slc-primary);
-  box-shadow: 0 0 0 3px rgba(59, 158, 245, .18);
+  box-shadow: 0 0 0 3px rgba(217, 184, 118, .18);
 }
 [data-theme="dark"] .form-control::placeholder { color: var(--slc-muted); opacity: .8; }
 [data-theme="dark"] .form-control:disabled,
