@@ -1,20 +1,29 @@
 /* ============================================================================
    SLC Case Management System — Design System
    Supreme Legislation Committee, Dubai — Static Prototype
+
+   Brand colors, typography and logos sourced from the official
+   "Supreme Legislation Committee Brand Identity Guidelines" (First
+   Edition 2020) and Government of Dubai visual identity manual.
    ============================================================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
 :root {
-  --slc-primary: #0078D4;
-  --slc-primary-dark: #0F6CBD;
-  --slc-primary-darker: #084C87;
+  --slc-primary: #0033A0;       /* Pantone 286 C — SLC / Dubai Gov corporate blue */
+  --slc-primary-dark: #002875;
+  --slc-primary-darker: #001A4D;
   --slc-secondary: #107C10;
   --slc-teal: #0B7285;
+  --slc-gold: #BF9A5E;          /* Pantone 7562 C — SLC brand gold */
+  --slc-brand-red: #E80032;     /* Pantone 185 C — SLC brand red */
+  --slc-brand-grey: #B2B2B2;    /* Black 40% — SLC brand grey */
   --slc-bg: #F7F9FC;
   --slc-card: #FFFFFF;
   --slc-text: #1F2937;
   --slc-muted: #6B7280;
   --slc-border: #E5E7EB;
-  --slc-danger: #DC2626;
+  --slc-danger: #E80032;
   --slc-warning: #D97706;
   --slc-success: #16A34A;
   --slc-info: #2563EB;
@@ -26,7 +35,7 @@
   --slc-shadow-sm: 0 1px 2px rgba(16, 24, 40, .04), 0 1px 3px rgba(16, 24, 40, .06);
   --slc-shadow-md: 0 4px 12px rgba(16, 24, 40, .06), 0 2px 4px rgba(16, 24, 40, .04);
   --slc-shadow-lg: 0 12px 32px rgba(16, 24, 40, .10);
-  --slc-font: "Segoe UI", "Inter", "Aptos", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --slc-font: "Poppins", "Cairo", "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -47,7 +56,7 @@ body {
 a { text-decoration: none; color: var(--slc-primary); }
 a:hover { color: var(--slc-primary-darker); }
 
-::selection { background: rgba(0, 120, 212, .18); }
+::selection { background: rgba(0, 51, 160, .18); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 9px; height: 9px; }
@@ -88,11 +97,11 @@ a:hover { color: var(--slc-primary-darker); }
   min-height: var(--slc-header-h);
 }
 .sidebar-brand-mark {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--slc-primary), var(--slc-primary-darker));
-  color: #fff; display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 14px; letter-spacing: .5px; flex-shrink: 0;
+  width: 38px; height: 38px; object-fit: contain; flex-shrink: 0;
+  background: #fff; border-radius: 8px; padding: 3px; box-shadow: var(--slc-shadow-sm);
 }
+.sidebar-brand-logo { height: 30px; width: auto; max-width: 172px; object-fit: contain; object-position: left center; }
+.app-shell.sidebar-collapsed .sidebar-brand-logo { display: none; }
 .sidebar-brand-text { line-height: 1.2; overflow: hidden; white-space: nowrap; }
 .sidebar-brand-text .t1 { font-weight: 700; font-size: 14.5px; color: var(--slc-text); }
 .sidebar-brand-text .t2 { font-size: 11px; color: var(--slc-muted); }
@@ -158,7 +167,7 @@ a:hover { color: var(--slc-primary-darker); }
 .header-search i { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--slc-muted); }
 [dir="rtl"] .header-search input { padding: 8px 38px 8px 14px; }
 [dir="rtl"] .header-search i { left: auto; right: 13px; }
-.header-search input:focus { outline: none; border-color: var(--slc-primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,120,212,.12); }
+.header-search input:focus { outline: none; border-color: var(--slc-primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,51,160,.12); }
 
 .header-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
 .header-icon-btn {
@@ -324,7 +333,7 @@ tr.row-classified:hover { background: #EAF3FC !important; }
   font-size: 14px; color: var(--slc-muted); font-weight: 700;
 }
 .ms-step.done .ms-dot { background: var(--slc-primary); border-color: var(--slc-primary); color: #fff; }
-.ms-step.current .ms-dot { background: #fff; border-color: var(--slc-primary); color: var(--slc-primary); box-shadow: 0 0 0 4px rgba(0,120,212,.14); }
+.ms-step.current .ms-dot { background: #fff; border-color: var(--slc-primary); color: var(--slc-primary); box-shadow: 0 0 0 4px rgba(0,51,160,.14); }
 .ms-label { font-size: 11.6px; font-weight: 600; color: var(--slc-muted); }
 .ms-step.done .ms-label, .ms-step.current .ms-label { color: var(--slc-text); }
 .ms-step.current .ms-label { color: var(--slc-primary-darker); font-weight: 700; }
@@ -419,7 +428,7 @@ tr.row-classified:hover { background: #EAF3FC !important; }
 .ai-fab {
   position: fixed; bottom: 26px; right: 26px; z-index: 200;
   width: 58px; height: 58px; border-radius: 50%;
-  background: linear-gradient(135deg, #6D28D9, #0078D4);
+  background: linear-gradient(135deg, #6D28D9, #0033A0);
   color: #fff; display: flex; align-items: center; justify-content: center;
   font-size: 24px; box-shadow: var(--slc-shadow-lg); border: none; cursor: pointer;
 }
@@ -433,7 +442,7 @@ tr.row-classified:hover { background: #EAF3FC !important; }
 [dir="rtl"] .ai-panel { right: auto; left: 26px; }
 .ai-panel.open { display: flex; }
 .ai-panel-head {
-  background: linear-gradient(135deg, #6D28D9, #0078D4); color: #fff; padding: 14px 16px;
+  background: linear-gradient(135deg, #6D28D9, #0033A0); color: #fff; padding: 14px 16px;
   display: flex; align-items: center; gap: 10px;
 }
 .ai-panel-body { flex: 1; overflow-y: auto; padding: 14px; background: #FAFBFE; }
@@ -487,14 +496,16 @@ tr.row-classified:hover { background: #EAF3FC !important; }
 /* Login page */
 .login-shell { min-height: 100vh; display: flex; }
 .login-aside {
-  flex: 1.1; background: linear-gradient(160deg, #06355F 0%, #0F6CBD 55%, #0078D4 100%);
+  flex: 1.1; background: linear-gradient(160deg, #001A4D 0%, #002875 55%, #0033A0 100%);
   color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 60px 64px; position: relative; overflow: hidden;
 }
 .login-aside::before {
-  content: ""; position: absolute; inset: 0; opacity: .12;
-  background-image: radial-gradient(circle at 20% 20%, #fff 1px, transparent 1px), radial-gradient(circle at 80% 60%, #fff 1px, transparent 1px);
-  background-size: 40px 40px;
+  content: ""; position: absolute; inset: 0; opacity: .14;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ffffff' stroke-width='1'><path d='M40 0 L80 40 L40 80 L0 40 Z'/><path d='M40 0 L40 80 M0 40 L80 40'/><rect x='20' y='20' width='40' height='40'/></g></svg>");
+  background-size: 80px 80px;
 }
+.login-aside-crest { position: absolute; top: 32px; right: 40px; opacity: .9; }
+[dir="rtl"] .login-aside-crest { right: auto; left: 40px; }
 .login-form-side { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; padding: 40px; }
 .login-card { width: 100%; max-width: 400px; }
 
@@ -547,12 +558,13 @@ tr.row-classified:hover { background: #EAF3FC !important; }
   --slc-text: #E5E9F0;
   --slc-muted: #8FA0B8;
   --slc-border: #26334A;
-  --slc-primary: #3B9EF5;
-  --slc-primary-dark: #62B4F8;
-  --slc-primary-darker: #8FCBFB;
+  --slc-primary: #4C7EE8;
+  --slc-primary-dark: #6E97EE;
+  --slc-primary-darker: #9AB6F4;
   --slc-secondary: #2ED573;
-  --slc-teal: #22B8CF;
-  --slc-danger: #F87171;
+  --slc-teal: #D4B579;
+  --slc-gold: #D4B579;
+  --slc-danger: #FF5C82;
   --slc-warning: #FBBF24;
   --slc-success: #4ADE80;
   --slc-info: #60A5FA;
@@ -730,3 +742,9 @@ tr.row-classified:hover { background: #EAF3FC !important; }
 /* Login page dark variant */
 [data-theme="dark"] .login-form-side { background: var(--slc-card); }
 [data-theme="dark"] .login-card .text-muted-soft { color: var(--slc-muted); }
+
+/* Re-theme Bootstrap utility classes to the SLC brand palette */
+.text-primary { color: var(--slc-primary) !important; }
+.bg-primary { background-color: var(--slc-primary) !important; }
+.border-primary { border-color: var(--slc-primary) !important; }
+.spinner-border.text-primary { color: var(--slc-primary) !important; }
