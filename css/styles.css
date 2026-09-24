@@ -509,7 +509,11 @@ tr.row-classified:hover { background: var(--hover-red-light) !important; }
 /* Login page */
 .login-shell { min-height: 100vh; display: flex; }
 .login-aside {
-  flex: 1.1; background: linear-gradient(160deg, #001E3C 0%, #003D6B 45%, #005A9E 75%, #0078D4 100%);
+  flex: 1.1;
+  background:
+    linear-gradient(160deg, rgba(0,30,60,.90) 0%, rgba(0,61,107,.86) 45%, rgba(0,90,158,.82) 75%, rgba(0,120,212,.78) 100%),
+    url("../assets/SLLandingPAge.png");
+  background-size: cover; background-position: center;
   color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 60px 64px; position: relative; overflow: hidden;
 }
 .login-aside::before {
