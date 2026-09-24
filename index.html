@@ -14,7 +14,7 @@
 
 <div class="login-shell">
   <div class="login-aside">
-    <img src="assets/DubaiGov.png" alt="Government of Dubai" width="150" height="86" style="position:absolute;top:32px;left:40px;width:150px;height:86px;background:#fff;border-radius:10px;padding:6px;object-fit:contain;">
+    <img src="assets/dubai-crest-icon.png" alt="Government of Dubai" width="72" height="84" style="position:absolute;top:32px;left:40px;width:72px;height:84px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));">
     <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="login-aside-crest" width="318" height="76" style="height:76px;width:auto;max-width:340px;">
     <div style="position:relative;z-index:1;">
       <h1 style="font-size:40px;font-weight:800;line-height:1.25;max-width:480px;">Tadween Portal</h1>
@@ -49,14 +49,14 @@
 
       <form id="loginForm">
         <div class="mb-3">
-          <label class="form-label" style="font-size:12.5px;font-weight:600;">Username</label>
+          <label class="form-label" data-en="Username" data-ar="اسم المستخدم" style="font-size:12.5px;font-weight:600;">Username</label>
           <div class="input-group">
             <span class="input-group-text bg-white"><i class="bi bi-person"></i></span>
             <input type="text" class="form-control" value="ahmed.almansoori" required>
           </div>
         </div>
         <div class="mb-3">
-          <label class="form-label" style="font-size:12.5px;font-weight:600;">Password</label>
+          <label class="form-label" data-en="Password" data-ar="كلمة المرور" style="font-size:12.5px;font-weight:600;">Password</label>
           <div class="input-group">
             <span class="input-group-text bg-white"><i class="bi bi-lock"></i></span>
             <input type="password" class="form-control" value="••••••••••" required>
@@ -70,8 +70,8 @@
           <a href="#" style="font-size:12.5px;">Forgot password?</a>
         </div>
         <button type="submit" class="btn btn-primary w-100 py-2 mb-3" style="font-size:14px;">Sign In <i class="bi bi-arrow-right ms-1"></i></button>
-        <button type="button" class="btn btn-light w-100 py-2 border d-flex align-items-center justify-content-center gap-2" id="ssoBtn" style="font-size:13px;">
-          <i class="bi bi-windows"></i> Sign in with Windows Authentication (SSO)
+        <button type="button" class="btn w-100 py-2 border d-flex align-items-center justify-content-center gap-2" id="ssoBtn" style="font-size:13px;background:#0A0A0A;color:#fff;border-color:#0A0A0A;">
+          <i class="bi bi-patch-check-fill" style="color:#C9A24B;"></i> Sign in with UAE PASS
         </button>
       </form>
 
@@ -94,20 +94,28 @@ document.getElementById("loginForm").addEventListener("submit", function(e){
 });
 document.getElementById("ssoBtn").addEventListener("click", function(){
   this.disabled = true;
-  this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Authenticating via SSO...';
+  this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Authenticating via UAE PASS...';
   setTimeout(() => { window.location.href = "dashboard.html"; }, 700);
 });
+function applyLoginLang(lang){
+  document.querySelectorAll("[data-en]").forEach(function(el){
+    const val = lang === "ar" ? el.getAttribute("data-ar") : el.getAttribute("data-en");
+    if (val) el.textContent = val;
+  });
+}
 document.getElementById("loginLangAr").addEventListener("click", function(){
   document.documentElement.setAttribute("dir","rtl");
   document.documentElement.setAttribute("lang","ar");
   this.classList.add("active");
   document.getElementById("loginLangEn").classList.remove("active");
+  applyLoginLang("ar");
 });
 document.getElementById("loginLangEn").addEventListener("click", function(){
   document.documentElement.setAttribute("dir","ltr");
   document.documentElement.setAttribute("lang","en");
   this.classList.add("active");
   document.getElementById("loginLangAr").classList.remove("active");
+  applyLoginLang("en");
 });
 function setLoginTheme(theme){
   try { localStorage.setItem("slc_theme", theme); } catch(e) {}
