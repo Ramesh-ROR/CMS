@@ -109,6 +109,14 @@ a:hover { color: var(--hover-red); }
   box-shadow: 0 2px 6px rgba(0,0,0,.08);
 }
 .app-topnav-inner { display: flex; align-items: stretch; padding: 0 24px; }
+.app-topnav-inner > .topnav-link,
+.app-topnav-inner > .topnav-item {
+  border-right: 1px solid rgba(255,255,255,.22);
+}
+[dir="rtl"] .app-topnav-inner > .topnav-link,
+[dir="rtl"] .app-topnav-inner > .topnav-item {
+  border-right: none; border-left: 1px solid rgba(255,255,255,.22);
+}
 .topnav-link {
   display: flex; align-items: center; gap: 6px; padding: 13px 16px; font-size: 13.3px; font-weight: 600;
   color: rgba(255,255,255,.85); white-space: nowrap; position: relative; cursor: pointer; border: none; background: none;
