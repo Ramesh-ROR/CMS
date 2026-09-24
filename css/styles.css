@@ -179,13 +179,17 @@ html.a11y-mode { font-size: 106%; }
 html.a11y-mode body { line-height: 1.65; }
 html.a11y-mode a, html.a11y-mode .topnav-link, html.a11y-mode .tab-btn { text-decoration: underline; }
 html.a11y-mode *:focus-visible { outline: 3px solid var(--hover-red) !important; outline-offset: 2px; }
-.header-icon-btn.a11y-active { background: var(--light-blue); color: var(--dark-blue); }
 .header-icon-btn {
   width: 38px; height: 38px; border-radius: 10px; border: 1px solid transparent;
   background: transparent; display: flex; align-items: center; justify-content: center;
   color: #4B5563; font-size: 17px; position: relative; cursor: pointer;
 }
 .header-icon-btn:hover { background: var(--hover-red-light); color: var(--hover-red); }
+
+/* Accessibility icon — kept pure black/white (not color-dependent) for users
+   who can only distinguish black and white. */
+#a11yToggleBtn { color: #000; border-color: #000; }
+#a11yToggleBtn:hover, #a11yToggleBtn.a11y-active { background: #000; color: #fff; }
 .header-icon-btn .dot {
   position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%;
   background: var(--slc-danger); border: 2px solid #fff;
