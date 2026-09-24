@@ -89,19 +89,24 @@ a:hover { color: var(--hover-red); }
 
 .app-brand-bar {
   height: var(--slc-header-h); background: #fff; border-bottom: 1px solid var(--slc-border);
-  display: flex; align-items: center; gap: 16px; padding: 0 24px; position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; position: sticky; top: 0; z-index: 40;
 }
 .app-brand-logo { height: 40px; width: auto; max-width: 180px; object-fit: contain; }
 .app-brand-logo.logo-on-dark { display: none; }
 [data-theme="dark"] .app-brand-logo.logo-on-light { display: none; }
 [data-theme="dark"] .app-brand-logo.logo-on-dark { display: inline-block; }
+.app-brand-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.app-brand-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 900px) {
+  .app-brand-name { display: none; }
+}
 
 /* Horizontal top menu bar (below the header) */
 .app-topnav {
   background: var(--dark-blue); position: sticky; top: var(--slc-header-h); z-index: 39;
   box-shadow: 0 2px 6px rgba(0,0,0,.08);
 }
-.app-topnav-inner { display: flex; align-items: stretch; padding: 0 24px; overflow-x: auto; }
+.app-topnav-inner { display: flex; align-items: stretch; padding: 0 24px; }
 .topnav-link {
   display: flex; align-items: center; gap: 6px; padding: 13px 16px; font-size: 13.3px; font-weight: 600;
   color: rgba(255,255,255,.85); white-space: nowrap; position: relative; cursor: pointer; border: none; background: none;
@@ -128,6 +133,19 @@ a:hover { color: var(--hover-red); }
 .topnav-dropdown a:hover { background: var(--hover-red-light); color: var(--hover-red); }
 .topnav-dropdown a:hover i { color: var(--hover-red); }
 [dir="rtl"] .topnav-dropdown { left: auto; right: 0; }
+
+/* Search box, pinned to the far right of the top menu bar */
+.topnav-search { margin-left: auto; display: flex; align-items: center; padding: 8px 12px; }
+.topnav-search .header-search { max-width: 260px; }
+.topnav-search .header-search input {
+  background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.28); color: #fff;
+}
+.topnav-search .header-search input::placeholder { color: rgba(255,255,255,.7); }
+.topnav-search .header-search i { color: rgba(255,255,255,.75); }
+.topnav-search .header-search input:focus { background: #fff; color: var(--slc-text); box-shadow: 0 0 0 3px rgba(255,255,255,.25); }
+.topnav-search .header-search input:focus + i,
+.topnav-search .header-search input:focus ~ i { color: var(--slc-muted); }
+
 .mobile-nav-toggle { display: none; }
 @media (max-width: 900px) {
   .app-topnav-inner { flex-direction: column; padding: 0; display: none; }
@@ -136,15 +154,10 @@ a:hover { color: var(--hover-red); }
   .topnav-dropdown { position: static; box-shadow: none; border: none; display: none !important; }
   .topnav-item.dropdown-open .topnav-dropdown { display: block !important; }
   .mobile-nav-toggle { display: flex; }
+  .topnav-search { margin-left: 0; width: 100%; padding: 10px 14px; }
+  .topnav-search .header-search { max-width: none; }
 }
 
-/* Header */
-.app-header {
-  height: var(--slc-header-h);
-  background: #fff; border-bottom: 1px solid var(--slc-border);
-  display: flex; align-items: center; gap: 16px;
-  padding: 0 20px; position: sticky; top: 0; z-index: 30;
-}
 .header-search {
   flex: 1; max-width: 440px; position: relative;
 }
@@ -157,7 +170,14 @@ a:hover { color: var(--hover-red); }
 [dir="rtl"] .header-search i { left: auto; right: 13px; }
 .header-search input:focus { outline: none; border-color: var(--slc-primary); background: #fff; box-shadow: 0 0 0 3px rgba(0, 120, 212,.12); }
 
-.header-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.header-actions { display: flex; align-items: center; gap: 6px; }
+
+/* Accessibility (demo) — toggled by the eye icon in the top-right utility area */
+html.a11y-mode { font-size: 106%; }
+html.a11y-mode body { line-height: 1.65; }
+html.a11y-mode a, html.a11y-mode .topnav-link, html.a11y-mode .tab-btn { text-decoration: underline; }
+html.a11y-mode *:focus-visible { outline: 3px solid var(--hover-red) !important; outline-offset: 2px; }
+.header-icon-btn.a11y-active { background: var(--light-blue); color: var(--dark-blue); }
 .header-icon-btn {
   width: 38px; height: 38px; border-radius: 10px; border: 1px solid transparent;
   background: transparent; display: flex; align-items: center; justify-content: center;
@@ -364,20 +384,17 @@ tr.row-classified:hover { background: var(--hover-red-light) !important; }
 /* Horizontal tab interface — Register Case / Case Workspace              */
 /* ---------------------------------------------------------------------- */
 .tab-nav {
-  display: flex; gap: 2px; overflow-x: auto; background: #fff; border: 1px solid var(--slc-border);
-  border-radius: var(--slc-radius) var(--slc-radius) 0 0; padding: 0 6px;
+  display: flex; gap: 6px; overflow-x: auto; background: #fff; border: 1px solid var(--slc-border);
+  border-radius: var(--slc-radius) var(--slc-radius) 0 0; padding: 8px 8px 0;
 }
 .tab-btn {
-  border: none; background: none; padding: 14px 18px; font-size: 13.3px; font-weight: 600;
-  color: var(--slc-muted); white-space: nowrap; position: relative; cursor: pointer;
-  transition: color .15s ease;
+  border: 1px solid #D1D5DB; background: #F3F4F6; border-bottom: none; padding: 10px 18px; font-size: 13.3px; font-weight: 600;
+  color: #374151; white-space: nowrap; position: relative; cursor: pointer; border-radius: 8px 8px 0 0;
+  transition: color .15s ease, background .15s ease;
 }
-.tab-btn:hover { color: var(--hover-red); }
-.tab-btn.active { color: var(--primary-blue); }
-.tab-btn.active::after {
-  content: ""; position: absolute; left: 10px; right: 10px; bottom: 0; height: 3px;
-  background: var(--primary-blue); border-radius: 3px 3px 0 0;
-}
+.tab-btn:hover { background: var(--hover-red-light); color: var(--hover-red); }
+.tab-btn.active { background: #374151; color: #FFFFFF; border-color: #374151; }
+.tab-btn.active:hover { background: #374151; color: #FFFFFF; }
 .tab-panels { background: #fff; border: 1px solid var(--slc-border); border-top: none; border-radius: 0 0 var(--slc-radius) var(--slc-radius); box-shadow: var(--slc-shadow-sm); margin-bottom: 18px; }
 .tab-panel { display: none; padding: 20px; animation: tabFadeIn .18s ease; }
 .tab-panel.active { display: block; }

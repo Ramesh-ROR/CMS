@@ -88,18 +88,74 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Brand bar (logo strip above the top menu)                           */
+  /* Brand bar — app name on the left, utility area (lang / accessibility/  */
+  /* notifications / user) on the top-right, above the main menu bar.    */
   /* ------------------------------------------------------------------ */
   function buildBrandBar() {
+    const u = D.CURRENT_USER;
+    const unread = D.NOTIFICATIONS.filter(n => n.unread).length;
+    let notifHtml = D.NOTIFICATIONS.map(n => `
+      <a href="#" class="dropdown-item d-flex gap-2 align-items-start py-2 px-3 ${n.unread ? "bg-light" : ""}" style="white-space:normal;">
+        <i class="bi ${n.icon} mt-1" style="color:var(--slc-primary)"></i>
+        <div>
+          <div style="font-size:12.5px;color:var(--slc-text);line-height:1.35">${n.text}</div>
+          <div style="font-size:10.8px;color:var(--slc-muted);margin-top:2px">${n.time}</div>
+        </div>
+      </a>`).join("");
+
     return `
-      <button class="header-icon-btn mobile-nav-toggle" id="mobileNavToggle"><i class="bi bi-list"></i></button>
-      <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
-      <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
-      <div style="font-weight:700;font-size:15px;color:var(--slc-text);border-left:1px solid var(--slc-border);padding-left:16px;">Case Management System</div>`;
+      <div class="app-brand-left">
+        <button class="header-icon-btn mobile-nav-toggle" id="mobileNavToggle"><i class="bi bi-list"></i></button>
+        <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
+        <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
+        <div class="app-brand-name" style="font-weight:700;font-size:15px;color:var(--slc-text);border-left:1px solid var(--slc-border);padding-left:16px;">Case Management System &ndash; Tadween Portal</div>
+      </div>
+      <div class="header-actions">
+        <div class="lang-switch">
+          <button id="langEnBtn" class="active">EN</button>
+          <button id="langArBtn">AR</button>
+        </div>
+        <div class="header-divider"></div>
+        <button class="header-icon-btn" id="a11yToggleBtn" title="Accessibility – Visually Impaired"><i class="bi bi-universal-access"></i></button>
+        <button class="header-icon-btn" title="Help"><i class="bi bi-question-circle"></i></button>
+        <div class="dropdown">
+          <button class="header-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" title="Notifications">
+            <i class="bi bi-bell"></i>${unread ? '<span class="dot"></span>' : ""}
+          </button>
+          <div class="dropdown-menu dropdown-menu-end p-0" style="width:340px;max-height:420px;overflow-y:auto;">
+            <div class="px-3 py-2 border-bottom fw-bold" style="font-size:13px;">Notifications</div>
+            ${notifHtml}
+            <div class="text-center py-2 border-top"><a href="#" style="font-size:12px;">View all notifications</a></div>
+          </div>
+        </div>
+        <div class="header-divider"></div>
+        <div class="dropdown">
+          <div class="header-user" data-bs-toggle="dropdown">
+            ${avatarHtml(u)}
+            <div class="header-user-text d-none d-md-block">
+              <div class="name">${u.name}</div>
+              <div class="role">${u.titleLine}</div>
+            </div>
+            <i class="bi bi-chevron-down ms-1" style="font-size:10px;color:var(--slc-muted)"></i>
+          </div>
+          <div class="dropdown-menu dropdown-menu-end" style="font-size:13px;">
+            <div class="px-3 py-2">
+              <div class="fw-bold">${u.name}</div>
+              <div class="text-muted-soft" style="font-size:11.5px;">${u.email}</div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>My Profile</a>
+            <a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Preferences</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="index.html"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a>
+          </div>
+        </div>
+      </div>`;
   }
 
   /* ------------------------------------------------------------------ */
-  /* Top navigation bar (replaces the former left sidebar)                */
+  /* Top navigation bar (replaces the former left sidebar) — search box   */
+  /* sits at the far right of this same bar.                             */
   /* ------------------------------------------------------------------ */
   function buildTopNav(active) {
     let html = `<div class="app-topnav-inner">`;
@@ -121,74 +177,27 @@
         </a>`;
       }
     });
-    html += `</div>`;
+    html += `
+      <div class="topnav-search">
+        <div class="header-search">
+          <i class="bi bi-search"></i>
+          <input type="text" id="globalHeaderSearch" placeholder="Search cases, documents, entities..." autocomplete="off">
+        </div>
+      </div>
+    </div>`;
     return html;
   }
 
   /* ------------------------------------------------------------------ */
-  /* Header                                                              */
+  /* Accessibility (demo) — toggles a body-level class that increases    */
+  /* base font size, underlines links and strengthens focus outlines.    */
+  /* No backend / persistence beyond this session is implied.           */
   /* ------------------------------------------------------------------ */
-  function buildHeader() {
-    const u = D.CURRENT_USER;
-    const unread = D.NOTIFICATIONS.filter(n => n.unread).length;
-    let notifHtml = D.NOTIFICATIONS.map(n => `
-      <a href="#" class="dropdown-item d-flex gap-2 align-items-start py-2 px-3 ${n.unread ? "bg-light" : ""}" style="white-space:normal;">
-        <i class="bi ${n.icon} mt-1" style="color:var(--slc-primary)"></i>
-        <div>
-          <div style="font-size:12.5px;color:var(--slc-text);line-height:1.35">${n.text}</div>
-          <div style="font-size:10.8px;color:var(--slc-muted);margin-top:2px">${n.time}</div>
-        </div>
-      </a>`).join("");
-
-    return `
-    <div class="header-search">
-      <i class="bi bi-search"></i>
-      <input type="text" id="globalHeaderSearch" placeholder="Search cases, documents, entities..." autocomplete="off">
-    </div>
-    <div class="header-actions">
-      <div class="theme-switch" title="Toggle light / dark theme">
-        <button id="themeLightBtn" class="active"><i class="bi bi-sun"></i></button>
-        <button id="themeDarkBtn"><i class="bi bi-moon-stars"></i></button>
-      </div>
-      <div class="lang-switch">
-        <button id="langEnBtn" class="active">EN</button>
-        <button id="langArBtn">AR</button>
-      </div>
-      <div class="header-divider"></div>
-      <button class="header-icon-btn" title="Help"><i class="bi bi-question-circle"></i></button>
-      <div class="dropdown">
-        <button class="header-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" title="Notifications">
-          <i class="bi bi-bell"></i>${unread ? '<span class="dot"></span>' : ""}
-        </button>
-        <div class="dropdown-menu dropdown-menu-end p-0" style="width:340px;max-height:420px;overflow-y:auto;">
-          <div class="px-3 py-2 border-bottom fw-bold" style="font-size:13px;">Notifications</div>
-          ${notifHtml}
-          <div class="text-center py-2 border-top"><a href="#" style="font-size:12px;">View all notifications</a></div>
-        </div>
-      </div>
-      <div class="header-divider"></div>
-      <div class="dropdown">
-        <div class="header-user" data-bs-toggle="dropdown">
-          ${avatarHtml(u)}
-          <div class="header-user-text d-none d-md-block">
-            <div class="name">${u.name}</div>
-            <div class="role">${u.titleLine}</div>
-          </div>
-          <i class="bi bi-chevron-down ms-1" style="font-size:10px;color:var(--slc-muted)"></i>
-        </div>
-        <div class="dropdown-menu dropdown-menu-end" style="font-size:13px;">
-          <div class="px-3 py-2">
-            <div class="fw-bold">${u.name}</div>
-            <div class="text-muted-soft" style="font-size:11.5px;">${u.email}</div>
-          </div>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>My Profile</a>
-          <a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Preferences</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="index.html"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a>
-        </div>
-      </div>
-    </div>`;
+  function toggleAccessibilityMode() {
+    const on = document.documentElement.classList.toggle("a11y-mode");
+    const btn = document.getElementById("a11yToggleBtn");
+    if (btn) btn.classList.toggle("a11y-active", on);
+    toast(on ? "Accessibility mode enabled (demo)." : "Accessibility mode disabled (demo).", { icon: "bi-universal-access" });
   }
 
   function buildBreadcrumb(trail) {
@@ -317,13 +326,11 @@
       <div class="app-brand-bar" id="appBrandBar"></div>
       <nav class="app-topnav" id="appTopNav"></nav>
       <div class="app-main">
-        <header class="app-header" id="appHeader"></header>
         <main class="page-wrap" id="pageContent"></main>
       </div>
     </div>`);
     document.getElementById("appBrandBar").innerHTML = buildBrandBar();
     document.getElementById("appTopNav").innerHTML = buildTopNav(active);
-    document.getElementById("appHeader").innerHTML = buildHeader();
 
     // Move any pre-existing page body content (declared before app.js ran) into pageContent
     const existing = document.getElementById("__pageBody");
@@ -356,10 +363,13 @@
     document.getElementById("langEnBtn").onclick = () => applyLang("en");
     document.getElementById("langArBtn").onclick = () => applyLang("ar");
 
-    // Theme (already applied pre-paint by the inline head script; just sync the toggle UI + wire clicks)
+    // Theme (already applied pre-paint by the inline head script; theme toggle UI is hidden,
+    // no visible buttons to wire in this build)
     applyTheme(currentTheme(), { silent: true });
-    document.getElementById("themeLightBtn").onclick = () => applyTheme("light");
-    document.getElementById("themeDarkBtn").onclick = () => applyTheme("dark");
+
+    // Accessibility (demo)
+    const a11yBtn = document.getElementById("a11yToggleBtn");
+    if (a11yBtn) a11yBtn.onclick = toggleAccessibilityMode;
 
     // Global search enter -> search.html
     const gs = document.getElementById("globalHeaderSearch");
@@ -426,7 +436,7 @@
     NAV, renderShell, toast, demoAction, demoActionModal, applyLang, avatarHtml,
     urgencyBadge, milestoneBadge, classifiedFlag, fmtDate, userChip,
     applyTheme, currentTheme, chartTheme, onThemeChange,
-    scrollToSection, initTabs,
+    scrollToSection, initTabs, toggleAccessibilityMode,
     workflowStageIndex, workflowStageName, workflowBadge, workflowStepperHtml, WORKFLOW_STAGES,
   };
 })(window);

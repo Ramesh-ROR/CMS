@@ -17,7 +17,6 @@
     const params = new URLSearchParams(window.location.search);
     const ref = params.get("ref") || "SLC-LEG-2026-00128";
     const c = D.caseByRef(ref) || D.CASES[0];
-    const milestone = D.milestoneById(c.milestone);
     const hod = D.userById(c.hod);
     const lead = c.lead ? D.userById(c.lead) : null;
 
@@ -27,7 +26,7 @@
       return d.firstElementChild;
     })());
 
-    document.title = c.ref + " — Case Workspace — SLC CMS";
+    document.title = c.ref + " — Case Workspace — Tadween Portal";
 
     /* ---------------- Header ---------------- */
     document.getElementById("caseHeaderBox").innerHTML = `
@@ -50,7 +49,13 @@
         </div>
         <div class="text-md-end">
           <div class="d-flex gap-2 justify-content-md-end mb-3 flex-wrap">
-            <button class="btn btn-sm btn-light border" onclick="window.print()"><i class="bi bi-printer"></i>Print</button>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-light border dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-download"></i>Export</button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#" onclick="event.preventDefault();SLCApp.toast('Report exported successfully.');"><i class="bi bi-file-earmark-excel me-2" style="color:#107C10;"></i>Export to Excel</a></li>
+                <li><a class="dropdown-item" href="#" onclick="event.preventDefault();SLCApp.toast('Report exported successfully.');"><i class="bi bi-file-earmark-pdf me-2" style="color:#B91C1C;"></i>Export to PDF</a></li>
+              </ul>
+            </div>
             <button class="btn btn-sm btn-outline-primary" onclick="SLCApp.demoActionModal('Case updated successfully in prototype mode.')"><i class="bi bi-pencil"></i>Edit</button>
           </div>
           <div class="d-flex gap-4 justify-content-md-end flex-wrap">
@@ -105,38 +110,6 @@
           <div class="mt-2"><span class="badge-status ${a.status === "Completed" ? "badge-success" : "badge-warning"}">${a.status}</span></div>
         </div>
       </div>`).join("") : `<div class="text-muted-soft text-center py-4">No activities logged yet for this case.</div>`;
-
-    /* ---------------- Milestone detail ---------------- */
-    document.getElementById("milestoneDetailBody").innerHTML = `
-      <div class="row">
-        ${fieldRow("Current Workflow Stage", A.workflowBadge(c.milestone))}
-        ${fieldRow("Detailed Milestone", `<span class="badge-status badge-${milestone.badge}">${milestone.name}</span>`)}
-        ${fieldRow("How Set", milestone.how)}
-        ${fieldRow("Responsible User", lead ? lead.name : hod.name)}
-        ${fieldRow("Planned Date", A.fmtDate(c.pcd))}
-        ${fieldRow("Actual / Expected Date", A.fmtDate(c.acd) !== "—" ? A.fmtDate(c.acd) : "In progress")}
-      </div>
-      <div class="mt-2">
-        <button class="btn btn-sm btn-outline-primary" onclick="SLCApp.demoActionModal('Milestone update request submitted for approval in prototype mode.')"><i class="bi bi-arrow-repeat"></i>Request Milestone Update</button>
-      </div>`;
-
-    /* ---------------- Checklist ---------------- */
-    const items = D.getChecklist(c.caseType);
-    const state = D.seededChecklistState(c.ref, items);
-    const doneCount = state.filter(s => s.status === "completed").length;
-    const pct = Math.round((doneCount / state.length) * 100);
-    document.getElementById("checklistPct").textContent = pct + "% complete";
-    document.getElementById("checklistBody").innerHTML = `
-      <div class="checklist-progress-wrap">
-        <div class="checklist-progress-bar"><div class="fill" style="width:${pct}%"></div></div>
-        <div style="font-size:12.5px;font-weight:700;color:var(--slc-primary-darker);">${pct}%</div>
-      </div>
-      ${state.map(s => `
-        <div class="checklist-item ${s.status}">
-          <div class="checklist-icon ${s.status}"><i class="bi ${s.status === "completed" ? "bi-check-lg" : s.status === "attention" ? "bi-exclamation" : "bi-circle"}"></i></div>
-          <div class="checklist-label">${s.label}</div>
-          ${s.status !== "completed" ? `<button class="btn btn-sm btn-light border" onclick="SLCApp.demoActionModal('Checklist item marked complete in prototype mode.')">Mark Done</button>` : `<span class="text-muted-soft" style="font-size:11px;">Satisfied</span>`}
-        </div>`).join("")}`;
 
     /* ---------------- Attachments ---------------- */
     const files = D.attachmentsFor(c.ref);
