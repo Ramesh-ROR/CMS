@@ -513,7 +513,11 @@ tr.row-classified:hover { background: var(--hover-red-light) !important; }
 [data-theme="dark"] .demo-success-icon { background: rgba(74, 222, 128, .16); color: #4ADE80; }
 
 /* Login page */
-.login-shell { min-height: 100vh; display: flex; }
+.login-top-logos {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px 32px; background: #fff; border-bottom: 1px solid var(--slc-border);
+}
+.login-shell { min-height: calc(100vh - 74px); display: flex; }
 .login-aside {
   flex: 1.1;
   background: url("../assets/SLLandingPAge.png");
