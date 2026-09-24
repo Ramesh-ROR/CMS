@@ -511,13 +511,13 @@ tr.row-classified:hover { background: var(--hover-red-light) !important; }
 .login-aside {
   flex: 1.1;
   background:
-    linear-gradient(160deg, rgba(0,30,60,.90) 0%, rgba(0,61,107,.86) 45%, rgba(0,90,158,.82) 75%, rgba(0,120,212,.78) 100%),
+    linear-gradient(180deg, rgba(0,20,45,.55) 0%, rgba(0,20,45,.18) 40%, rgba(0,20,45,.35) 70%, rgba(0,20,45,.72) 100%),
     url("../assets/SLLandingPAge.png");
   background-size: cover; background-position: center;
   color: #fff; display: flex; flex-direction: column; justify-content: center; padding: 60px 64px; position: relative; overflow: hidden;
 }
 .login-aside::before {
-  content: ""; position: absolute; inset: 0; opacity: .14;
+  content: ""; position: absolute; inset: 0; opacity: .08;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><g fill='none' stroke='%23ffffff' stroke-width='1'><path d='M40 0 L80 40 L40 80 L0 40 Z'/><path d='M40 0 L40 80 M0 40 L80 40'/><rect x='20' y='20' width='40' height='40'/></g></svg>");
   background-size: 80px 80px;
 }
