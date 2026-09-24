@@ -106,7 +106,6 @@
     return `
       <div class="app-brand-row app-brand-row-logos">
         <div class="d-flex align-items-center gap-2">
-          <button class="header-icon-btn mobile-nav-toggle" id="mobileNavToggle"><i class="bi bi-list"></i></button>
           <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
           <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
         </div>
