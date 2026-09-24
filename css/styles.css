@@ -45,7 +45,7 @@
   --slc-warning: #D97706;
   --slc-success: #16A34A;
   --slc-info: var(--primary-blue);
-  --slc-header-h: 64px;
+  --slc-header-h: 108px;
   --slc-topnav-h: 48px;
   --slc-radius: 12px;
   --slc-radius-sm: 8px;
@@ -88,14 +88,16 @@ a:hover { color: var(--hover-red); }
 .app-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .app-brand-bar {
-  height: var(--slc-header-h); background: #fff; border-bottom: 1px solid var(--slc-border);
-  display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; position: sticky; top: 0; z-index: 40;
+  background: #fff; border-bottom: 1px solid var(--slc-border);
+  display: flex; flex-direction: column; justify-content: center; gap: 8px;
+  padding: 10px 24px; position: sticky; top: 0; z-index: 40; min-height: var(--slc-header-h);
 }
-.app-brand-logo { height: 40px; width: auto; max-width: 180px; object-fit: contain; }
+.app-brand-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.app-brand-row-logos { padding-bottom: 6px; border-bottom: 1px solid var(--slc-border); }
+.app-brand-logo { height: 38px; width: auto; max-width: 180px; object-fit: contain; }
 .app-brand-logo.logo-on-dark { display: none; }
 [data-theme="dark"] .app-brand-logo.logo-on-light { display: none; }
 [data-theme="dark"] .app-brand-logo.logo-on-dark { display: inline-block; }
-.app-brand-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .app-brand-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 900px) {
   .app-brand-name { display: none; }

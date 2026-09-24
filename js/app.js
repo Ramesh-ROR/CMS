@@ -104,39 +104,43 @@
       </a>`).join("");
 
     return `
-      <div class="app-brand-left">
-        <button class="header-icon-btn mobile-nav-toggle" id="mobileNavToggle"><i class="bi bi-list"></i></button>
-        <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
-        <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
-        <div class="app-brand-name" style="font-weight:700;font-size:15px;color:var(--slc-text);border-left:1px solid var(--slc-border);padding-left:16px;">Case Management System &ndash; Tadween Portal</div>
+      <div class="app-brand-row app-brand-row-logos">
+        <div class="d-flex align-items-center gap-2">
+          <button class="header-icon-btn mobile-nav-toggle" id="mobileNavToggle"><i class="bi bi-list"></i></button>
+          <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
+          <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
+        </div>
+        <img src="assets/Tadweenlogo.png" alt="Tadween Portal" class="app-brand-logo" width="140" height="60">
       </div>
-      <div class="header-actions">
-        <div class="lang-switch">
-          <button id="langEnBtn" class="active">EN</button>
-          <button id="langArBtn">AR</button>
-        </div>
-        <div class="header-divider"></div>
-        <button class="header-icon-btn" id="a11yToggleBtn" title="Accessibility – Visually Impaired"><i class="bi bi-universal-access"></i></button>
-        <button class="header-icon-btn" title="Help"><i class="bi bi-question-circle"></i></button>
-        <div class="dropdown">
-          <button class="header-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" title="Notifications">
-            <i class="bi bi-bell"></i>${unread ? '<span class="dot"></span>' : ""}
-          </button>
-          <div class="dropdown-menu dropdown-menu-end p-0" style="width:340px;max-height:420px;overflow-y:auto;">
-            <div class="px-3 py-2 border-bottom fw-bold" style="font-size:13px;">Notifications</div>
-            ${notifHtml}
-            <div class="text-center py-2 border-top"><a href="#" style="font-size:12px;">View all notifications</a></div>
+      <div class="app-brand-row app-brand-row-utility">
+        <div class="app-brand-name" style="font-weight:700;font-size:14px;color:var(--slc-text);">Case Management System &ndash; Tadween Portal</div>
+        <div class="header-actions">
+          <div class="lang-switch">
+            <button id="langEnBtn" class="active">EN</button>
+            <button id="langArBtn">AR</button>
           </div>
-        </div>
-        <div class="header-divider"></div>
-        <div class="dropdown">
-          <div class="header-user" data-bs-toggle="dropdown">
-            ${avatarHtml(u)}
-            <div class="header-user-text d-none d-md-block">
-              <div class="name">${u.name}</div>
-              <div class="role">${u.titleLine}</div>
+          <div class="header-divider"></div>
+          <button class="header-icon-btn" id="a11yToggleBtn" title="Accessibility – Visually Impaired"><i class="bi bi-universal-access"></i></button>
+          <button class="header-icon-btn" title="Help"><i class="bi bi-question-circle"></i></button>
+          <div class="dropdown">
+            <button class="header-icon-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" title="Notifications">
+              <i class="bi bi-bell"></i>${unread ? '<span class="dot"></span>' : ""}
+            </button>
+            <div class="dropdown-menu dropdown-menu-end p-0" style="width:340px;max-height:420px;overflow-y:auto;">
+              <div class="px-3 py-2 border-bottom fw-bold" style="font-size:13px;">Notifications</div>
+              ${notifHtml}
+              <div class="text-center py-2 border-top"><a href="#" style="font-size:12px;">View all notifications</a></div>
             </div>
-            <i class="bi bi-chevron-down ms-1" style="font-size:10px;color:var(--slc-muted)"></i>
+          </div>
+          <div class="header-divider"></div>
+          <div class="dropdown">
+            <div class="header-user" data-bs-toggle="dropdown">
+              ${avatarHtml(u)}
+              <div class="header-user-text d-none d-md-block">
+                <div class="name">${u.name}</div>
+                <div class="role">${u.titleLine}</div>
+              </div>
+              <i class="bi bi-chevron-down ms-1" style="font-size:10px;color:var(--slc-muted)"></i>
           </div>
           <div class="dropdown-menu dropdown-menu-end" style="font-size:13px;">
             <div class="px-3 py-2">
@@ -149,6 +153,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="index.html"><i class="bi bi-box-arrow-right me-2"></i>Sign Out</a>
           </div>
+        </div>
         </div>
       </div>`;
   }
