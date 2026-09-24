@@ -539,7 +539,9 @@ tr.row-classified:hover { background: var(--hover-red-light) !important; }
 }
 .login-aside-crest { position: absolute; top: 32px; right: 40px; opacity: .9; }
 [dir="rtl"] .login-aside-crest { right: auto; left: 40px; }
-.login-form-side { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; padding: 40px; }
+.login-form-side { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; padding: 40px; position: relative; }
+.login-lang-switch { position: absolute; top: 24px; right: 40px; }
+[dir="rtl"] .login-lang-switch { right: auto; left: 40px; }
 .login-card { width: 100%; max-width: 400px; }
 .login-card .btn-primary { background: var(--primary-blue); border-color: var(--primary-blue); }
 .login-card .btn-primary:hover { background: var(--hover-red); border-color: var(--hover-red); }
