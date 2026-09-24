@@ -5,18 +5,10 @@
 <script>(function(){try{localStorage.removeItem("slc_theme");}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="assets/dubai-crest-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pending Cases — SLC Case Management System</title>
+<title>Completed Cases — SLC Case Management System</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <link href="css/styles.css?v=2" rel="stylesheet">
-<style>
-  .missing-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 700; background: #FEF3C7; color: #B45309; padding: 2px 8px; border-radius: 6px; margin: 2px 3px 2px 0; }
-  .missing-chip i { font-size: 10px; }
-  .reg-progress-bar { width: 84px; height: 7px; background: #F3F4F6; border-radius: 20px; overflow: hidden; }
-  .reg-progress-bar .fill { height: 100%; background: linear-gradient(90deg, #D97706, #F59E0B); border-radius: 20px; }
-  [data-theme="dark"] .missing-chip { background: rgba(217,119,6,.2); color: #FCD34D; }
-  [data-theme="dark"] .reg-progress-bar { background: rgba(255,255,255,.08); }
-</style>
 </head>
 <body>
 
@@ -24,46 +16,50 @@
 
   <div class="page-title-row">
     <div>
-      <h1 class="page-title" data-en="Pending Cases" data-ar="القضايا المعلقة">Pending Cases</h1>
-      <div class="page-subtitle">All cases that did not complete the registration cycle. Complete required fields to move each case into Live status.</div>
+      <h1 class="page-title" data-en="Completed Cases" data-ar="القضايا المكتملة">Completed Cases</h1>
+      <div class="page-subtitle">All cases that have completed the case workflow and reached Closed status.</div>
     </div>
     <div class="page-title-actions">
       <button class="btn btn-light border" id="exportBtn"><i class="bi bi-download"></i>Export</button>
     </div>
   </div>
 
-  <!-- KPI strip -->
-  <div class="row g-3 mb-2" id="pcKpiRow"></div>
-
-  <div id="aiInsightSlot"></div>
+  <!-- KPI Row -->
+  <div class="row g-3 mb-2" id="ccKpiRow"></div>
 
   <!-- Filter bar -->
   <div class="filter-bar">
     <div class="row g-2 align-items-end">
-      <div class="col-lg-4 col-md-6">
+      <div class="col-lg-3 col-md-6">
         <label>Search</label>
-        <input type="text" class="form-control form-control-sm" id="fSearch" placeholder="Search ref, system no., title, entity...">
+        <input type="text" class="form-control form-control-sm" id="fSearch" placeholder="Search ref, title, entity...">
       </div>
       <div class="col-lg-2 col-md-3">
         <label>Work Type</label>
         <select class="form-select form-select-sm" id="fWorkType"><option value="">All Work Types</option></select>
       </div>
       <div class="col-lg-2 col-md-3">
-        <label>Work Source</label>
-        <select class="form-select form-select-sm" id="fWorkSource"><option value="">All Sources</option></select>
+        <label>Case Type</label>
+        <select class="form-select form-select-sm" id="fCaseType"><option value="">All Case Types</option></select>
       </div>
       <div class="col-lg-2 col-md-3">
         <label>Directorate</label>
         <select class="form-select form-select-sm" id="fDirectorate"><option value="">All Directorates</option></select>
       </div>
-      <div class="col-lg-2 col-md-3 d-flex align-items-center">
-        <div class="form-check form-switch mb-0">
-          <input class="form-check-input" type="checkbox" id="fClassified">
-          <label class="form-check-label" for="fClassified" style="font-size:12.3px;">Classified only</label>
-        </div>
+      <div class="col-lg-1 col-md-3">
+        <label>Urgency</label>
+        <select class="form-select form-select-sm" id="fUrgency"><option value="">All</option></select>
       </div>
       <div class="col-lg-2 col-md-3 d-flex gap-2">
         <button class="btn btn-light border btn-sm w-100" id="fResetBtn"><i class="bi bi-arrow-counterclockwise"></i>Reset</button>
+      </div>
+    </div>
+    <div class="row g-2 align-items-end mt-1">
+      <div class="col-lg-3 col-md-4 d-flex align-items-center">
+        <div class="form-check form-switch mb-0">
+          <input class="form-check-input" type="checkbox" id="fClassified">
+          <label class="form-check-label" for="fClassified" style="font-size:12.3px;">Classified cases only</label>
+        </div>
       </div>
     </div>
   </div>
@@ -71,27 +67,30 @@
   <!-- Table -->
   <div class="table-card">
     <div class="table-scroll">
-      <table class="table-modern mb-0" id="pendingCasesTable">
+      <table class="table-modern mb-0" id="completedCasesTable">
         <thead>
           <tr>
-            <th>Case Ref. / System No.</th>
+            <th>Case Ref. No.</th>
             <th>Case Title</th>
             <th>Work Type</th>
             <th>Case Type</th>
-            <th>Work Source</th>
-            <th>Opened Date</th>
             <th>Requesting Entity</th>
-            <th>Registration Status</th>
-            <th>Missing Information</th>
-            <th>Assigned User</th>
+            <th>Lead Member</th>
+            <th>Current Workflow Stage</th>
+            <th>Urgency</th>
+            <th>Proposed Completion</th>
+            <th>Last Activity</th>
             <th></th>
           </tr>
         </thead>
-        <tbody id="pendingCasesTbody"></tbody>
+        <tbody id="completedCasesTbody"></tbody>
       </table>
     </div>
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 px-3 py-3 border-top">
-      <div class="text-muted-soft" id="pcResultCount" style="font-size:12.3px;"></div>
+      <div class="text-muted-soft" id="ccResultCount" style="font-size:12.3px;"></div>
+      <nav>
+        <ul class="pagination pagination-sm mb-0" id="ccPagination"></ul>
+      </nav>
     </div>
   </div>
 
@@ -100,6 +99,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/demo-data.js"></script>
 <script src="js/app.js"></script>
-<script src="js/pending-cases.js"></script>
+<script src="js/completed-cases.js"></script>
 </body>
 </html>

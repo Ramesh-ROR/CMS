@@ -112,17 +112,15 @@
     });
   }
 
-  function rowHtml(c, opts) {
-    opts = opts || {};
+  function rowHtml(c) {
     return `
       <tr class="${c.classified ? "row-classified" : ""}">
-        ${opts.matchChip ? `<td>${opts.matchChip}</td>` : ""}
         <td><a class="ref-link" href="case-workspace.html?ref=${c.ref}">${c.ref}</a>${c.classified ? " " + A.classifiedFlag(true) : ""}</td>
         <td style="max-width:280px;">${c.title}</td>
         <td>${c.workType}<div class="text-muted-soft" style="font-size:11px;">${c.caseType}</div></td>
-        ${opts.matchChip ? "" : `<td>${c.requestingEntity}</td>`}
-        <td>${A.milestoneBadge(c.milestone)}</td>
-        ${opts.matchChip ? "" : `<td>${A.urgencyBadge(c.urgency)}</td>`}
+        <td>${c.requestingEntity}</td>
+        <td>${A.workflowBadge(c.milestone)}</td>
+        <td>${A.urgencyBadge(c.urgency)}</td>
         <td>${A.fmtDate(c.pcd)}</td>
         <td>${statusBadge(c.status)}</td>
       </tr>`;
@@ -137,35 +135,10 @@
   }
 
   /* ---------------------------------------------------------------- */
-  /* AI-Assisted Search example                                        */
-  /* ---------------------------------------------------------------- */
-  function runAiExample() {
-    document.getElementById("heroSearchInput").value = "Find legislation cases related to environmental regulation that are approaching their completion date";
-
-    // Curated demo logic: legislation cases, ranked by relevance to "environmental" keyword, then by nearest PCD
-    const legCases = D.CASES.filter(c => c.workType === "Legislation" && c.status === "Live" && c.pcd);
-    const scored = legCases.map(c => {
-      const hit = /environmental|environment/i.test(c.title + " " + c.titleAr);
-      return { c, score: hit ? 2 : 1, daysToPcd: (new Date(c.pcd) - new Date("2026-09-21")) / 86400000 };
-    }).sort((a, b) => b.score - a.score || a.daysToPcd - b.daysToPcd).slice(0, 4);
-
-    const tbody = document.querySelector("#aiResultsTable tbody");
-    tbody.innerHTML = scored.map(s => {
-      const chip = s.score === 2
-        ? `<span class="ai-match-chip"><i class="bi bi-stars"></i>Strong Match</span>`
-        : `<span class="ai-match-chip ai-match-chip-related"><i class="bi bi-stars"></i>Related</span>`;
-      return rowHtml(s.c, { matchChip: chip });
-    }).join("");
-
-    document.getElementById("aiResultCount").textContent = `${scored.length} AI-curated result${scored.length === 1 ? "" : "s"} for this query`;
-    document.getElementById("aiResultsCard").style.display = "";
-  }
-
-  /* ---------------------------------------------------------------- */
   /* Init                                                               */
   /* ---------------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
-    A.renderShell("search", [{ label: "Search" }]);
+    A.renderShell("search", [{ label: "Database Search" }]);
 
     populateFilterOptions();
 
@@ -187,18 +160,5 @@
       document.getElementById("heroSearchInput").value = "";
       renderResults();
     });
-
-    // Mode tabs
-    const tabs = document.querySelectorAll("#searchModeTabs .nav-link");
-    tabs.forEach(t => t.addEventListener("click", e => {
-      e.preventDefault();
-      tabs.forEach(x => x.classList.remove("active"));
-      t.classList.add("active");
-      const mode = t.dataset.mode;
-      document.getElementById("standardPane").style.display = mode === "standard" ? "" : "none";
-      document.getElementById("aiPane").style.display = mode === "ai" ? "" : "none";
-    }));
-
-    document.getElementById("tryAiExampleBtn").addEventListener("click", runAiExample);
   });
 })();

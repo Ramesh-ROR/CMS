@@ -20,156 +20,80 @@
     </div>
   </div>
 
-  <!-- Progress tracker -->
+  <!-- Workflow stepper -->
   <div class="section-card">
     <div class="sc-header">
-      <span>Case Progress</span>
-      <button class="btn btn-sm btn-light border" onclick="window.print()"><i class="bi bi-printer"></i>Print Workspace</button>
+      <span>Workflow Progress</span>
     </div>
     <div class="sc-body">
-      <div class="milestone-tracker" id="wsTracker"></div>
-      <div class="ai-insight-box mt-3 d-flex align-items-start gap-2" style="padding:12px 16px;">
-        <i class="bi bi-stars mt-1" style="color:#7C3AED;"></i>
-        <div style="font-size:12.6px;">
-          <strong>AI Timeline Alert</strong> — Current milestone is <strong>3 days behind</strong> the planned completion date based on historical case velocity for this case type.
-          <div class="mt-1"><span class="ai-chip"><i class="bi bi-info-circle"></i>AI-Assisted Insight – Demo</span></div>
-        </div>
-      </div>
+      <div class="workflow-stepper" id="wsWorkflow"></div>
     </div>
   </div>
 
-  <!-- AI Case Summary -->
-  <div class="section-card">
-    <div class="sc-header">
-      <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>AI Case Summary</span>
-      <span class="ai-chip"><i class="bi bi-stars"></i>Demo</span>
-    </div>
-    <div class="sc-body" id="aiCaseSummaryBox" style="font-size:13px;color:var(--slc-text);"></div>
+  <!-- Tab navigation -->
+  <div class="tab-nav" id="cwTabs">
+    <button type="button" class="tab-btn active" data-tab="tabGeneral">General</button>
+    <button type="button" class="tab-btn" data-tab="tabActivities">Activities</button>
+    <button type="button" class="tab-btn" data-tab="tabMilestones">Milestones</button>
+    <button type="button" class="tab-btn" data-tab="tabChecklist">Checklist</button>
+    <button type="button" class="tab-btn" data-tab="tabAttachments">Attachments</button>
+    <button type="button" class="tab-btn" data-tab="tabCaseTeam">Case Team</button>
+    <button type="button" class="tab-btn" data-tab="tabRelated">Related Cases</button>
+    <button type="button" class="tab-btn" data-tab="tabAudit">Audit Trail</button>
   </div>
 
-  <!-- 1. General Details -->
-  <div class="ws-section open" id="secGeneral">
-    <div class="ws-section-head" onclick="toggleSection('secGeneral')">
-      <div class="ws-icon"><i class="bi bi-file-earmark-text"></i></div>
-      <div class="ws-title">General Details</div>
-      <i class="bi bi-chevron-down chevron"></i>
-    </div>
-    <div class="ws-section-body" id="generalDetailsBody"></div>
-  </div>
+  <div class="tab-panels" id="cwPanels">
 
-  <!-- 2. Work Type Details -->
-  <div class="ws-section" id="secWorkType">
-    <div class="ws-section-head" onclick="toggleSection('secWorkType')">
-      <div class="ws-icon"><i class="bi bi-diagram-3"></i></div>
-      <div class="ws-title">Work Type Details</div>
-      <i class="bi bi-chevron-down chevron"></i>
+    <!-- General -->
+    <div class="tab-panel active" id="tabGeneral">
+      <div id="generalDetailsBody"></div>
     </div>
-    <div class="ws-section-body" id="workTypeDetailsBody"></div>
-  </div>
 
-  <!-- 3. Case Activities -->
-  <div class="ws-section" id="secActivities">
-    <div class="ws-section-head" onclick="toggleSection('secActivities')">
-      <div class="ws-icon"><i class="bi bi-activity"></i></div>
-      <div class="ws-title">Case Activities</div>
-      <span class="ws-meta" id="activityCount"></span>
-      <i class="bi bi-chevron-down chevron"></i>
-    </div>
-    <div class="ws-section-body">
-      <div id="activitySummarySlot"></div>
-      <div class="d-flex justify-content-end mb-2">
-        <button class="btn btn-sm btn-primary" onclick="event.stopPropagation();SLCApp.demoActionModal('Activity added successfully in prototype mode.')"><i class="bi bi-plus-lg"></i>Add Activity</button>
+    <!-- Activities -->
+    <div class="tab-panel" id="tabActivities">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span class="ws-meta" id="activityCount" style="font-size:12px;color:var(--slc-muted);"></span>
+        <button class="btn btn-sm btn-primary" onclick="SLCApp.demoActionModal('Activity added successfully in prototype mode.')"><i class="bi bi-plus-lg"></i>Add Activity</button>
       </div>
       <div class="timeline" id="activityTimeline"></div>
     </div>
-  </div>
 
-  <!-- 4. Case Milestone -->
-  <div class="ws-section" id="secMilestone">
-    <div class="ws-section-head" onclick="toggleSection('secMilestone')">
-      <div class="ws-icon"><i class="bi bi-signpost-split"></i></div>
-      <div class="ws-title">Case Milestone</div>
-      <i class="bi bi-chevron-down chevron"></i>
+    <!-- Milestones -->
+    <div class="tab-panel" id="tabMilestones">
+      <div id="milestoneDetailBody"></div>
     </div>
-    <div class="ws-section-body" id="milestoneDetailBody"></div>
-  </div>
 
-  <!-- 5. Case Checklist -->
-  <div class="ws-section" id="secChecklist">
-    <div class="ws-section-head" onclick="toggleSection('secChecklist')">
-      <div class="ws-icon"><i class="bi bi-list-check"></i></div>
-      <div class="ws-title">Case Checklist</div>
-      <span class="ws-meta" id="checklistPct"></span>
-      <i class="bi bi-chevron-down chevron"></i>
+    <!-- Checklist -->
+    <div class="tab-panel" id="tabChecklist">
+      <span class="ws-meta" id="checklistPct" style="font-size:12px;color:var(--slc-muted);"></span>
+      <div id="checklistBody"></div>
     </div>
-    <div class="ws-section-body" id="checklistBody"></div>
-  </div>
 
-  <!-- 6. Case Attachments -->
-  <div class="ws-section" id="secAttachments">
-    <div class="ws-section-head" onclick="toggleSection('secAttachments')">
-      <div class="ws-icon"><i class="bi bi-paperclip"></i></div>
-      <div class="ws-title">Case Attachments</div>
-      <i class="bi bi-chevron-down chevron"></i>
-    </div>
-    <div class="ws-section-body">
+    <!-- Attachments -->
+    <div class="tab-panel" id="tabAttachments">
       <div class="dropzone" onclick="SLCApp.demoActionModal('Document uploaded successfully in prototype mode.')">
         <i class="bi bi-cloud-arrow-up"></i>
-        <div style="font-weight:600;font-size:13px;color:var(--slc-text);">Drag & drop documents here, or click to browse</div>
-        <div style="font-size:11.5px;">or select from Document Bank</div>
+        <div style="font-weight:600;font-size:13px;color:var(--slc-text);">Drag &amp; drop documents here, or click to browse</div>
+        <div style="font-size:11.5px;">Upload Document — or select from Document Bank</div>
       </div>
       <div id="attachmentsBody"></div>
     </div>
-  </div>
 
-  <!-- 7. Case Team -->
-  <div class="ws-section" id="secTeam">
-    <div class="ws-section-head" onclick="toggleSection('secTeam')">
-      <div class="ws-icon"><i class="bi bi-people"></i></div>
-      <div class="ws-title">Case Team</div>
-      <i class="bi bi-chevron-down chevron"></i>
+    <!-- Case Team -->
+    <div class="tab-panel" id="tabCaseTeam">
+      <div id="teamBody"></div>
     </div>
-    <div class="ws-section-body" id="teamBody"></div>
-  </div>
 
-  <!-- 8. Related Cases -->
-  <div class="ws-section" id="secRelated">
-    <div class="ws-section-head" onclick="toggleSection('secRelated')">
-      <div class="ws-icon"><i class="bi bi-diagram-2"></i></div>
-      <div class="ws-title">Related Cases</div>
-      <i class="bi bi-chevron-down chevron"></i>
+    <!-- Related Cases -->
+    <div class="tab-panel" id="tabRelated">
+      <div id="relatedBody"></div>
     </div>
-    <div class="ws-section-body" id="relatedBody"></div>
-  </div>
 
-  <!-- 9. Tasks -->
-  <div class="ws-section" id="secTasks">
-    <div class="ws-section-head" onclick="toggleSection('secTasks')">
-      <div class="ws-icon"><i class="bi bi-list-task"></i></div>
-      <div class="ws-title">Tasks</div>
-      <i class="bi bi-chevron-down chevron"></i>
+    <!-- Audit Trail -->
+    <div class="tab-panel" id="tabAudit">
+      <div id="auditBody"></div>
     </div>
-    <div class="ws-section-body" id="tasksBody"></div>
-  </div>
 
-  <!-- 10. Reminders -->
-  <div class="ws-section" id="secReminders">
-    <div class="ws-section-head" onclick="toggleSection('secReminders')">
-      <div class="ws-icon"><i class="bi bi-alarm"></i></div>
-      <div class="ws-title">Reminders</div>
-      <i class="bi bi-chevron-down chevron"></i>
-    </div>
-    <div class="ws-section-body" id="remindersBody"></div>
-  </div>
-
-  <!-- 11. Audit Trail -->
-  <div class="ws-section" id="secAudit">
-    <div class="ws-section-head" onclick="toggleSection('secAudit')">
-      <div class="ws-icon"><i class="bi bi-shield-check"></i></div>
-      <div class="ws-title">Audit Trail</div>
-      <i class="bi bi-chevron-down chevron"></i>
-    </div>
-    <div class="ws-section-body" id="auditBody"></div>
   </div>
 
 </div>

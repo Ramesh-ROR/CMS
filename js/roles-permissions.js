@@ -5,19 +5,19 @@
 
   /* Visual treatment for each of the 8 permission action columns */
   const ACTION_STYLE = {
-    "View": { icon: "bi-eye", color: "#8A6A3A" },
+    "View": { icon: "bi-eye", color: "#0078D4" },
     "Create": { icon: "bi-plus-circle", color: "#16A34A" },
-    "Edit": { icon: "bi-pencil", color: "#BF9A5E" },
+    "Edit": { icon: "bi-pencil", color: "#005A9E" },
     "Delete": { icon: "bi-trash", color: "#DC2626" },
     "Approve": { icon: "bi-check2-circle", color: "#7C3AED" },
     "Register": { icon: "bi-clipboard-check", color: "#C2410C" },
-    "Manage": { icon: "bi-sliders", color: "#B45309" },
+    "Manage": { icon: "bi-sliders", color: "#4B5563" },
     "Report Access": { icon: "bi-bar-chart-line", color: "#0B7285" },
   };
 
   const CASE_ROLE_STYLE = {
     LEAD: { icon: "bi-star-fill", color: "#B45309", bg: "#FEF3C7" },
-    TEAM: { icon: "bi-people-fill", color: "#6B4F24", bg: "#EFE4D0" },
+    TEAM: { icon: "bi-people-fill", color: "#005A9E", bg: "#D6EAF8" },
     ASSOC: { icon: "bi-person-plus-fill", color: "#8764B8", bg: "#F1E9FE" },
     ADMIN: { icon: "bi-clipboard-data-fill", color: "#15803D", bg: "#DCFCE7" },
   };
@@ -49,7 +49,7 @@
       (D.ROLE_PERMISSIONS[b.name] || []).length - (D.ROLE_PERMISSIONS[a.name] || []).length
     )[0];
     const kpis = [
-      { icon: "bi-person-badge", bg: "#F5EBD8", color: "#8A6A3A", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: "Defined per BRD 6.1.1.2", target: "matrixSection" },
+      { icon: "bi-person-badge", bg: "var(--light-blue)", color: "var(--primary-blue)", value: D.SYSTEM_ROLES.length, label: "System Roles", sub: "Defined per BRD 6.1.1.2", target: "matrixSection" },
       { icon: "bi-shield-exclamation", bg: "#F3E8FF", color: "#6D28D9", value: elevatedCount, label: "Elevated Roles", sub: "Require special authority", target: "matrixSection" },
       { icon: "bi-grid-3x3-gap", bg: "#FFE8D1", color: "#C2540A", value: D.PERMISSION_ACTIONS.length, label: "Permission Actions", sub: "View, Create, Edit and more", target: "matrixSection" },
       { icon: "bi-person-workspace", bg: "#DCFCE7", color: "#15803D", value: D.CASE_ROLES.length, label: "Case Roles", sub: "Per-case activity based", target: "caseRolesSection" },
@@ -67,17 +67,6 @@
         </div>
         </a>
       </div>`).join("");
-
-    /* --- AI access review insight --- */
-    const assignedRoleNames = new Set(D.USERS.map(u => u.role));
-    const unusedElevated = D.SYSTEM_ROLES.filter(r => r.elevated && !assignedRoleNames.has(r.name));
-    const aiItems = [];
-    if (unusedElevated.length) {
-      aiItems.push(`${unusedElevated.length} elevated role${unusedElevated.length>1?"s have":" has"} no user currently assigned: ${unusedElevated.map(r=>r.name).join(", ")} — review whether these are still required.`);
-    }
-    aiItems.push(`${fullAccessRole.name} holds the broadest permission set (${(D.ROLE_PERMISSIONS[fullAccessRole.name]||[]).length} of ${D.PERMISSION_ACTIONS.length} actions) — access reviews should prioritize this role.`);
-    aiItems.push(`Average system role carries ${avgActions} of ${D.PERMISSION_ACTIONS.length} permitted actions, consistent with the BRD's principle of least-privilege access by directorate function.`);
-    document.getElementById("aiInsightSlot").innerHTML = A.aiInsightCard("AI Access Review", aiItems);
 
     /* --- Matrix header row (action columns) --- */
     const headRow = document.querySelector("#permMatrix thead tr");

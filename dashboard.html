@@ -20,18 +20,93 @@
       <div class="page-subtitle">Welcome back, Ahmed. Here is what's happening across SLC directorates today, 21 September 2026.</div>
     </div>
     <div class="page-title-actions">
-      <button class="btn btn-light border" onclick="window.print()"><i class="bi bi-printer"></i>Print</button>
+      <div class="dropdown">
+        <button class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-download"></i>Export</button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#" onclick="event.preventDefault();SLCApp.toast('Report exported successfully – Demo Mode');"><i class="bi bi-file-earmark-excel me-2" style="color:#107C10;"></i>Export to Excel</a></li>
+          <li><a class="dropdown-item" href="#" onclick="event.preventDefault();SLCApp.toast('Report exported successfully – Demo Mode');"><i class="bi bi-file-earmark-pdf me-2" style="color:#B91C1C;"></i>Export to PDF</a></li>
+        </ul>
+      </div>
       <a href="new-case.html" class="btn btn-primary"><i class="bi bi-plus-lg"></i>New Case</a>
     </div>
   </div>
 
-  <!-- KPI Row -->
-  <div class="row g-3 mb-2">
+  <!-- ================= Charts & widgets FIRST ================= -->
+  <div class="row g-3">
+    <div class="col-md-7">
+      <div class="section-card h-100">
+        <div class="sc-header">
+          <span>Monthly Case Trend</span>
+          <span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Registered vs. Closed — last 12 months</span>
+        </div>
+        <div class="sc-body"><div class="chart-box"><canvas id="chartTrend"></canvas></div></div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Cases by Work Type</span></div>
+        <div class="sc-body"><div class="chart-box"><canvas id="chartWorkType"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Cases by Directorate</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Live vs. Completed</span></div>
+        <div class="sc-body"><div class="chart-box sm"><canvas id="chartDirectorate"></canvas></div></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Case Aging</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Days open — live cases</span></div>
+        <div class="sc-body"><div class="chart-box sm"><canvas id="chartAging"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Case Completion Performance</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Target vs. Completed — within/beyond SLA</span></div>
+        <div class="sc-body"><div class="chart-box sm"><canvas id="chartCompletion"></canvas></div></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Cases Requiring Attention</span></div>
+        <div class="sc-body pt-2" id="attentionList" style="max-height:236px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-md-6">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Pending Approvals</span></div>
+        <div class="table-scroll">
+          <table class="table-modern mb-0" id="approvalsTable">
+            <thead><tr><th>Case Ref.</th><th>Case Title</th><th>Work Type</th><th>Approval Stage</th><th>Submitted</th><th>Pending With</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="section-card h-100">
+        <div class="sc-header"><span>Recent Activities</span></div>
+        <div class="sc-body pt-2" id="recentActivitiesList" style="max-height:280px;overflow-y:auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= KPI / data summary cards — secondary, at the bottom ================= -->
+  <div class="row g-3 mt-1">
     <div class="col-6 col-md-3">
       <a href="live-cases.html" class="kpi-card-link">
       <div class="kpi-card compact">
         <div class="kpi-top">
-          <div class="kpi-icon" style="background:#F5EBD8;color:#8A6A3A;"><i class="bi bi-activity"></i></div>
+          <div class="kpi-icon" style="background:var(--light-blue);color:var(--primary-blue);"><i class="bi bi-activity"></i></div>
           <div class="kpi-value">1,248</div>
         </div>
         <div class="kpi-label">Live Cases</div>
@@ -40,43 +115,7 @@
       </a>
     </div>
     <div class="col-6 col-md-3">
-      <a href="pending-cases.html" class="kpi-card-link">
-      <div class="kpi-card compact">
-        <div class="kpi-top">
-          <div class="kpi-icon" style="background:#FEF3C7;color:#B45309;"><i class="bi bi-hourglass-split"></i></div>
-          <div class="kpi-value">86</div>
-        </div>
-        <div class="kpi-label">Pending Cases</div>
-        <div class="kpi-trend down"><i class="bi bi-arrow-down-short"></i>2.1% vs last month</div>
-      </div>
-      </a>
-    </div>
-    <div class="col-6 col-md-3">
-      <a href="calendar.html" class="kpi-card-link">
-      <div class="kpi-card compact">
-        <div class="kpi-top">
-          <div class="kpi-icon" style="background:#FBEFD9;color:#B8863E;"><i class="bi bi-calendar-week"></i></div>
-          <div class="kpi-value">74</div>
-        </div>
-        <div class="kpi-label">Due This Week</div>
-        <div class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>6 more than last week</div>
-      </div>
-      </a>
-    </div>
-    <div class="col-6 col-md-3">
-      <a href="live-cases.html?overdue=1" class="kpi-card-link">
-      <div class="kpi-card compact">
-        <div class="kpi-top">
-          <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-exclamation-triangle"></i></div>
-          <div class="kpi-value">19</div>
-        </div>
-        <div class="kpi-label">Overdue Cases</div>
-        <div class="kpi-trend down"><i class="bi bi-arrow-down-short"></i>3 fewer than last week</div>
-      </div>
-      </a>
-    </div>
-    <div class="col-6 col-md-3">
-      <a href="reports.html" class="kpi-card-link">
+      <a href="completed-cases.html" class="kpi-card-link">
       <div class="kpi-card compact">
         <div class="kpi-top">
           <div class="kpi-icon" style="background:#DCFCE7;color:#15803D;"><i class="bi bi-check2-circle"></i></div>
@@ -84,18 +123,6 @@
         </div>
         <div class="kpi-label">Completed This Month</div>
         <div class="kpi-trend up"><i class="bi bi-arrow-up-short"></i>11% vs last month</div>
-      </div>
-      </a>
-    </div>
-    <div class="col-6 col-md-3">
-      <a href="tasks.html" class="kpi-card-link">
-      <div class="kpi-card compact">
-        <div class="kpi-top">
-          <div class="kpi-icon" style="background:#F3E8FF;color:#7C3AED;"><i class="bi bi-clock-history"></i></div>
-          <div class="kpi-value">63</div>
-        </div>
-        <div class="kpi-label">Cases Awaiting Action</div>
-        <div class="kpi-trend down"><i class="bi bi-dash"></i>Stable vs last week</div>
       </div>
       </a>
     </div>
@@ -115,121 +142,13 @@
       <a href="live-cases.html?classified=1" class="kpi-card-link">
       <div class="kpi-card compact">
         <div class="kpi-top">
-          <div class="kpi-icon" style="background:#F5EBD8;color:#6B4F24;"><i class="bi bi-shield-lock"></i></div>
+          <div class="kpi-icon" style="background:var(--light-blue);color:var(--dark-blue);"><i class="bi bi-shield-lock"></i></div>
           <div class="kpi-value">57</div>
         </div>
         <div class="kpi-label">Classified Cases</div>
         <div class="kpi-trend down"><i class="bi bi-dash"></i>Restricted visibility</div>
       </div>
       </a>
-    </div>
-  </div>
-
-  <div class="row g-3 mt-1">
-    <!-- Main column -->
-    <div class="col-xl-8">
-
-      <div class="row g-3">
-        <div class="col-md-7">
-          <div class="section-card h-100">
-            <div class="sc-header">
-              <span>Monthly Case Trend</span>
-              <span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Registered vs. Closed — last 12 months</span>
-            </div>
-            <div class="sc-body"><div class="chart-box"><canvas id="chartTrend"></canvas></div></div>
-          </div>
-        </div>
-        <div class="col-md-5">
-          <div class="section-card h-100">
-            <div class="sc-header"><span>Cases by Work Type</span></div>
-            <div class="sc-body"><div class="chart-box"><canvas id="chartWorkType"></canvas></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row g-3 mt-1">
-        <div class="col-md-6">
-          <div class="section-card h-100">
-            <div class="sc-header"><span>Cases by Directorate</span></div>
-            <div class="sc-body"><div class="chart-box sm"><canvas id="chartDirectorate"></canvas></div></div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="section-card h-100">
-            <div class="sc-header"><span>Case Status Distribution</span></div>
-            <div class="sc-body"><div class="chart-box sm"><canvas id="chartStatus"></canvas></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row g-3 mt-1">
-        <div class="col-md-6">
-          <div class="section-card h-100">
-            <div class="sc-header"><span>Case Aging</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">Days open — live cases</span></div>
-            <div class="sc-body"><div class="chart-box sm"><canvas id="chartAging"></canvas></div></div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="section-card h-100">
-            <div class="sc-header"><span>Case Completion Performance</span><span class="text-muted-soft" style="font-size:11.5px;font-weight:500;">On-time vs delayed</span></div>
-            <div class="sc-body"><div class="chart-box sm"><canvas id="chartCompletion"></canvas></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section-card mt-1">
-        <div class="sc-header">
-          <span>Recent Cases</span>
-          <a href="my-cases.html" style="font-size:12px;font-weight:600;">View All <i class="bi bi-arrow-right"></i></a>
-        </div>
-        <div class="table-scroll">
-          <table class="table-modern mb-0" id="recentCasesTable">
-            <thead><tr><th>Case Ref.</th><th>Title</th><th>Work Type</th><th>Milestone</th><th>Urgency</th><th>PCD</th><th></th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Right column: widgets -->
-    <div class="col-xl-4">
-
-      <div class="section-card">
-        <div class="sc-header">
-          <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>AI Insights</span>
-          <span class="ai-chip"><i class="bi bi-stars"></i>Demo</span>
-        </div>
-        <div class="sc-body pt-2">
-          <div class="ai-insight-box" id="aiInsightsBox"></div>
-        </div>
-      </div>
-
-      <div class="section-card">
-        <div class="sc-header"><span>Cases Requiring Attention</span></div>
-        <div class="sc-body pt-2" id="attentionList"></div>
-      </div>
-
-      <div class="section-card">
-        <div class="sc-header"><span>Upcoming Milestones</span></div>
-        <div class="sc-body pt-2" id="milestoneList"></div>
-      </div>
-
-      <div class="section-card">
-        <div class="sc-header"><span>Pending Approvals</span></div>
-        <div class="sc-body pt-2" id="approvalsList"></div>
-      </div>
-
-      <div class="section-card">
-        <div class="sc-header"><span>Recent Activities</span></div>
-        <div class="sc-body pt-2" id="recentActivitiesList"></div>
-      </div>
-
-      <div class="section-card">
-        <div class="sc-header"><span>Upcoming Reminders</span><a href="reminders.html" style="font-size:11.5px;">View all</a></div>
-        <div class="sc-body pt-2" id="reminderList"></div>
-      </div>
-
     </div>
   </div>
 

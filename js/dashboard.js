@@ -23,7 +23,7 @@
     Chart.defaults.color = t.text;
     Chart.defaults.font.size = 11.5;
 
-    const palette = { blue: "#B8863E", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626" };
+    const palette = { blue: "#0078D4", darkBlue: "#005A9E", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626" };
 
     /* --- Monthly Trend --- */
     charts.push(new Chart(document.getElementById("chartTrend"), {
@@ -31,7 +31,7 @@
       data: {
         labels: ["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"],
         datasets: [
-          { label: "Registered", data: [92,101,88,110,122,118,131,127,140,135,148,156], borderColor: palette.blue, backgroundColor: "rgba(184,134,62,.08)", fill: true, tension: .35, pointRadius: 3 },
+          { label: "Registered", data: [92,101,88,110,122,118,131,127,140,135,148,156], borderColor: palette.blue, backgroundColor: "rgba(0,120,212,.08)", fill: true, tension: .35, pointRadius: 3 },
           { label: "Closed", data: [80,95,84,99,108,112,120,119,126,124,138,142], borderColor: palette.green, backgroundColor: "rgba(22,163,74,.06)", fill: true, tension: .35, pointRadius: 3 },
         ],
       },
@@ -48,24 +48,24 @@
       options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 10.5 }, usePointStyle: true } } }, cutout: "68%", maintainAspectRatio: false },
     }));
 
-    /* --- Directorate bar --- */
+    /* --- Directorate grouped bar: Live vs. Completed only (no Pending) --- */
+    const DIRECTORATE_CASELOAD = {
+      "Legislation Directorate": { live: 145, completed: 238 },
+      "Legal Advice and Opinion Directorate": { live: 96, completed: 174 },
+      "Translation Section": { live: 72, completed: 121 },
+      "General Section": { live: 84, completed: 149 },
+      "Research and Publications Section": { live: 61, completed: 102 },
+    };
     charts.push(new Chart(document.getElementById("chartDirectorate"), {
       type: "bar",
       data: {
         labels: D.DIRECTORATES.map(d => d.id),
-        datasets: [{ label: "Live Cases", data: [412, 268, 198, 231, 139], backgroundColor: palette.blue, borderRadius: 6, maxBarThickness: 34 }],
+        datasets: [
+          { label: "Live Cases", data: D.DIRECTORATES.map(d => DIRECTORATE_CASELOAD[d.name].live), backgroundColor: palette.blue, borderRadius: 6, maxBarThickness: 26 },
+          { label: "Completed Cases", data: D.DIRECTORATES.map(d => DIRECTORATE_CASELOAD[d.name].completed), backgroundColor: palette.green, borderRadius: 6, maxBarThickness: 26 },
+        ],
       },
-      options: { plugins: { legend: { display: false } }, scales: { y: { grid: { color: t.grid } }, x: { grid: { display: false } } }, maintainAspectRatio: false },
-    }));
-
-    /* --- Status distribution --- */
-    charts.push(new Chart(document.getElementById("chartStatus"), {
-      type: "pie",
-      data: {
-        labels: ["Live", "Pending", "Completed", "On Hold", "Closed/Archived"],
-        datasets: [{ data: [1248, 86, 156, 24, 312], backgroundColor: [palette.blue, "#F5C242", palette.green, palette.red, palette.grey], borderWidth: 2, borderColor: t.border }],
-      },
-      options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 10, font: { size: 10.5 }, usePointStyle: true } } }, maintainAspectRatio: false },
+      options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 10, usePointStyle: true } } }, scales: { y: { grid: { color: t.grid } }, x: { grid: { display: false } } }, maintainAspectRatio: false },
     }));
 
     /* --- Aging --- */
@@ -78,94 +78,76 @@
       options: { indexAxis: "y", plugins: { legend: { display: false } }, scales: { x: { grid: { color: t.grid } }, y: { grid: { display: false } } }, maintainAspectRatio: false },
     }));
 
-    /* --- Completion performance --- */
+    /* --- Completion performance: Target / Completed / Within SLA / Beyond SLA --- */
     charts.push(new Chart(document.getElementById("chartCompletion"), {
       type: "bar",
       data: {
         labels: ["Apr","May","Jun","Jul","Aug","Sep"],
         datasets: [
-          { label: "On-Time", data: [88,94,101,97,110,103], backgroundColor: palette.green, borderRadius: 6, stack: "s" },
-          { label: "Delayed", data: [15,11,9,14,8,12], backgroundColor: palette.red, borderRadius: 6, stack: "s" },
+          { label: "Target", data: [100,100,100,100,100,100], backgroundColor: "rgba(0,0,0,.08)", borderRadius: 6 },
+          { label: "Within SLA", data: [88,94,101,97,110,103], backgroundColor: palette.blue, borderRadius: 6, stack: "s" },
+          { label: "Beyond SLA", data: [15,11,9,14,8,12], backgroundColor: palette.red, borderRadius: 6, stack: "s" },
         ],
       },
-      options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 10, usePointStyle: true } } }, scales: { y: { grid: { color: t.grid }, stacked: true }, x: { grid: { display: false }, stacked: true } }, maintainAspectRatio: false },
+      options: { plugins: { legend: { position: "bottom", labels: { boxWidth: 10, usePointStyle: true } } }, scales: { y: { grid: { color: t.grid } }, x: { grid: { display: false } } }, maintainAspectRatio: false },
     }));
 
     A.onThemeChange(retheme);
 
-    /* --- AI Insights --- */
-    const aiBox = document.getElementById("aiInsightsBox");
-    aiBox.innerHTML = D.AI_INSIGHTS.map(t => `<div class="ai-insight-item"><i class="bi bi-stars"></i><div>${t}</div></div>`).join("")
-      + `<div class="text-center mt-2"><span class="ai-chip"><i class="bi bi-info-circle"></i>AI-Assisted Insight – Demo</span></div>`;
-
-    /* --- Recent cases table --- */
-    const recent = D.CASES.slice().sort((a,b) => new Date(b.lastActivity) - new Date(a.lastActivity)).slice(0, 6);
-    document.querySelector("#recentCasesTable tbody").innerHTML = recent.map(c => `
-      <tr class="${c.classified ? "row-classified" : ""}">
-        <td><a class="ref-link" href="case-workspace.html?ref=${c.ref}">${c.ref}</a>${c.classified ? " " + A.classifiedFlag(true) : ""}</td>
-        <td style="max-width:260px;">${c.title}</td>
-        <td>${c.workType}</td>
-        <td>${A.milestoneBadge(c.milestone)}</td>
-        <td>${A.urgencyBadge(c.urgency)}</td>
-        <td>${A.fmtDate(c.pcd)}</td>
-        <td><a href="case-workspace.html?ref=${c.ref}" class="btn btn-sm btn-light border"><i class="bi bi-arrow-right"></i></a></td>
-      </tr>`).join("");
-
     /* --- Cases requiring attention --- */
-    const attention = D.CASES.filter(c => c.overdue || c.classified).slice(0, 4);
-    document.getElementById("attentionList").innerHTML = attention.map(c => `
-      <a href="case-workspace.html?ref=${c.ref}" class="d-flex align-items-start gap-2 py-2 border-bottom text-decoration-none" style="border-color:var(--slc-border) !important;">
-        <i class="bi ${c.overdue ? "bi-exclamation-triangle-fill text-danger" : "bi-shield-lock-fill text-primary"} mt-1"></i>
-        <div>
-          <div style="font-size:12.3px;font-weight:600;color:var(--slc-text);">${c.ref}</div>
-          <div style="font-size:11.6px;color:var(--slc-muted);">${c.overdue ? "Past Proposed Completion Date" : "Classified — restricted visibility"}</div>
+    const ATTENTION_ITEMS = [
+      { ref: "SLC-LEG-2026-00128", title: "Federal Environmental Legislation", stage: "Pre-Approved", note: "Requires approval", icon: "bi-hourglass-split", tone: "warning" },
+      { ref: "SLC-LEG-2026-00119", title: "Ratification Review — Bilateral Investment Treaty", stage: "In Progress", note: "Past Proposed Completion Date", icon: "bi-exclamation-triangle-fill", tone: "danger" },
+      { ref: "SLC-GEN-2026-00061", title: "IT Infrastructure Upgrade Request", stage: "In Progress", note: "Past Proposed Completion Date", icon: "bi-exclamation-triangle-fill", tone: "danger" },
+      { ref: "SLC-LAO-2026-00087", title: "Legal Opinion on PPP Framework", stage: "In Progress", note: "Classified — restricted visibility", icon: "bi-shield-lock-fill", tone: "info" },
+      { ref: "SLC-LEG-2026-00131", title: "Amendment to Local Traffic and Roads Legislation", stage: "Registered", note: "Delayed milestone — 18 days in First Review", icon: "bi-clock-history", tone: "warning" },
+      { ref: "SLC-RP-2026-00033", title: "Official Gazette Issue No. 214", stage: "In Progress", note: "Registration action required", icon: "bi-clipboard-check", tone: "info" },
+    ];
+    const TONE_CLASS = { warning: "text-warning", danger: "text-danger", info: "text-primary" };
+    document.getElementById("attentionList").innerHTML = ATTENTION_ITEMS.map(x => `
+      <a href="case-workspace.html?ref=${x.ref}" class="d-flex align-items-start gap-2 py-2 border-bottom text-decoration-none" style="border-color:var(--slc-border) !important;">
+        <i class="bi ${x.icon} ${TONE_CLASS[x.tone]} mt-1"></i>
+        <div class="flex-grow-1">
+          <div style="font-size:12.3px;font-weight:600;color:var(--slc-text);">${x.ref} <span class="text-muted-soft fw-normal">— ${x.title}</span></div>
+          <div style="font-size:11.3px;color:var(--slc-muted);margin-top:2px;">${x.note}</div>
         </div>
+        <span class="badge-status badge-muted">${x.stage}</span>
       </a>`).join("");
-
-    /* --- Upcoming milestones --- */
-    const upcoming = D.CASES.filter(c => c.pcd && c.status === "Live").sort((a,b) => new Date(a.pcd) - new Date(b.pcd)).slice(0, 5);
-    document.getElementById("milestoneList").innerHTML = upcoming.map(c => `
-      <div class="d-flex align-items-center justify-content-between py-2 border-bottom" style="border-color:var(--slc-border) !important;">
-        <div>
-          <div style="font-size:12.3px;font-weight:600;">${c.ref}</div>
-          <div style="font-size:11.3px;color:var(--slc-muted);">PCD: ${A.fmtDate(c.pcd)}</div>
-        </div>
-        ${A.milestoneBadge(c.milestone)}
-      </div>`).join("");
 
     /* --- Pending approvals --- */
     const approvals = [
-      { text: "Secretary General Final Approval — SLC-LEG-2026-00128", by: "u1" },
-      { text: "Milestone change request — SLC-LAO-2026-00087", by: "u7" },
-      { text: "Official Gazette publication sign-off — SLC-RP-2026-00033", by: "u9" },
+      { ref: "SLC-LEG-2026-00128", stage: "Pre-Closure Approval", submitted: "2026-09-18", by: "u1" },
+      { ref: "SLC-LAO-2026-00087", stage: "Registration Approval", submitted: "2026-09-17", by: "u7" },
+      { ref: "SLC-RP-2026-00033", stage: "Pre-Approval", submitted: "2026-09-16", by: "u9" },
     ];
-    document.getElementById("approvalsList").innerHTML = approvals.map(a => `
-      <div class="d-flex align-items-center justify-content-between py-2 border-bottom" style="border-color:var(--slc-border) !important;">
-        <div style="font-size:12.2px;max-width:190px;">${a.text}</div>
-        <button class="btn btn-sm btn-outline-primary" onclick="SLCApp.demoActionModal('Approval recorded successfully in prototype mode.')">Review</button>
-      </div>`).join("");
+    document.querySelector("#approvalsTable tbody").innerHTML = approvals.map(a => {
+      const c = D.caseByRef(a.ref);
+      return `<tr>
+        <td><a class="ref-link" href="case-workspace.html?ref=${a.ref}">${a.ref}</a></td>
+        <td style="max-width:220px;">${c.title}</td>
+        <td>${c.workType}</td>
+        <td><span class="badge-status badge-info">${a.stage}</span></td>
+        <td>${A.fmtDate(a.submitted)}</td>
+        <td>${A.userChip(a.by)}</td>
+        <td><button class="btn btn-sm btn-outline-primary" onclick="SLCApp.demoActionModal('Approval recorded successfully in prototype mode.')">Review</button></td>
+      </tr>`;
+    }).join("");
 
     /* --- Recent activities --- */
     const allActivities = [];
     Object.keys(D.ACTIVITIES).forEach(ref => D.ACTIVITIES[ref].forEach(a => allActivities.push({ ...a, ref })));
     allActivities.sort((a,b) => new Date(b.date) - new Date(a.date));
-    document.getElementById("recentActivitiesList").innerHTML = allActivities.slice(0, 5).map(a => `
+    document.getElementById("recentActivitiesList").innerHTML = allActivities.slice(0, 6).map(a => {
+      const [datePart, timePart] = a.date.split(" ");
+      return `
       <div class="d-flex gap-2 py-2 border-bottom" style="border-color:var(--slc-border) !important;">
         <i class="bi bi-clock-history mt-1 text-muted-soft"></i>
         <div>
-          <div style="font-size:12.2px;"><strong>${a.type}</strong> — ${a.ref}</div>
-          <div style="font-size:11.2px;color:var(--slc-muted);">${a.date} · ${D.userById(a.user).name}</div>
+          <div style="font-size:11.2px;font-weight:700;color:var(--slc-muted);">${timePart || ""}</div>
+          <div style="font-size:12.2px;margin-top:1px;"><strong>${a.type}</strong> — ${a.ref}</div>
+          <div style="font-size:11.2px;color:var(--slc-muted);">${datePart} · ${D.userById(a.user).name}</div>
         </div>
-      </div>`).join("");
-
-    /* --- Reminders --- */
-    document.getElementById("reminderList").innerHTML = D.REMINDERS.slice(0, 4).map(r => `
-      <div class="d-flex align-items-center justify-content-between py-2 border-bottom" style="border-color:var(--slc-border) !important;">
-        <div>
-          <div style="font-size:12.2px;font-weight:600;">${r.title}</div>
-          <div style="font-size:11.2px;color:var(--slc-muted);">${A.fmtDate(r.date)} · ${r.relatedCase}</div>
-        </div>
-        <span class="badge-status ${r.status === "Overdue" ? "badge-danger" : r.status === "Due Today" ? "badge-warning" : "badge-info"}">${r.status}</span>
-      </div>`).join("");
+      </div>`;
+    }).join("");
   });
 })();

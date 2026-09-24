@@ -7,30 +7,80 @@
   const D = global.SLC;
 
   /* ------------------------------------------------------------------ */
-  /* Navigation model                                                    */
+  /* Navigation model — horizontal top menu (no sidebar)                 */
   /* ------------------------------------------------------------------ */
   const NAV = [
-    { section: "Overview", items: [
-      { key: "dashboard", label: "Dashboard", labelAr: "لوحة المعلومات", icon: "bi-speedometer2", href: "dashboard.html" },
-    ]},
-    { section: "Case Inboxes", items: [
-      { key: "my-cases", label: "My Cases", labelAr: "قضاياي", icon: "bi-briefcase", href: "my-cases.html", count: 24 },
-      { key: "pending-cases", label: "Pending Cases", labelAr: "القضايا المعلقة", icon: "bi-hourglass-split", href: "pending-cases.html", count: 6 },
-      { key: "live-cases", label: "Live Cases", labelAr: "القضايا النشطة", icon: "bi-activity", href: "live-cases.html", count: 1248 },
-      { key: "new-case", label: "New Case", labelAr: "قضية جديدة", icon: "bi-plus-circle", href: "new-case.html" },
-    ]},
-    { section: "Work", items: [
-      { key: "tasks", label: "My Tasks", labelAr: "مهامي", icon: "bi-list-check", href: "tasks.html", count: 8 },
-      { key: "reminders", label: "Reminders", labelAr: "التذكيرات", icon: "bi-alarm", href: "reminders.html", count: 5 },
-      { key: "calendar", label: "Calendar", labelAr: "التقويم", icon: "bi-calendar3", href: "calendar.html" },
-      { key: "search", label: "Search", labelAr: "بحث", icon: "bi-search", href: "search.html" },
-    ]},
-    { section: "Insights", items: [
-      { key: "reports", label: "Reports", labelAr: "التقارير", icon: "bi-bar-chart-line", href: "reports.html" },
-      { key: "management", label: "Management Console", labelAr: "وحدة الإدارة", icon: "bi-gear", href: "management.html" },
-      { key: "roles-permissions", label: "Roles & Permissions", labelAr: "الأدوار والصلاحيات", icon: "bi-shield-lock", href: "roles-permissions.html" },
-    ]},
+    { key: "dashboard", label: "Dashboard", labelAr: "لوحة المعلومات", href: "dashboard.html" },
+    { key: "new-case", label: "Register Case", labelAr: "تسجيل قضية", href: "new-case.html" },
+    { key: "live-cases", label: "Live Cases", labelAr: "القضايا النشطة", href: "live-cases.html" },
+    { key: "completed-cases", label: "Completed Cases", labelAr: "القضايا المكتملة", href: "completed-cases.html" },
+    {
+      key: "reports", label: "Reports", labelAr: "التقارير", href: "reports.html",
+      matchKeys: ["reports"],
+      dropdown: [
+        { label: "Case Summary Report", href: "reports.html", icon: "bi-clipboard-data" },
+        { label: "Cases by Classification", href: "report-details.html?id=rep-work-type", icon: "bi-diagram-3" },
+        { label: "Cases by Directorate", href: "report-details.html?id=rep-directorate", icon: "bi-building" },
+        { label: "Case Aging Report", href: "report-details.html?id=rep-aging", icon: "bi-hourglass-split" },
+        { label: "Case Completion Performance", href: "report-details.html?id=rep-completion", icon: "bi-graph-up" },
+        { label: "Case Milestone Report", href: "report-details.html?id=rep-milestone", icon: "bi-signpost-split" },
+        { label: "Case Status Report", href: "report-details.html?id=rep-status", icon: "bi-pie-chart" },
+        { label: "Registration Performance", href: "report-details.html?id=rep-registration", icon: "bi-clipboard-check" },
+        { label: "User Workload Report", href: "report-details.html?id=rep-workload", icon: "bi-people" },
+        { label: "Activity Report", href: "report-details.html?id=rep-activity", icon: "bi-activity" },
+      ],
+    },
+    { key: "search", label: "Database Search", labelAr: "بحث", href: "search.html" },
+    {
+      key: "management", label: "Management Console", labelAr: "وحدة الإدارة", href: "management.html",
+      matchKeys: ["management", "roles-permissions"],
+      dropdown: [
+        { label: "User Management", href: "management.html#sec-users", icon: "bi-people" },
+        { label: "Roles & Permissions", href: "roles-permissions.html", icon: "bi-shield-lock" },
+        { label: "Work Type Masters", href: "management.html#sec-work-types", icon: "bi-diagram-3" },
+        { label: "Case Type Masters", href: "management.html#sec-case-types", icon: "bi-tags" },
+        { label: "Milestone Masters", href: "management.html#sec-milestones", icon: "bi-flag" },
+        { label: "Entity Masters", href: "management.html#sec-entities", icon: "bi-building" },
+        { label: "Expert Masters", href: "management.html#sec-experts", icon: "bi-mortarboard" },
+        { label: "Document Bank", href: "management.html#sec-doc-bank", icon: "bi-file-earmark-text" },
+        { label: "Reports User Rights", href: "management.html#sec-reports-rights", icon: "bi-bar-chart-line" },
+        { label: "Audit Trail", href: "management.html#sec-audit", icon: "bi-clock-history" },
+      ],
+    },
   ];
+
+  /* Five-stage case workflow (BRD-aligned, simplified from the granular milestone list
+     for at-a-glance status tracking). Each granular milestone rolls up into one stage. */
+  const WORKFLOW_STAGES = ["Registered", "Pre-Approved", "In Progress", "Pre-Closure Approval", "Closed"];
+  const MILESTONE_TO_STAGE = {
+    opened: 0, registered: 0,
+    first_review: 1,
+    first_draft: 2, further_review: 2, further_draft: 2, final_draft: 2, final_review: 2,
+    awaiting_customer: 2, awaiting_internal: 2,
+    signoff: 3,
+    completed: 4, on_hold: 4, closed: 4, cancelled: 4, archived: 4,
+  };
+  function workflowStageIndex(milestoneId) {
+    const idx = MILESTONE_TO_STAGE[milestoneId];
+    return idx === undefined ? 0 : idx;
+  }
+  function workflowStageName(milestoneId) {
+    return WORKFLOW_STAGES[workflowStageIndex(milestoneId)];
+  }
+  const WORKFLOW_BADGE_CLASS = ["badge-muted", "badge-primary-dark", "badge-info", "badge-navy", "badge-success"];
+  function workflowBadge(milestoneId) {
+    const idx = workflowStageIndex(milestoneId);
+    return `<span class="badge-status ${WORKFLOW_BADGE_CLASS[idx]}">${WORKFLOW_STAGES[idx]}</span>`;
+  }
+  /* Horizontal workflow stepper markup for the Case Workspace */
+  function workflowStepperHtml(milestoneId) {
+    const current = workflowStageIndex(milestoneId);
+    return WORKFLOW_STAGES.map((label, i) => {
+      const cls = i < current ? "done" : i === current ? "current" : "";
+      const icon = i < current ? '<i class="bi bi-check-lg"></i>' : (i + 1);
+      return `<div class="wf-step ${cls}"><div class="wf-line"></div><div class="wf-dot">${icon}</div><div class="wf-label">${label}</div></div>`;
+    }).join("");
+  }
 
   function avatarHtml(user, size) {
     size = size || 36;
@@ -38,31 +88,40 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* Sidebar                                                             */
+  /* Brand bar (logo strip above the top menu)                           */
   /* ------------------------------------------------------------------ */
-  function buildSidebar(active) {
-    let html = `
-    <div class="sidebar-brand">
-     
-      <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-light" width="200" height="70">
-      <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="sidebar-brand-logo logo-on-dark" width="200" height="70">
-    </div>
-    <nav class="sidebar-nav">`;
-    NAV.forEach(sec => {
-      html += `<div class="sidebar-section-label">${sec.section}</div>`;
-      sec.items.forEach(it => {
-        const isActive = it.key === active ? "active" : "";
-        html += `<a href="${it.href}" class="sidebar-link ${isActive}" data-key="${it.key}">
-          <i class="bi ${it.icon}"></i>
-          <span class="link-text" data-en="${it.label}" data-ar="${it.labelAr}">${it.label}</span>
-          ${it.count ? `<span class="badge-count">${it.count}</span>` : ""}
+  function buildBrandBar() {
+    return `
+      <button class="header-icon-btn mobile-nav-toggle" id="mobileNavToggle"><i class="bi bi-list"></i></button>
+      <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
+      <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
+      <div style="font-weight:700;font-size:15px;color:var(--slc-text);border-left:1px solid var(--slc-border);padding-left:16px;">Case Management System</div>`;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Top navigation bar (replaces the former left sidebar)                */
+  /* ------------------------------------------------------------------ */
+  function buildTopNav(active) {
+    let html = `<div class="app-topnav-inner">`;
+    NAV.forEach(it => {
+      const keys = it.matchKeys || [it.key];
+      const isActive = keys.indexOf(active) !== -1 ? "active" : "";
+      if (it.dropdown) {
+        html += `<div class="topnav-item">
+          <a href="${it.href}" class="topnav-link ${isActive}" data-key="${it.key}">
+            <span data-en="${it.label}" data-ar="${it.labelAr}">${it.label}</span><i class="bi bi-chevron-down"></i>
+          </a>
+          <div class="topnav-dropdown">
+            ${it.dropdown.map(d => `<a href="${d.href}"><i class="bi ${d.icon}"></i>${d.label}</a>`).join("")}
+          </div>
+        </div>`;
+      } else {
+        html += `<a href="${it.href}" class="topnav-link ${isActive}" data-key="${it.key}">
+          <span data-en="${it.label}" data-ar="${it.labelAr}">${it.label}</span>
         </a>`;
-      });
+      }
     });
-    html += `</nav>
-    <div class="sidebar-footer">
-      <button class="sidebar-collapse-btn" id="sidebarCollapseBtn"><i class="bi bi-layout-sidebar-inset"></i><span>Collapse</span></button>
-    </div>`;
+    html += `</div>`;
     return html;
   }
 
@@ -82,7 +141,6 @@
       </a>`).join("");
 
     return `
-    <button class="header-icon-btn d-lg-none" id="mobileNavToggle"><i class="bi bi-list"></i></button>
     <div class="header-search">
       <i class="bi bi-search"></i>
       <input type="text" id="globalHeaderSearch" placeholder="Search cases, documents, entities..." autocomplete="off">
@@ -252,96 +310,19 @@
   }
 
   /* ------------------------------------------------------------------ */
-  /* AI Assistant panel                                                  */
-  /* ------------------------------------------------------------------ */
-  const AI_RESPONSES = {
-    "summarize this case.": "**AI Case Summary** — This case concerns a proposed Federal Environmental Protection Legislation. The case is currently in Final Review milestone. Two checklist items remain pending (Team Final Approval, Secretary General Final Approval) and the Proposed Completion Date is 9 days away.",
-    "what are the pending actions?": "Pending actions across your cases: (1) Complete Legal Review comments for SLC-LEG-2026-00128, (2) Proofread translation draft for SLC-TRN-2026-00114, (3) Respond to extension request on SLC-LEG-2026-00119.",
-    "which cases are overdue?": "2 cases are past their Proposed Completion Date: SLC-LEG-2026-00119 (Ratification Review — Bilateral Investment Treaty, 5 days overdue) and SLC-GEN-2026-00061 (IT Infrastructure Upgrade, 1 day overdue).",
-    "show cases requiring management attention.": "3 cases flagged for management attention based on inactivity or approaching deadlines: SLC-LAO-2026-00087 (Legal Opinion on PPP Framework, classified, no activity in 4 days), SLC-LEG-2026-00131 (still in First Review after 18 days), SLC-RP-2026-00033 (Official Gazette Issue 214, task overdue).",
-    "summarize recent case activities.": "In the last 7 days: 14 activities logged across 6 live cases, including 3 translation requests, 2 milestone updates, 4 document uploads and 5 comments added.",
-    "identify cases approaching their completion date.": "Cases approaching their Proposed Completion Date within 10 days: SLC-LEG-2026-00128 (9 days), SLC-TRN-2026-00114 (6 days), SLC-RP-2026-00033 (9 days), SLC-LAO-2026-00091 (in 15 days — monitor)."
-  };
-
-  function aiRespond(question) {
-    const key = question.trim().toLowerCase();
-    return AI_RESPONSES[key] || "This is a demonstration response. In the full solution, this would be generated from live case data using an AI-assisted analysis of case activities, milestones and documents.";
-  }
-
-  function buildAIPanel() {
-    if (document.getElementById("aiPanel")) return;
-    const wrap = document.createElement("div");
-    wrap.innerHTML = `
-    <button class="ai-fab" id="aiFabBtn" title="AI Assistant"><i class="bi bi-stars"></i></button>
-    <div class="ai-panel" id="aiPanel">
-      <div class="ai-panel-head">
-        <i class="bi bi-stars fs-5"></i>
-        <div>
-          <div style="font-weight:700;font-size:13.5px;">SLC AI Assistant</div>
-          <div style="font-size:10.5px;opacity:.85;">AI-Assisted Capability — Demonstration Prototype</div>
-        </div>
-        <button class="btn-close btn-close-white ms-auto" id="aiCloseBtn" style="font-size:11px;"></button>
-      </div>
-      <div class="ai-panel-body" id="aiBody">
-        <div class="ai-msg bot"><div class="bubble">Hello ${D.CURRENT_USER.name.split(" ")[0]}, I'm your AI-assisted CMS helper. Ask me about your cases, pending actions or deadlines.</div></div>
-      </div>
-      <div class="ai-quick" id="aiQuick"></div>
-      <div class="ai-panel-input">
-        <input type="text" id="aiInput" placeholder="Ask about your cases...">
-        <button id="aiSendBtn"><i class="bi bi-send"></i></button>
-      </div>
-      <div class="ai-disclaimer">Demo AI capability — no real AI service connected.</div>
-    </div>`;
-    document.body.appendChild(wrap);
-
-    const quick = document.getElementById("aiQuick");
-    D.AI_QUICK_QUESTIONS.forEach(q => {
-      const b = document.createElement("button");
-      b.textContent = q;
-      b.onclick = () => sendAI(q);
-      quick.appendChild(b);
-    });
-
-    document.getElementById("aiFabBtn").onclick = () => document.getElementById("aiPanel").classList.add("open");
-    document.getElementById("aiCloseBtn").onclick = () => document.getElementById("aiPanel").classList.remove("open");
-    document.getElementById("aiSendBtn").onclick = () => {
-      const inp = document.getElementById("aiInput");
-      if (inp.value.trim()) { sendAI(inp.value.trim()); inp.value = ""; }
-    };
-    document.getElementById("aiInput").addEventListener("keydown", e => {
-      if (e.key === "Enter") document.getElementById("aiSendBtn").click();
-    });
-  }
-
-  function sendAI(question) {
-    const body = document.getElementById("aiBody");
-    document.getElementById("aiPanel").classList.add("open");
-    const userMsg = document.createElement("div");
-    userMsg.className = "ai-msg user";
-    userMsg.innerHTML = `<div class="bubble">${question}</div>`;
-    body.appendChild(userMsg);
-    body.scrollTop = body.scrollHeight;
-    setTimeout(() => {
-      const botMsg = document.createElement("div");
-      botMsg.className = "ai-msg bot";
-      botMsg.innerHTML = `<div class="bubble">${aiRespond(question).replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")}<div style="margin-top:6px;"><span class="ai-chip"><i class="bi bi-stars"></i>AI-generated demo content</span></div></div>`;
-      body.appendChild(botMsg);
-      body.scrollTop = body.scrollHeight;
-    }, 550);
-  }
-
-  /* ------------------------------------------------------------------ */
   /* Shell renderer                                                      */
   /* ------------------------------------------------------------------ */
   function renderShell(active, breadcrumbTrail) {
     document.body.insertAdjacentHTML("afterbegin", `<div class="app-shell" id="appShell">
-      <aside class="app-sidebar" id="appSidebar"></aside>
+      <div class="app-brand-bar" id="appBrandBar"></div>
+      <nav class="app-topnav" id="appTopNav"></nav>
       <div class="app-main">
         <header class="app-header" id="appHeader"></header>
         <main class="page-wrap" id="pageContent"></main>
       </div>
     </div>`);
-    document.getElementById("appSidebar").innerHTML = buildSidebar(active);
+    document.getElementById("appBrandBar").innerHTML = buildBrandBar();
+    document.getElementById("appTopNav").innerHTML = buildTopNav(active);
     document.getElementById("appHeader").innerHTML = buildHeader();
 
     // Move any pre-existing page body content (declared before app.js ran) into pageContent
@@ -356,12 +337,18 @@
       document.getElementById("pageContent").prepend(bc.firstElementChild);
     }
 
-    // Collapse toggle
-    document.getElementById("sidebarCollapseBtn").onclick = () => {
-      document.getElementById("appShell").classList.toggle("sidebar-collapsed");
-    };
+    // Mobile top-nav toggle
     const mobBtn = document.getElementById("mobileNavToggle");
-    if (mobBtn) mobBtn.onclick = () => document.getElementById("appShell").classList.toggle("sidebar-mobile-open");
+    if (mobBtn) mobBtn.onclick = () => document.getElementById("appTopNav").classList.toggle("mobile-open");
+    // Mobile: tap a dropdown parent to expand its submenu in place
+    document.querySelectorAll(".topnav-item > .topnav-link").forEach(link => {
+      link.addEventListener("click", e => {
+        if (window.innerWidth <= 900) {
+          e.preventDefault();
+          link.parentElement.classList.toggle("dropdown-open");
+        }
+      });
+    });
 
     // Lang
     const savedLang = localStorage.getItem("slc_lang") || "en";
@@ -373,9 +360,6 @@
     applyTheme(currentTheme(), { silent: true });
     document.getElementById("themeLightBtn").onclick = () => applyTheme("light");
     document.getElementById("themeDarkBtn").onclick = () => applyTheme("dark");
-
-    // AI assistant available everywhere
-    buildAIPanel();
 
     // Global search enter -> search.html
     const gs = document.getElementById("globalHeaderSearch");
@@ -412,31 +396,6 @@
     return `<div class="d-flex align-items-center gap-2">${avatarHtml(u, 26)}<span style="font-size:12.6px;">${u.name}</span></div>`;
   }
 
-  /* ------------------------------------------------------------------ */
-  /* Shared AI insight card — used across every page to keep the AI      */
-  /* touchpoints visually and structurally consistent.                   */
-  /* ------------------------------------------------------------------ */
-  function aiInsightCard(title, items, opts) {
-    opts = opts || {};
-    if (!items || !items.length) return "";
-    return `<div class="section-card ai-insight-card">
-      <div class="sc-header">
-        <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>${title}</span>
-        <span class="ai-chip"><i class="bi bi-stars"></i>Demo</span>
-      </div>
-      <div class="sc-body pt-2">
-        <div class="ai-insight-box">
-          ${items.map(t => `<div class="ai-insight-item"><i class="bi bi-stars"></i><div>${t}</div></div>`).join("")}
-          <div class="text-center mt-2"><span class="ai-chip"><i class="bi bi-info-circle"></i>${opts.label || "AI-Assisted Insight – Demo"}</span></div>
-        </div>
-      </div>
-    </div>`;
-  }
-  /* Compact inline variant (single line, no card wrapper) for tight spaces */
-  function aiInlineNote(text) {
-    return `<div class="ai-inline-note"><i class="bi bi-stars"></i><span>${text}</span> <span class="ai-chip ms-1"><i class="bi bi-info-circle"></i>Demo</span></div>`;
-  }
-
   /* Smooth-scroll to a same-page section and briefly flash it, used by clickable KPI/data cards
      that drill into a section further down the same page rather than to another page. */
   function scrollToSection(id) {
@@ -447,10 +406,27 @@
     setTimeout(() => el.classList.remove("section-flash"), 1200);
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Reusable horizontal tab-panel controller — Register Case / Case     */
+  /* Workspace both use this to swap visible sections without navigating.*/
+  /* ------------------------------------------------------------------ */
+  function initTabs(navSelector, panelSelector) {
+    const tabs = document.querySelectorAll(navSelector + " .tab-btn");
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabs.forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(panelSelector + " .tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+  }
+
   global.SLCApp = {
     NAV, renderShell, toast, demoAction, demoActionModal, applyLang, avatarHtml,
-    urgencyBadge, milestoneBadge, classifiedFlag, fmtDate, userChip, sendAI,
-    applyTheme, currentTheme, chartTheme, onThemeChange, aiInsightCard, aiInlineNote,
-    scrollToSection,
+    urgencyBadge, milestoneBadge, classifiedFlag, fmtDate, userChip,
+    applyTheme, currentTheme, chartTheme, onThemeChange,
+    scrollToSection, initTabs,
+    workflowStageIndex, workflowStageName, workflowBadge, workflowStepperHtml, WORKFLOW_STAGES,
   };
 })(window);

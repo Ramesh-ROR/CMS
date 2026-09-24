@@ -20,7 +20,7 @@
     });
   }
 
-  const palette = { blue: "#B8863E", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626", yellow: "#F5C242" };
+  const palette = { blue: "#0078D4", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626", yellow: "#F5C242" };
   const MONTHS12 = ["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"];
 
   function pct(v, total) { return total ? ((v / total) * 100).toFixed(1) + "%" : "—"; }
@@ -253,7 +253,7 @@
       const labels = ["PDF", "Word", "Excel", "Scanned/Image", "Other"];
       const data = [2140, 1380, 420, 310, 150];
       return {
-        primary: { type: "doughnut", labels, datasets: [{ data, backgroundColor: [palette.red, "#8A6A3A", palette.green, palette.purple, palette.grey], borderWidth: 2, borderColor: t.border }], cutout: "66%" },
+        primary: { type: "doughnut", labels, datasets: [{ data, backgroundColor: [palette.red, palette.teal, palette.green, palette.purple, palette.grey], borderWidth: 2, borderColor: t.border }], cutout: "66%" },
         chartTitle1: "Document Uploads by File Type",
         table: countTable(labels, data, "File Type", "Documents"),
         narrative: "PDF remains the dominant document format (49% of uploads), consistent with final approved legislation and legal opinion documents being stored as signed PDFs.",
@@ -352,8 +352,7 @@
 
     A.onThemeChange(retheme);
 
-    document.getElementById("rptNarrative").innerHTML =
-      `<div>${cfg.narrative}</div><div class="mt-2"><span class="ai-chip"><i class="bi bi-info-circle"></i>AI-Assisted Capability – Demonstration Prototype</span></div>`;
+    document.getElementById("rptNarrative").innerHTML = `<div>${cfg.narrative}</div>`;
 
     document.getElementById("rptTableHead").innerHTML = cfg.table.cols.map(c => `<th>${c}</th>`).join("");
     document.getElementById("rptTableBody").innerHTML = cfg.table.rows.map(r => `<tr>${r.map(v => `<td>${v}</td>`).join("")}</tr>`).join("");

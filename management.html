@@ -16,13 +16,13 @@
     box-shadow: var(--slc-shadow-sm); padding: 16px; cursor: pointer; height: 100%;
     display: flex; flex-direction: column; gap: 10px; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
   }
-  .module-tile:hover { transform: translateY(-2px); box-shadow: var(--slc-shadow-md); border-color: #E3CFA0; }
+  .module-tile:hover { transform: translateY(-2px); box-shadow: var(--slc-shadow-md); border-color: var(--hover-red); }
   .module-tile .mt-icon {
     width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
   }
   .module-tile .mt-title { font-weight: 700; font-size: 13.6px; color: var(--slc-text); }
   .module-tile .mt-desc { font-size: 11.6px; color: var(--slc-muted); line-height: 1.4; flex: 1; }
-  .module-tile .mt-count { font-size: 11px; font-weight: 700; color: var(--slc-primary-darker); background: #F5EBD8; border-radius: 20px; padding: 2px 9px; align-self: flex-start; }
+  .module-tile .mt-count { font-size: 11px; font-weight: 700; color: var(--slc-primary-darker); background: var(--light-blue); border-radius: 20px; padding: 2px 9px; align-self: flex-start; }
 
   /* Colour swatch dot for milestone/master rows */
   .swatch-dot { width: 14px; height: 14px; border-radius: 4px; display: inline-block; border: 1px solid rgba(0,0,0,.08); vertical-align: middle; }
@@ -68,17 +68,6 @@
 
   <!-- KPI Row -->
   <div class="row g-3 mb-2" id="mgmtKpiRow"></div>
-
-  <!-- AI Insights Widget -->
-  <div class="section-card">
-    <div class="sc-header">
-      <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>AI Management Insights</span>
-      <span class="ai-chip"><i class="bi bi-stars"></i>Demo</span>
-    </div>
-    <div class="sc-body pt-2">
-      <div class="ai-insight-box" id="mgmtAiInsights"></div>
-    </div>
-  </div>
 
   <!-- Module tile grid -->
   <div class="section-card">

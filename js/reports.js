@@ -6,7 +6,7 @@
   const D = window.SLC, A = window.SLCApp;
 
   const CHART_ICON = {
-    doughnut: { icon: "bi-pie-chart-fill", bg: "#F5EBD8", color: "#8A6A3A" },
+    doughnut: { icon: "bi-pie-chart-fill", bg: "var(--light-blue)", color: "var(--primary-blue)" },
     bar: { icon: "bi-bar-chart-fill", bg: "#E9F7EF", color: "#107C10" },
     horizontalBar: { icon: "bi-bar-chart-steps", bg: "#F3E8FF", color: "#7C3AED" },
     line: { icon: "bi-graph-up", bg: "#FFF4E5", color: "#C2540A" },
@@ -16,12 +16,6 @@
     "Case Reports": "bi-folder2-open",
     "Operational Reports": "bi-clipboard-data",
   };
-
-  const AI_TREND_ITEMS = [
-    "Legislation case registrations are trending 6% higher quarter-over-quarter, driven mainly by the Legislation and General directorates.",
-    "Average case aging in the 61-90 day bracket has grown to 138 cases — Case Aging Report recommended for directorate review.",
-    "On-time completion rate improved to 89.6% this month, up from 85.4% in April, reflecting steadier milestone throughput.",
-  ];
 
   function reportCardHtml(r) {
     const ci = CHART_ICON[r.chart] || CHART_ICON.bar;
@@ -45,10 +39,6 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("reports", [{ label: "Reports" }]);
-
-    document.getElementById("aiTrendBox").innerHTML = AI_TREND_ITEMS.map(t =>
-      `<div class="ai-insight-item"><i class="bi bi-graph-up-arrow"></i><div>${t}</div></div>`
-    ).join("") + `<div class="text-center mt-2"><span class="ai-chip"><i class="bi bi-info-circle"></i>AI-Assisted Insight – Demo</span></div>`;
 
     const wrap = document.getElementById("reportGroups");
     let html = "";

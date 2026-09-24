@@ -33,19 +33,14 @@
       <div class="page-subtitle">Generate, view and export case and operational reports across SLC directorates.</div>
     </div>
     <div class="page-title-actions">
-      <button class="btn btn-light border" onclick="window.print()"><i class="bi bi-printer"></i>Print</button>
+      <div class="dropdown">
+        <button class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-download"></i>Export</button>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><a class="dropdown-item" href="#" onclick="event.preventDefault();SLCApp.toast('Report exported successfully – Demo Mode');"><i class="bi bi-file-earmark-excel me-2" style="color:#107C10;"></i>Export to Excel</a></li>
+          <li><a class="dropdown-item" href="#" onclick="event.preventDefault();SLCApp.toast('Report exported successfully – Demo Mode');"><i class="bi bi-file-earmark-pdf me-2" style="color:#B91C1C;"></i>Export to PDF</a></li>
+        </ul>
+      </div>
       <button class="btn btn-primary" onclick="SLCApp.demoActionModal('Custom report builder is a demonstration capability in this prototype.')"><i class="bi bi-plus-lg"></i>New Custom Report</button>
-    </div>
-  </div>
-
-  <!-- AI Trend Summary -->
-  <div class="section-card">
-    <div class="sc-header">
-      <span><i class="bi bi-stars me-1" style="color:#7C3AED;"></i>AI Trend Summary</span>
-      <span class="ai-chip"><i class="bi bi-stars"></i>AI-Assisted Insight – Demo</span>
-    </div>
-    <div class="sc-body pt-2">
-      <div class="ai-insight-box" id="aiTrendBox"></div>
     </div>
   </div>
 
