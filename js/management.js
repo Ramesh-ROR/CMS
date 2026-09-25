@@ -172,7 +172,7 @@
     document.getElementById("tblUsers").innerHTML = D.USERS.map(u => {
       const status = USER_STATUS[u.id] || "Active";
       return `<tr>
-        <td>${A.userChip(u.id)}</td>
+        <td data-sort-value="${u.name}">${A.userChip(u.id)}</td>
         <td>${u.role}</td>
         <td>${D.DIRECTORATES.find(d => d.id === u.directorate) ? D.DIRECTORATES.find(d => d.id === u.directorate).name : u.directorate}</td>
         <td style="font-size:12.2px;color:var(--slc-muted);">${u.email}</td>
@@ -187,8 +187,8 @@
     /* --- System Roles table --- */
     document.getElementById("tblSystemRoles").innerHTML = D.SYSTEM_ROLES.map(r => `
       <tr>
-        <td class="fw-700">${r.name}${r.elevated ? ' <span class="badge-status badge-purple ms-1">Elevated</span>' : ""}</td>
-        <td>${r.elevated ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>
+        <td class="fw-700" data-sort-value="${r.name}">${r.name}${r.elevated ? ' <span class="badge-status badge-purple ms-1">Elevated</span>' : ""}</td>
+        <td data-sort-value="${r.elevated ? 1 : 0}">${r.elevated ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>
         <td style="max-width:520px;">${r.desc}</td>
       </tr>`).join("");
 
@@ -241,8 +241,8 @@
       <tr>
         <td><i class="bi ${d.type === "PDF" ? "bi-file-earmark-pdf text-danger" : d.type === "Excel" ? "bi-file-earmark-spreadsheet text-success" : "bi-file-earmark-word text-primary"} me-2"></i>${d.name}</td>
         <td>${d.type}</td>
-        <td>${A.fmtDate(d.updated)}</td>
-        <td>${A.userChip(d.by)}</td>
+        <td data-sort-value="${d.updated}">${A.fmtDate(d.updated)}</td>
+        <td data-sort-value="${D.userById(d.by).name}">${A.userChip(d.by)}</td>
       </tr>`).join("");
 
     /* --- Reports User Rights table --- */
@@ -253,33 +253,38 @@
       const opAccess = hasReports && rn !== "Case Type Supervisor"; // Case Type Supervisor scoped to case reports only, per BRD case-type supervision remit
       return `<tr>
         <td class="fw-700">${rn}</td>
-        <td>${caseAccess ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>
-        <td>${opAccess ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>
+        <td data-sort-value="${caseAccess ? 1 : 0}">${caseAccess ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>
+        <td data-sort-value="${opAccess ? 1 : 0}">${opAccess ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>
       </tr>`;
     }).join("");
 
     /* --- Management Console User Rights table --- */
     document.getElementById("tblConsoleRights").innerHTML = CONSOLE_MODULES.map(mod => {
       const r = CONSOLE_RIGHTS[mod];
-      const cell = v => v ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>';
+      const cell = v => `<td data-sort-value="${v ? 1 : 0}">${v ? '<i class="bi bi-check-lg rights-check"></i>' : '<i class="bi bi-dash rights-dash"></i>'}</td>`;
       return `<tr>
         <td class="fw-700">${mod}</td>
-        <td>${cell(r.sysadmin)}</td>
-        <td>${cell(r.pwradmin)}</td>
-        <td>${cell(r.reg)}</td>
-        <td>${cell(r.hod)}</td>
-        <td>${cell(r.sg)}</td>
+        ${cell(r.sysadmin)}
+        ${cell(r.pwradmin)}
+        ${cell(r.reg)}
+        ${cell(r.hod)}
+        ${cell(r.sg)}
       </tr>`;
     }).join("");
 
     /* --- Audit Trail table --- */
     document.getElementById("tblAudit").innerHTML = AUDIT_TRAIL.map(a => `
       <tr>
-        <td>${A.userChip(a.user)}</td>
+        <td data-sort-value="${D.userById(a.user).name}">${A.userChip(a.user)}</td>
         <td>${a.action}</td>
         <td>${a.target.indexOf("SLC-") === 0 ? `<a class="ref-link" href="case-workspace.html?ref=${a.target}">${a.target}</a>` : a.target}</td>
         <td style="font-size:12.2px;color:var(--slc-muted);">${a.ts}</td>
       </tr>`).join("");
+
+    /* --- Enable click-to-sort on every master-data table --- */
+    ["tblUsers", "tblSystemRoles", "tblCaseRoles", "tblWorkTypes", "tblCaseTypes", "tblMilestones",
+     "tblEntities", "tblExperts", "tblDocBank", "tblReportsRights", "tblConsoleRights", "tblAudit"]
+      .forEach(id => A.enableTableSort(document.getElementById(id).closest("table")));
 
     /* --- Deep link from Management Console top-nav dropdown (e.g. management.html#sec-users) --- */
     if (window.location.hash) {

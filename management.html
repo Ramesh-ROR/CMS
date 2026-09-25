@@ -93,7 +93,10 @@
       </div>
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Name</th><th>System Role</th><th>Directorate</th><th>Email</th><th>Status</th><th></th></tr></thead>
+          <thead><tr>
+            <th class="sortable">Name</th><th class="sortable">System Role</th><th class="sortable">Directorate</th>
+            <th class="sortable">Email</th><th class="sortable">Status</th><th></th>
+          </tr></thead>
           <tbody id="tblUsers"></tbody>
         </table>
       </div>
@@ -141,7 +144,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Role</th><th>Elevated</th><th>Description</th></tr></thead>
+          <thead><tr><th class="sortable">Role</th><th class="sortable">Elevated</th><th class="sortable">Description</th></tr></thead>
           <tbody id="tblSystemRoles"></tbody>
         </table>
       </div>
@@ -159,7 +162,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Role</th><th>Description</th></tr></thead>
+          <thead><tr><th class="sortable">Role</th><th class="sortable">Description</th></tr></thead>
           <tbody id="tblCaseRoles"></tbody>
         </table>
       </div>
@@ -177,7 +180,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Work Type</th><th>Code</th><th>Case Types</th></tr></thead>
+          <thead><tr><th class="sortable">Work Type</th><th class="sortable">Code</th><th class="sortable">Case Types</th></tr></thead>
           <tbody id="tblWorkTypes"></tbody>
         </table>
       </div>
@@ -195,7 +198,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Case Type</th><th>Parent Work Type</th></tr></thead>
+          <thead><tr><th class="sortable">Case Type</th><th class="sortable">Parent Work Type</th></tr></thead>
           <tbody id="tblCaseTypes"></tbody>
         </table>
       </div>
@@ -213,7 +216,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>#</th><th>Colour</th><th>Milestone</th><th>Badge Preview</th><th>How Set</th></tr></thead>
+          <thead><tr><th class="sortable">#</th><th>Colour</th><th class="sortable">Milestone</th><th>Badge Preview</th><th class="sortable">How Set</th></tr></thead>
           <tbody id="tblMilestones"></tbody>
         </table>
       </div>
@@ -231,7 +234,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Entity Name</th><th>Type</th><th>Primary Contact</th></tr></thead>
+          <thead><tr><th class="sortable">Entity Name</th><th class="sortable">Type</th><th class="sortable">Primary Contact</th></tr></thead>
           <tbody id="tblEntities"></tbody>
         </table>
       </div>
@@ -249,7 +252,7 @@
     <div class="ws-section-body">
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Expert</th><th>Specialty Area</th><th>Affiliation</th><th>Contact</th></tr></thead>
+          <thead><tr><th class="sortable">Expert</th><th class="sortable">Specialty Area</th><th class="sortable">Affiliation</th><th class="sortable">Contact</th></tr></thead>
           <tbody id="tblExperts"></tbody>
         </table>
       </div>
@@ -270,7 +273,7 @@
       </div>
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Template</th><th>Type</th><th>Last Updated</th><th>Uploaded By</th></tr></thead>
+          <thead><tr><th class="sortable">Template</th><th class="sortable">Type</th><th class="sortable">Last Updated</th><th class="sortable">Uploaded By</th></tr></thead>
           <tbody id="tblDocBank"></tbody>
         </table>
       </div>
@@ -289,7 +292,7 @@
       <div class="text-muted-soft mb-2" style="font-size:12px;">Representative subset of system roles showing access to the two report categories. Classified case reporting remains restricted to Power System Admin regardless of category access.</div>
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>System Role</th><th>Case Reports</th><th>Operational Reports</th></tr></thead>
+          <thead><tr><th class="sortable">System Role</th><th class="sortable">Case Reports</th><th class="sortable">Operational Reports</th></tr></thead>
           <tbody id="tblReportsRights"></tbody>
         </table>
       </div>
@@ -308,7 +311,10 @@
       <div class="text-muted-soft mb-2" style="font-size:12px;">Access to Management Console modules is, per BRD, largely restricted to System Admin, Power System Admin and Registration Team (registration-related masters only). Other roles have no console access.</div>
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>Module</th><th>System Admin</th><th>Power System Admin</th><th>Registration Team</th><th>Head of Directorate</th><th>Secretary General</th></tr></thead>
+          <thead><tr>
+            <th class="sortable">Module</th><th class="sortable">System Admin</th><th class="sortable">Power System Admin</th>
+            <th class="sortable">Registration Team</th><th class="sortable">Head of Directorate</th><th class="sortable">Secretary General</th>
+          </tr></thead>
           <tbody id="tblConsoleRights"></tbody>
         </table>
       </div>
@@ -329,7 +335,7 @@
       </div>
       <div class="table-scroll">
         <table class="table-modern mb-0">
-          <thead><tr><th>User</th><th>Action</th><th>Target</th><th>Timestamp</th></tr></thead>
+          <thead><tr><th class="sortable">User</th><th class="sortable">Action</th><th class="sortable">Target</th><th class="sortable">Timestamp</th></tr></thead>
           <tbody id="tblAudit"></tbody>
         </table>
       </div>

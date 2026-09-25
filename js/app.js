@@ -437,11 +437,49 @@
     });
   }
 
+  /* ------------------------------------------------------------------ */
+  /* Generic click-to-sort for static, already-rendered tables (Management */
+  /* Console master-data tables). Reads each row's cell text (or a          */
+  /* data-sort-value override, for icon-only or differently-formatted       */
+  /* cells) rather than requiring a backing data array per table.           */
+  /* ------------------------------------------------------------------ */
+  function enableTableSort(table) {
+    if (!table) return;
+    const headRow = table.querySelector("thead tr");
+    const tbody = table.querySelector("tbody");
+    if (!headRow || !tbody) return;
+    const ths = Array.from(headRow.children);
+    let sortCol = null, sortDir = 1;
+    ths.forEach((th, colIndex) => {
+      if (!th.classList.contains("sortable")) return;
+      th.addEventListener("click", () => {
+        const rows = Array.from(tbody.querySelectorAll("tr")).filter(r => r.children.length === ths.length);
+        if (!rows.length) return;
+        sortCol === colIndex ? (sortDir *= -1) : (sortCol = colIndex, sortDir = 1);
+        ths.forEach(h => h.classList.remove("sort-asc", "sort-desc"));
+        th.classList.add(sortDir === 1 ? "sort-asc" : "sort-desc");
+        const cellValue = row => {
+          const cell = row.children[colIndex];
+          const override = cell.getAttribute("data-sort-value");
+          return (override !== null ? override : cell.textContent).trim();
+        };
+        rows.sort((a, b) => {
+          const av = cellValue(a), bv = cellValue(b);
+          const an = parseFloat(av), bn = parseFloat(bv);
+          const bothNumeric = av !== "" && bv !== "" && !isNaN(an) && !isNaN(bn) && /^-?[\d.]+$/.test(av) && /^-?[\d.]+$/.test(bv);
+          const cmp = bothNumeric ? (an - bn) : av.toLowerCase().localeCompare(bv.toLowerCase());
+          return cmp * sortDir;
+        });
+        rows.forEach(r => tbody.appendChild(r));
+      });
+    });
+  }
+
   global.SLCApp = {
     NAV, renderShell, toast, demoAction, demoActionModal, applyLang, avatarHtml,
     urgencyBadge, milestoneBadge, classifiedFlag, fmtDate, userChip,
     applyTheme, currentTheme, chartTheme, onThemeChange,
-    scrollToSection, initTabs, toggleAccessibilityMode,
+    scrollToSection, initTabs, toggleAccessibilityMode, enableTableSort,
     workflowStageIndex, workflowStageName, workflowBadge, workflowStepperHtml, WORKFLOW_STAGES,
   };
 })(window);
