@@ -126,8 +126,41 @@
       </tr>`;
   }
 
+  let sortField = null;
+  let sortDir = 1;
+
+  function sortValue(c, field) {
+    switch (field) {
+      case "milestone": return A.workflowStageIndex(c.milestone);
+      case "urgency": return ["Low", "Medium", "High", "Very High"].indexOf(c.urgency);
+      default: return c[field];
+    }
+  }
+
+  function applySort(rows) {
+    if (!sortField) return rows;
+    return rows.slice().sort((a, b) => {
+      let av = sortValue(a, sortField), bv = sortValue(b, sortField);
+      if (av === undefined || av === null) av = "";
+      if (bv === undefined || bv === null) bv = "";
+      if (typeof av === "string") av = av.toLowerCase();
+      if (typeof bv === "string") bv = bv.toLowerCase();
+      if (av < bv) return -1 * sortDir;
+      if (av > bv) return 1 * sortDir;
+      return 0;
+    });
+  }
+
+  function updateSortIndicators() {
+    document.querySelectorAll("#resultsTable th.sortable").forEach(th => {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.getAttribute("data-sort") === sortField) th.classList.add(sortDir === 1 ? "sort-asc" : "sort-desc");
+    });
+  }
+
   function renderResults() {
-    const results = getFiltered();
+    const results = applySort(getFiltered());
+    updateSortIndicators();
     document.getElementById("resultCount").textContent = `${results.length} case${results.length === 1 ? "" : "s"} found`;
     document.querySelector("#resultsTable tbody").innerHTML = results.length
       ? results.map(c => rowHtml(c)).join("")
@@ -159,6 +192,13 @@
       ["fWorkType", "fCaseType", "fEntity", "fTeam"].forEach(id => document.getElementById(id).value = "");
       document.getElementById("heroSearchInput").value = "";
       renderResults();
+    });
+    document.querySelectorAll("#resultsTable th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const field = th.getAttribute("data-sort");
+        if (sortField === field) { sortDir *= -1; } else { sortField = field; sortDir = 1; }
+        renderResults();
+      });
     });
   });
 })();

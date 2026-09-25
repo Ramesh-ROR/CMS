@@ -4,6 +4,8 @@
   const D = window.SLC, A = window.SLCApp;
   const PAGE_SIZE = 8;
   let currentPage = 1;
+  let sortField = null;
+  let sortDir = 1;
 
   function applyFilters(rows) {
     const search = document.getElementById("fSearch").value.trim().toLowerCase();
@@ -14,6 +16,37 @@
         if (!hay.includes(search)) return false;
       }
       return true;
+    });
+  }
+
+  function sortValue(a, field) {
+    const c = D.caseByRef(a.ref);
+    switch (field) {
+      case "ref": return a.ref;
+      case "title": return c.title;
+      case "workType": return c.workType;
+      case "stage": return a.stage;
+      case "submitted": return a.submitted;
+      case "by": return D.userById(a.by).name;
+      default: return "";
+    }
+  }
+
+  function applySort(rows) {
+    if (!sortField) return rows;
+    return rows.slice().sort((a, b) => {
+      const av = sortValue(a, sortField).toLowerCase();
+      const bv = sortValue(b, sortField).toLowerCase();
+      if (av < bv) return -1 * sortDir;
+      if (av > bv) return 1 * sortDir;
+      return 0;
+    });
+  }
+
+  function updateSortIndicators() {
+    document.querySelectorAll("#myApprovalsTable th.sortable").forEach(th => {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.getAttribute("data-sort") === sortField) th.classList.add(sortDir === 1 ? "sort-asc" : "sort-desc");
     });
   }
 
@@ -54,8 +87,10 @@
 
   function render() {
     const all = D.PENDING_APPROVALS;
-    const filtered = applyFilters(all);
+    let filtered = applyFilters(all);
+    filtered = applySort(filtered);
     renderPagination(filtered.length);
+    updateSortIndicators();
     const start = (currentPage - 1) * PAGE_SIZE;
     const pageRows = filtered.slice(start, start + PAGE_SIZE);
     document.getElementById("myApprovalsTbody").innerHTML = pageRows.length
@@ -68,6 +103,13 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("my-approvals", [{ label: "My Approvals" }]);
+    document.querySelectorAll("#myApprovalsTable th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const field = th.getAttribute("data-sort");
+        if (sortField === field) { sortDir *= -1; } else { sortField = field; sortDir = 1; }
+        render();
+      });
+    });
     document.getElementById("fSearch").addEventListener("input", () => { currentPage = 1; render(); });
     document.getElementById("fResetBtn").addEventListener("click", () => {
       document.getElementById("fSearch").value = "";
