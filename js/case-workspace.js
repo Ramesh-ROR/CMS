@@ -3,11 +3,6 @@
   "use strict";
   const D = window.SLC, A = window.SLCApp;
 
-  const ACTIVITY_TYPE = { "Legal Review Started": "Review", "Translation Requested": "Translation", "Comment Added": "Comment", "Document Uploaded": "Document" };
-  function activityType(a) {
-    return ACTIVITY_TYPE[a.type] || (a.type.includes("Translation") ? "Translation" : a.type.includes("Document") ? "Document" : a.type.includes("Comment") ? "Comment" : a.type.includes("Review") ? "Review" : "General");
-  }
-
   function fieldRow(label, value) {
     return `<div class="col-md-4 col-sm-6 mb-3">
       <div style="font-size:10.8px;font-weight:700;color:var(--slc-muted);text-transform:uppercase;letter-spacing:.04em;">${label}</div>
@@ -104,7 +99,7 @@
     document.getElementById("activityCount").textContent = activities.length + " logged";
     document.getElementById("activityTbody").innerHTML = activities.length ? activities.map(a => `
       <tr>
-        <td><span class="badge-status badge-muted">${activityType(a)}</span></td>
+        <td><span class="badge-status ${a.mode === "Automatic" ? "badge-info" : "badge-muted"}">${a.mode}</span></td>
         <td style="font-weight:600;">${a.type}</td>
         <td style="max-width:320px;">${a.desc}</td>
         <td>${D.userById(a.user).name}</td>

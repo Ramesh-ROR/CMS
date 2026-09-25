@@ -391,23 +391,23 @@
   /* ---------------------------------------------------------------------- */
   const ACTIVITIES = {
     "SLC-LEG-2026-00128": [
-      { date: "2026-09-18 14:22", user: "u2", type: "Legal Review Started", desc: "Final review of Article 12 amendments started following comments from Dubai Municipality.", attachments: ["Legal_Review_Notes_v3.docx"], status: "Completed" },
-      { date: "2026-09-15 09:05", user: "u12", type: "Translation Requested", desc: "Translation of final draft requested (Arabic to English) for Executive Council submission.", attachments: ["Translation_Request_Form.pdf"], status: "In Progress" },
-      { date: "2026-09-10 16:40", user: "u8", type: "Comment Added", desc: "Added clarification note on penalty clause aligned with Federal Law No. 24 of 1999.", attachments: [], status: "Completed" },
-      { date: "2026-09-02 11:15", user: "u2", type: "Document Uploaded", desc: "Uploaded Legislation Second Draft Review incorporating stakeholder feedback.", attachments: ["Legislation_Second_Draft_Review.docx"], status: "Completed" },
-      { date: "2026-08-20 10:00", user: "u4", type: "Milestone Updated", desc: "Milestone changed from Further Review to Further Draft/Amendment.", attachments: [], status: "Completed" },
-      { date: "2026-07-30 13:30", user: "u2", type: "Email Sent", desc: "Circulated first draft to Technical Office for preliminary comments.", attachments: ["First_Draft_Circulation_Email.msg"], status: "Completed" },
-      { date: "2026-01-20 09:00", user: "u4", type: "Case Registered", desc: "Case registration cycle completed and reference number generated.", attachments: [], status: "Completed" },
+      { date: "2026-09-18 14:22", user: "u2", type: "Legal Review Started", mode: "Manual", desc: "Final review of Article 12 amendments started following comments from Dubai Municipality.", attachments: ["Legal_Review_Notes_v3.docx"], status: "Completed" },
+      { date: "2026-09-15 09:05", user: "u12", type: "Translation Requested", mode: "Manual", desc: "Translation of final draft requested (Arabic to English) for Executive Council submission.", attachments: ["Translation_Request_Form.pdf"], status: "In Progress" },
+      { date: "2026-09-10 16:40", user: "u8", type: "Comment Added", mode: "Manual", desc: "Added clarification note on penalty clause aligned with Federal Law No. 24 of 1999.", attachments: [], status: "Completed" },
+      { date: "2026-09-02 11:15", user: "u2", type: "Document Uploaded", mode: "Manual", desc: "Uploaded Legislation Second Draft Review incorporating stakeholder feedback.", attachments: ["Legislation_Second_Draft_Review.docx"], status: "Completed" },
+      { date: "2026-08-20 10:00", user: "u4", type: "Milestone Updated", mode: "Automatic", desc: "Milestone changed from Further Review to Further Draft/Amendment.", attachments: [], status: "Completed" },
+      { date: "2026-07-30 13:30", user: "u2", type: "Email Sent", mode: "Manual", desc: "Circulated first draft to Technical Office for preliminary comments.", attachments: ["First_Draft_Circulation_Email.msg"], status: "Completed" },
+      { date: "2026-01-20 09:00", user: "u4", type: "Case Registered", mode: "Automatic", desc: "Case registration cycle completed and reference number generated.", attachments: [], status: "Completed" },
     ],
     "SLC-LAO-2026-00087": [
-      { date: "2026-09-17 15:10", user: "u3", type: "Comment Added", desc: "Preliminary position shared with Directorate Legal Staff for internal alignment.", attachments: [], status: "Completed" },
-      { date: "2026-09-11 10:20", user: "u8", type: "Document Uploaded", desc: "Uploaded relevant legislation references (Federal Law No. 2 of 2015).", attachments: ["Relevant_Legislation_Ref.pdf"], status: "Completed" },
-      { date: "2026-08-28 09:45", user: "u3", type: "Task Assigned", desc: "Assigned research task on PPP frameworks in comparable jurisdictions to Associate Member.", attachments: [], status: "Completed" },
-      { date: "2026-02-10 09:00", user: "u4", type: "Case Registered", desc: "Case registration cycle completed and reference number generated.", attachments: [], status: "Completed" },
+      { date: "2026-09-17 15:10", user: "u3", type: "Comment Added", mode: "Manual", desc: "Preliminary position shared with Directorate Legal Staff for internal alignment.", attachments: [], status: "Completed" },
+      { date: "2026-09-11 10:20", user: "u8", type: "Document Uploaded", mode: "Manual", desc: "Uploaded relevant legislation references (Federal Law No. 2 of 2015).", attachments: ["Relevant_Legislation_Ref.pdf"], status: "Completed" },
+      { date: "2026-08-28 09:45", user: "u3", type: "Task Assigned", mode: "Manual", desc: "Assigned research task on PPP frameworks in comparable jurisdictions to Associate Member.", attachments: [], status: "Completed" },
+      { date: "2026-02-10 09:00", user: "u4", type: "Case Registered", mode: "Automatic", desc: "Case registration cycle completed and reference number generated.", attachments: [], status: "Completed" },
     ],
     "SLC-TRN-2026-00114": [
-      { date: "2026-09-19 08:40", user: "u12", type: "Translation Completed", desc: "First draft translation completed, pending proofreading.", attachments: ["FEPL_Translation_Draft1_EN.docx"], status: "Completed" },
-      { date: "2026-08-31 09:15", user: "u6", type: "Case Registered", desc: "Translation pending case auto-registered from Legislation Directorate request.", attachments: [], status: "Completed" },
+      { date: "2026-09-19 08:40", user: "u12", type: "Translation Completed", mode: "Manual", desc: "First draft translation completed, pending proofreading.", attachments: ["FEPL_Translation_Draft1_EN.docx"], status: "Completed" },
+      { date: "2026-08-31 09:15", user: "u6", type: "Case Registered", mode: "Automatic", desc: "Translation pending case auto-registered from Legislation Directorate request.", attachments: [], status: "Completed" },
     ],
   };
 
