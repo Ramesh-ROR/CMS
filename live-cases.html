@@ -25,29 +25,20 @@
       <div class="page-subtitle">All registered and active cases currently in progress across SLC directorates.</div>
     </div>
     <div class="page-title-actions">
+      <input type="text" class="form-control form-control-sm" id="fSearch" placeholder="Search ref, title, entity..." style="width:220px;">
+      <button class="btn btn-light border btn-sm" id="fToggleBtn" data-bs-toggle="collapse" data-bs-target="#fMoreFilters" aria-expanded="false">
+        <i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-down ms-1"></i>
+      </button>
+      <button class="btn btn-light border btn-sm" id="fResetBtn"><i class="bi bi-arrow-counterclockwise"></i>Reset</button>
       <button class="btn btn-light border" id="exportBtn"><i class="bi bi-download"></i>Export</button>
       <a href="new-case.html" class="btn btn-primary"><i class="bi bi-plus-lg"></i>New Case</a>
     </div>
   </div>
 
-  <!-- Filter bar -->
-  <div class="filter-bar">
-    <div class="row g-2 align-items-end">
-      <div class="col-lg-4 col-md-6">
-        <label>Search</label>
-        <input type="text" class="form-control form-control-sm" id="fSearch" placeholder="Search ref, title, entity...">
-      </div>
-      <div class="col-lg-2 col-md-3 d-flex gap-2">
-        <button class="btn btn-light border btn-sm w-100" id="fToggleBtn" data-bs-toggle="collapse" data-bs-target="#fMoreFilters" aria-expanded="false">
-          <i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-down ms-1"></i>
-        </button>
-      </div>
-      <div class="col-lg-2 col-md-3 d-flex gap-2">
-        <button class="btn btn-light border btn-sm w-100" id="fResetBtn"><i class="bi bi-arrow-counterclockwise"></i>Reset</button>
-      </div>
-    </div>
-    <div class="collapse" id="fMoreFilters">
-      <div class="row g-2 align-items-end mt-2">
+  <!-- Additional filters (collapsed by default) -->
+  <div class="collapse" id="fMoreFilters">
+    <div class="filter-bar">
+      <div class="row g-2 align-items-end">
         <div class="col-lg-2 col-md-3">
           <label>Case Type</label>
           <select class="form-select form-select-sm" id="fCaseType"><option value="">All Case Types</option></select>
