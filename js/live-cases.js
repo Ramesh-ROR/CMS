@@ -4,25 +4,27 @@
   const D = window.SLC, A = window.SLCApp;
   const PAGE_SIZE = 8;
   let currentPage = 1;
+  let activeCode = "LEG";
+  let sortField = null;
+  let sortDir = 1;
 
   function liveCases() {
     return D.CASES.filter(c => c.status === "Live");
   }
 
-  function populateFilterOptions() {
-    const wtSel = document.getElementById("fWorkType");
-    D.WORK_TYPES.forEach(w => wtSel.insertAdjacentHTML("beforeend", `<option value="${w.id}">${w.id}</option>`));
+  function activeWorkType() {
+    return D.WORK_TYPES.find(w => w.code === activeCode);
+  }
 
+  function populateFilterOptions() {
     const ctSel = document.getElementById("fCaseType");
-    function rebuildCaseTypes(workTypeFilter) {
+    function rebuildCaseTypes() {
       ctSel.innerHTML = `<option value="">All Case Types</option>`;
-      const types = workTypeFilter
-        ? (D.WORK_TYPES.find(w => w.id === workTypeFilter) || { caseTypes: [] }).caseTypes
-        : Array.from(new Set(D.WORK_TYPES.flatMap(w => w.caseTypes)));
+      const types = (activeWorkType() || { caseTypes: [] }).caseTypes;
       types.forEach(t => ctSel.insertAdjacentHTML("beforeend", `<option value="${t}">${t}</option>`));
     }
-    rebuildCaseTypes("");
-    wtSel.addEventListener("change", () => { rebuildCaseTypes(wtSel.value); currentPage = 1; render(); });
+    rebuildCaseTypes();
+    populateFilterOptions.rebuildCaseTypes = rebuildCaseTypes;
 
     const dSel = document.getElementById("fDirectorate");
     D.DIRECTORATES.forEach(d => dSel.insertAdjacentHTML("beforeend", `<option value="${d.id}">${d.name}</option>`));
@@ -39,7 +41,6 @@
 
   function applyFilters(rows) {
     const search = document.getElementById("fSearch").value.trim().toLowerCase();
-    const workType = document.getElementById("fWorkType").value;
     const caseType = document.getElementById("fCaseType").value;
     const directorate = document.getElementById("fDirectorate").value;
     const urgency = document.getElementById("fUrgency").value;
@@ -48,13 +49,14 @@
     const dateTo = document.getElementById("fDateTo").value;
     const classifiedOnly = document.getElementById("fClassified").checked;
     const overdueOnly = document.getElementById("fOverdue").checked;
+    const wt = activeWorkType();
 
     return rows.filter(c => {
+      if (wt && c.workType !== wt.id) return false;
       if (search) {
         const hay = `${c.ref} ${c.title} ${c.requestingEntity}`.toLowerCase();
         if (!hay.includes(search)) return false;
       }
-      if (workType && c.workType !== workType) return false;
       if (caseType && c.caseType !== caseType) return false;
       if (directorate && c.directorate !== directorate) return false;
       if (urgency && !urgency.split(",").includes(c.urgency)) return false;
@@ -67,8 +69,30 @@
     });
   }
 
+  function applySort(rows) {
+    if (!sortField) return rows;
+    const sorted = rows.slice().sort((a, b) => {
+      let av = a[sortField], bv = b[sortField];
+      if (sortField === "lead") { av = av ? D.userById(av).name : ""; bv = bv ? D.userById(bv).name : ""; }
+      if (av === undefined || av === null) av = "";
+      if (bv === undefined || bv === null) bv = "";
+      if (typeof av === "string") av = av.toLowerCase();
+      if (typeof bv === "string") bv = bv.toLowerCase();
+      if (av < bv) return -1 * sortDir;
+      if (av > bv) return 1 * sortDir;
+      return 0;
+    });
+    return sorted;
+  }
+
+  function updateSortIndicators() {
+    document.querySelectorAll("#liveCasesTable th.sortable").forEach(th => {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.getAttribute("data-sort") === sortField) th.classList.add(sortDir === 1 ? "sort-asc" : "sort-desc");
+    });
+  }
+
   function rowHtml(c) {
-    const dName = (D.DIRECTORATES.find(d => d.id === c.directorate) || {}).name || c.directorate;
     return `
       <tr class="${c.classified ? "row-classified" : ""}">
         <td>
@@ -76,13 +100,9 @@
           ${c.overdue ? `<div class="mt-1"><span class="badge-status badge-danger"><i class="bi bi-exclamation-triangle-fill" style="margin-right:2px;"></i>Overdue</span></div>` : ""}
           ${c.classified ? `<div class="mt-1">${A.classifiedFlag(true)}</div>` : ""}
         </td>
-        <td style="max-width:250px;">${c.title}</td>
+        <td style="max-width:280px;">${c.title}</td>
         <td>${c.workType}</td>
-        <td>${c.caseType}</td>
-        <td style="font-size:12.2px;">${dName}</td>
         <td>${c.lead ? A.userChip(c.lead) : '<span class="text-muted-soft">Not yet assigned</span>'}</td>
-        <td>${A.workflowBadge(c.milestone)}</td>
-        <td>${A.urgencyBadge(c.urgency)}</td>
         <td>
           <div class="d-flex align-items-center gap-2">
             <div class="lc-progress-bar"><div class="fill" style="width:${c.progressPct || 0}%;"></div></div>
@@ -170,13 +190,15 @@
 
   function render() {
     const all = liveCases();
-    const filtered = applyFilters(all);
+    let filtered = applyFilters(all);
+    filtered = applySort(filtered);
     renderPagination(filtered.length);
+    updateSortIndicators();
     const start = (currentPage - 1) * PAGE_SIZE;
     const pageRows = filtered.slice(start, start + PAGE_SIZE);
     document.getElementById("liveCasesTbody").innerHTML = pageRows.length
       ? pageRows.map(rowHtml).join("")
-      : `<tr><td colspan="12" class="text-center text-muted-soft py-4">No cases match the current filters.</td></tr>`;
+      : `<tr><td colspan="8" class="text-center text-muted-soft py-4">No cases match the current filters.</td></tr>`;
     const shownFrom = filtered.length ? start + 1 : 0;
     const shownTo = Math.min(start + PAGE_SIZE, filtered.length);
     document.getElementById("lcResultCount").textContent = `Showing ${shownFrom}–${shownTo} of ${filtered.length} live cases`;
@@ -191,10 +213,7 @@
 
   function resetFilters() {
     document.getElementById("fSearch").value = "";
-    document.getElementById("fWorkType").value = "";
-    document.getElementById("fCaseType").innerHTML = `<option value="">All Case Types</option>`;
-    Array.from(new Set(D.WORK_TYPES.flatMap(w => w.caseTypes))).forEach(t =>
-      document.getElementById("fCaseType").insertAdjacentHTML("beforeend", `<option value="${t}">${t}</option>`));
+    document.getElementById("fCaseType").value = "";
     document.getElementById("fDirectorate").value = "";
     document.getElementById("fUrgency").value = "";
     document.getElementById("fMilestone").value = "";
@@ -206,12 +225,17 @@
     render();
   }
 
+  function expandFilters() {
+    const el = document.getElementById("fMoreFilters");
+    if (!el.classList.contains("show")) bootstrap.Collapse.getOrCreateInstance(el).show();
+  }
+
   /* Clicking a KPI card jumps straight to the matching slice of this same table */
   window.__lcKpiClick = function (type) {
     resetFilters();
-    if (type === "urgency") document.getElementById("fUrgency").value = "High,Very High";
-    if (type === "classified") document.getElementById("fClassified").checked = true;
-    if (type === "overdue") document.getElementById("fOverdue").checked = true;
+    if (type === "urgency") { document.getElementById("fUrgency").value = "High,Very High"; expandFilters(); }
+    if (type === "classified") { document.getElementById("fClassified").checked = true; expandFilters(); }
+    if (type === "overdue") { document.getElementById("fOverdue").checked = true; expandFilters(); }
     currentPage = 1;
     render();
     document.querySelector(".filter-bar, .table-card").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -222,6 +246,33 @@
     renderKpis(liveCases());
     populateFilterOptions();
     applyParamsFromUrl();
+
+    document.querySelectorAll("#lcClassTabs .tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#lcClassTabs .tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeCode = btn.getAttribute("data-code");
+        populateFilterOptions.rebuildCaseTypes();
+        document.getElementById("fCaseType").value = "";
+        currentPage = 1;
+        render();
+      });
+    });
+
+    document.getElementById("fToggleBtn").addEventListener("click", function () {
+      const expanded = this.getAttribute("aria-expanded") === "true";
+      this.innerHTML = expanded
+        ? `<i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-down ms-1"></i>`
+        : `<i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-up ms-1"></i>`;
+    });
+
+    document.querySelectorAll("#liveCasesTable th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const field = th.getAttribute("data-sort");
+        if (sortField === field) { sortDir *= -1; } else { sortField = field; sortDir = 1; }
+        render();
+      });
+    });
 
     ["fSearch", "fCaseType", "fDirectorate", "fUrgency", "fMilestone", "fDateFrom", "fDateTo", "fClassified", "fOverdue"].forEach(id => {
       document.getElementById(id).addEventListener("input", () => { currentPage = 1; render(); });

@@ -31,10 +31,10 @@
     </div>
   </div>
 
-  <!-- ================= Charts & widgets FIRST — 3-column layout ================= -->
-  <!-- Row 1: one chart + Pending Approvals + Recent Activities -->
+  <!-- ================= Charts & widgets FIRST ================= -->
+  <!-- Row 1: one chart + Pending Approvals (extends to the end of the row) -->
   <div class="row g-3">
-    <div class="col-12 col-sm-6 col-lg-4">
+    <div class="col-12 col-lg-4">
       <div class="section-card h-100">
         <div class="sc-header">
           <span>Monthly Case Trend</span>
@@ -42,9 +42,12 @@
         <div class="sc-body"><div class="chart-box"><canvas id="chartTrend"></canvas></div></div>
       </div>
     </div>
-    <div class="col-12 col-sm-6 col-lg-4">
+    <div class="col-12 col-lg-8">
       <div class="section-card h-100">
-        <div class="sc-header"><span>Pending Approvals</span></div>
+        <div class="sc-header">
+          <span>Pending Approvals</span>
+          <a href="my-approvals.html" class="text-primary" style="font-size:12.3px;font-weight:600;">View All<i class="bi bi-arrow-right ms-1"></i></a>
+        </div>
         <div class="table-scroll">
           <table class="table-modern mb-0" id="approvalsTable">
             <thead><tr><th>Case Ref.</th><th>Case Title</th><th>Classification</th><th>Approval Stage</th><th>Submitted</th><th>Pending With</th><th></th></tr></thead>
@@ -53,8 +56,12 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-12 col-lg-4">
-      <div class="section-card h-100">
+  </div>
+
+  <!-- Row 1b: Recent Activities — moved below, full width -->
+  <div class="row g-3 mt-1">
+    <div class="col-12">
+      <div class="section-card">
         <div class="sc-header"><span>Recent Activities</span></div>
         <div class="sc-body pt-2" id="recentActivitiesList" style="max-height:280px;overflow-y:auto;"></div>
       </div>

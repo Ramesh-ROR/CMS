@@ -4,25 +4,27 @@
   const D = window.SLC, A = window.SLCApp;
   const PAGE_SIZE = 8;
   let currentPage = 1;
+  let activeCode = "LEG";
+  let sortField = null;
+  let sortDir = 1;
 
   function completedCases() {
     return D.CASES.filter(c => c.status === "Completed");
   }
 
-  function populateFilterOptions() {
-    const wtSel = document.getElementById("fWorkType");
-    D.WORK_TYPES.forEach(w => wtSel.insertAdjacentHTML("beforeend", `<option value="${w.id}">${w.id}</option>`));
+  function activeWorkType() {
+    return D.WORK_TYPES.find(w => w.code === activeCode);
+  }
 
+  function populateFilterOptions() {
     const ctSel = document.getElementById("fCaseType");
-    function rebuildCaseTypes(workTypeFilter) {
+    function rebuildCaseTypes() {
       ctSel.innerHTML = `<option value="">All Case Types</option>`;
-      const types = workTypeFilter
-        ? (D.WORK_TYPES.find(w => w.id === workTypeFilter) || { caseTypes: [] }).caseTypes
-        : Array.from(new Set(D.WORK_TYPES.flatMap(w => w.caseTypes)));
+      const types = (activeWorkType() || { caseTypes: [] }).caseTypes;
       types.forEach(t => ctSel.insertAdjacentHTML("beforeend", `<option value="${t}">${t}</option>`));
     }
-    rebuildCaseTypes("");
-    wtSel.addEventListener("change", () => { rebuildCaseTypes(wtSel.value); currentPage = 1; render(); });
+    rebuildCaseTypes();
+    populateFilterOptions.rebuildCaseTypes = rebuildCaseTypes;
 
     const dSel = document.getElementById("fDirectorate");
     D.DIRECTORATES.forEach(d => dSel.insertAdjacentHTML("beforeend", `<option value="${d.id}">${d.name}</option>`));
@@ -33,23 +35,45 @@
 
   function applyFilters(rows) {
     const search = document.getElementById("fSearch").value.trim().toLowerCase();
-    const workType = document.getElementById("fWorkType").value;
     const caseType = document.getElementById("fCaseType").value;
     const directorate = document.getElementById("fDirectorate").value;
     const urgency = document.getElementById("fUrgency").value;
     const classifiedOnly = document.getElementById("fClassified").checked;
+    const wt = activeWorkType();
 
     return rows.filter(c => {
+      if (wt && c.workType !== wt.id) return false;
       if (search) {
         const hay = `${c.ref} ${c.title} ${c.requestingEntity}`.toLowerCase();
         if (!hay.includes(search)) return false;
       }
-      if (workType && c.workType !== workType) return false;
       if (caseType && c.caseType !== caseType) return false;
       if (directorate && c.directorate !== directorate) return false;
       if (urgency && c.urgency !== urgency) return false;
       if (classifiedOnly && !c.classified) return false;
       return true;
+    });
+  }
+
+  function applySort(rows) {
+    if (!sortField) return rows;
+    return rows.slice().sort((a, b) => {
+      let av = a[sortField], bv = b[sortField];
+      if (sortField === "lead") { av = av ? D.userById(av).name : ""; bv = bv ? D.userById(bv).name : ""; }
+      if (av === undefined || av === null) av = "";
+      if (bv === undefined || bv === null) bv = "";
+      if (typeof av === "string") av = av.toLowerCase();
+      if (typeof bv === "string") bv = bv.toLowerCase();
+      if (av < bv) return -1 * sortDir;
+      if (av > bv) return 1 * sortDir;
+      return 0;
+    });
+  }
+
+  function updateSortIndicators() {
+    document.querySelectorAll("#completedCasesTable th.sortable").forEach(th => {
+      th.classList.remove("sort-asc", "sort-desc");
+      if (th.getAttribute("data-sort") === sortField) th.classList.add(sortDir === 1 ? "sort-asc" : "sort-desc");
     });
   }
 
@@ -62,11 +86,8 @@
         </td>
         <td style="max-width:260px;">${c.title}</td>
         <td>${c.workType}</td>
-        <td>${c.caseType}</td>
         <td style="max-width:200px;">${c.requestingEntity}</td>
         <td>${c.lead ? A.userChip(c.lead) : '<span class="text-muted-soft">Not yet assigned</span>'}</td>
-        <td>${A.workflowBadge(c.milestone)}</td>
-        <td>${A.urgencyBadge(c.urgency)}</td>
         <td>${A.fmtDate(c.pcd)}</td>
         <td>${A.fmtDate(c.lastActivity)}</td>
         <td><a href="case-workspace.html?ref=${c.ref}" class="btn btn-sm btn-light border" title="Open case"><i class="bi bi-arrow-right"></i></a></td>
@@ -140,10 +161,7 @@
 
   function resetFilters() {
     document.getElementById("fSearch").value = "";
-    document.getElementById("fWorkType").value = "";
-    document.getElementById("fCaseType").innerHTML = `<option value="">All Case Types</option>`;
-    Array.from(new Set(D.WORK_TYPES.flatMap(w => w.caseTypes))).forEach(t =>
-      document.getElementById("fCaseType").insertAdjacentHTML("beforeend", `<option value="${t}">${t}</option>`));
+    document.getElementById("fCaseType").value = "";
     document.getElementById("fDirectorate").value = "";
     document.getElementById("fUrgency").value = "";
     document.getElementById("fClassified").checked = false;
@@ -153,13 +171,15 @@
 
   function render() {
     const all = completedCases();
-    const filtered = applyFilters(all);
+    let filtered = applyFilters(all);
+    filtered = applySort(filtered);
     renderPagination(filtered.length);
+    updateSortIndicators();
     const start = (currentPage - 1) * PAGE_SIZE;
     const pageRows = filtered.slice(start, start + PAGE_SIZE);
     document.getElementById("completedCasesTbody").innerHTML = pageRows.length
       ? pageRows.map(rowHtml).join("")
-      : `<tr><td colspan="11" class="text-center text-muted-soft py-4">No completed cases match the current filters.</td></tr>`;
+      : `<tr><td colspan="8" class="text-center text-muted-soft py-4">No completed cases match the current filters.</td></tr>`;
     const shownFrom = filtered.length ? start + 1 : 0;
     const shownTo = Math.min(start + PAGE_SIZE, filtered.length);
     document.getElementById("ccResultCount").textContent = `Showing ${shownFrom}–${shownTo} of ${filtered.length} completed cases`;
@@ -170,6 +190,33 @@
     const all = completedCases();
     renderKpis(all);
     populateFilterOptions();
+
+    document.querySelectorAll("#ccClassTabs .tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll("#ccClassTabs .tab-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeCode = btn.getAttribute("data-code");
+        populateFilterOptions.rebuildCaseTypes();
+        document.getElementById("fCaseType").value = "";
+        currentPage = 1;
+        render();
+      });
+    });
+
+    document.getElementById("fToggleBtn").addEventListener("click", function () {
+      const expanded = this.getAttribute("aria-expanded") === "true";
+      this.innerHTML = expanded
+        ? `<i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-down ms-1"></i>`
+        : `<i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-up ms-1"></i>`;
+    });
+
+    document.querySelectorAll("#completedCasesTable th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        const field = th.getAttribute("data-sort");
+        if (sortField === field) { sortDir *= -1; } else { sortField = field; sortDir = 1; }
+        render();
+      });
+    });
 
     ["fSearch", "fCaseType", "fDirectorate", "fUrgency", "fClassified"].forEach(id => {
       document.getElementById(id).addEventListener("input", () => { currentPage = 1; render(); });

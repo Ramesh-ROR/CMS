@@ -11,8 +11,8 @@
 
 :root {
   /* Blue + Grey enterprise government theme (replaces the earlier gold/bronze theme) */
-  --primary-blue: #0078D4;
-  --dark-blue: #005A9E;
+  --primary-blue: #0033A0;
+  --dark-blue: #0033A0;
   --darker-blue: #003D6B;
   --light-blue: #EAF4FB;
 
@@ -353,6 +353,12 @@ tr.row-classified:hover { background: var(--hover-red-light) !important; }
 .filter-bar { background: #fff; border: 1px solid var(--slc-border); border-radius: var(--slc-radius); padding: 14px 16px; margin-bottom: 16px; box-shadow: var(--slc-shadow-sm); }
 .filter-bar .form-select, .filter-bar .form-control { font-size: 12.8px; border-radius: 8px; }
 .filter-bar label { font-size: 11px; font-weight: 700; color: var(--slc-muted); text-transform: uppercase; letter-spacing: .03em; margin-bottom: 4px; }
+
+/* Sortable table headers (Live Cases / Completed Cases) */
+.table-modern th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+.table-modern th.sortable::after { content: "\2195"; font-size: 10px; opacity: .35; margin-left: 5px; }
+.table-modern th.sortable.sort-asc::after { content: "\2191"; opacity: 1; color: var(--slc-primary); }
+.table-modern th.sortable.sort-desc::after { content: "\2193"; opacity: 1; color: var(--slc-primary); }
 
 /* ---------------------------------------------------------------------- */
 /* Milestone tracker (Case Workspace)                                      */

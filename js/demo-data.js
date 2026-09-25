@@ -26,7 +26,7 @@
     {
       id: "Legislation",
       code: "LEG",
-      color: "#0078D4",
+      color: "#0033A0",
       caseTypes: ["Local Legislations", "Federal Legislations", "Treaties & Conventions"],
     },
     {
@@ -94,8 +94,8 @@
     { id: "registered", name: "Case Registered", color: "#F3F4F6", badge: "muted", order: 2, how: "Auto (after Case Registration)" },
     { id: "first_review", name: "First Review", color: "#F5C242", badge: "warning", order: 3, how: "Manual" },
     { id: "first_draft", name: "First Draft", color: "#F08C1A", badge: "orange", order: 4, how: "Manual" },
-    { id: "further_review", name: "Further Review", color: "#0078D4", badge: "info", order: 5, how: "Manual" },
-    { id: "further_draft", name: "Further Draft/Amendment", color: "#005A9E", badge: "primary-dark", order: 6, how: "Manual" },
+    { id: "further_review", name: "Further Review", color: "#0033A0", badge: "info", order: 5, how: "Manual" },
+    { id: "further_draft", name: "Further Draft/Amendment", color: "#0033A0", badge: "primary-dark", order: 6, how: "Manual" },
     { id: "final_draft", name: "Final Draft/Amendment", color: "#003D6B", badge: "navy", order: 7, how: "Manual" },
     { id: "final_review", name: "Final Review", color: "#6B3FA0", badge: "purple-dark", order: 8, how: "Manual" },
     { id: "signoff", name: "Sign Off/Acceptance", color: "#8B5CF6", badge: "purple", order: 9, how: "Manual" },
@@ -374,6 +374,19 @@
   function caseByRef(ref) { return CASES.find(c => c.ref === ref); }
 
   /* ---------------------------------------------------------------------- */
+  /*  Pending Approvals — cases currently awaiting the logged-in user's      */
+  /*  (CURRENT_USER) sign-off at their current workflow stage.               */
+  /* ---------------------------------------------------------------------- */
+  const PENDING_APPROVALS = [
+    { ref: "SLC-LEG-2026-00128", stage: "Pre-Closure Approval", submitted: "2026-09-18", by: "u1" },
+    { ref: "SLC-LAO-2026-00087", stage: "Registration Approval", submitted: "2026-09-17", by: "u1" },
+    { ref: "SLC-RP-2026-00033", stage: "Pre-Approval", submitted: "2026-09-16", by: "u1" },
+    { ref: "SLC-LEG-2026-00131", stage: "Registration Approval", submitted: "2026-09-15", by: "u1" },
+    { ref: "SLC-LEG-2026-00119", stage: "Pre-Closure Approval", submitted: "2026-09-14", by: "u1" },
+    { ref: "SLC-LAO-2026-00102", stage: "Pre-Approval", submitted: "2026-09-12", by: "u1" },
+  ];
+
+  /* ---------------------------------------------------------------------- */
   /*  Case Activities (subset, focused on featured cases)                   */
   /* ---------------------------------------------------------------------- */
   const ACTIVITIES = {
@@ -597,7 +610,7 @@
   /* ---------------------------------------------------------------------- */
   global.SLC = {
     DIRECTORATES, WORK_TYPES, SYSTEM_ROLES, CASE_ROLES, MILESTONES, WORKSPACE_TRACKER,
-    USERS, CURRENT_USER, ENTITIES, CASES, ACTIVITIES, CHECKLIST_TEMPLATES, ATTACHMENTS,
+    USERS, CURRENT_USER, ENTITIES, CASES, ACTIVITIES, PENDING_APPROVALS, CHECKLIST_TEMPLATES, ATTACHMENTS,
     TASKS, REMINDERS, NOTIFICATIONS, PERMISSION_ACTIONS, ROLE_PERMISSIONS, REPORTS_CATALOG,
     milestoneById, userById, userByName, caseByRef, getChecklist, seededChecklistState, attachmentsFor,
   };

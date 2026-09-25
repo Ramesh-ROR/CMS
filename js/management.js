@@ -102,9 +102,9 @@
 
   /* Module tile config for the top index grid */
   const MODULES = [
-    { id: "sec-users", icon: "bi-people", color: "#0078D4", bg: "var(--light-blue)", title: "User Management", desc: "Manage SLC user accounts, system roles and directorate assignment.", count: () => D.USERS.length + " users" },
+    { id: "sec-users", icon: "bi-people", color: "#0033A0", bg: "var(--light-blue)", title: "User Management", desc: "Manage SLC user accounts, system roles and directorate assignment.", count: () => D.USERS.length + " users" },
     { id: "sec-roles-summary", icon: "bi-shield-lock", color: "#6D28D9", bg: "#F3E8FF", title: "Roles & Permissions", desc: "System role and case role summary — links to the full permissions matrix.", count: () => D.SYSTEM_ROLES.length + " + " + D.CASE_ROLES.length + " roles" },
-    { id: "sec-system-roles", icon: "bi-person-badge", color: "#005A9E", bg: "#D6EAF8", title: "System Roles", desc: "The 13 BRD-defined system roles and their elevated authority flags.", count: () => D.SYSTEM_ROLES.length + " roles" },
+    { id: "sec-system-roles", icon: "bi-person-badge", color: "#0033A0", bg: "#D6EAF8", title: "System Roles", desc: "The 13 BRD-defined system roles and their elevated authority flags.", count: () => D.SYSTEM_ROLES.length + " roles" },
     { id: "sec-case-roles", icon: "bi-person-workspace", color: "#107C10", bg: "#DCFCE7", title: "Case Roles", desc: "Per-case team roles: Lead, Team, Associate and Admin Member.", count: () => D.CASE_ROLES.length + " roles" },
     { id: "sec-work-types", icon: "bi-diagram-3", color: "#8764B8", bg: "#F1E9FE", title: "Work Type Masters", desc: "The 5 SLC work types and their configured case types.", count: () => D.WORK_TYPES.length + " work types" },
     { id: "sec-case-types", icon: "bi-tags", color: "#C2410C", bg: "#FFEDD5", title: "Case Type Masters", desc: "Flattened list of every case type across all work types.", count: () => CASE_TYPE_ROWS.length + " case types" },

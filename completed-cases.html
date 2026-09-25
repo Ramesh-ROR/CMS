@@ -30,56 +30,64 @@
   <!-- Filter bar -->
   <div class="filter-bar">
     <div class="row g-2 align-items-end">
-      <div class="col-lg-3 col-md-6">
+      <div class="col-lg-4 col-md-6">
         <label>Search</label>
         <input type="text" class="form-control form-control-sm" id="fSearch" placeholder="Search ref, title, entity...">
       </div>
-      <div class="col-lg-2 col-md-3">
-        <label>Work Type</label>
-        <select class="form-select form-select-sm" id="fWorkType"><option value="">All Work Types</option></select>
-      </div>
-      <div class="col-lg-2 col-md-3">
-        <label>Case Type</label>
-        <select class="form-select form-select-sm" id="fCaseType"><option value="">All Case Types</option></select>
-      </div>
-      <div class="col-lg-2 col-md-3">
-        <label>Directorate</label>
-        <select class="form-select form-select-sm" id="fDirectorate"><option value="">All Directorates</option></select>
-      </div>
-      <div class="col-lg-1 col-md-3">
-        <label>Urgency</label>
-        <select class="form-select form-select-sm" id="fUrgency"><option value="">All</option></select>
+      <div class="col-lg-2 col-md-3 d-flex gap-2">
+        <button class="btn btn-light border btn-sm w-100" id="fToggleBtn" data-bs-toggle="collapse" data-bs-target="#fMoreFilters" aria-expanded="false">
+          <i class="bi bi-sliders"></i>Filters<i class="bi bi-chevron-down ms-1"></i>
+        </button>
       </div>
       <div class="col-lg-2 col-md-3 d-flex gap-2">
         <button class="btn btn-light border btn-sm w-100" id="fResetBtn"><i class="bi bi-arrow-counterclockwise"></i>Reset</button>
       </div>
     </div>
-    <div class="row g-2 align-items-end mt-1">
-      <div class="col-lg-3 col-md-4 d-flex align-items-center">
-        <div class="form-check form-switch mb-0">
-          <input class="form-check-input" type="checkbox" id="fClassified">
-          <label class="form-check-label" for="fClassified" style="font-size:12.3px;">Classified cases only</label>
+    <div class="collapse" id="fMoreFilters">
+      <div class="row g-2 align-items-end mt-2">
+        <div class="col-lg-2 col-md-3">
+          <label>Case Type</label>
+          <select class="form-select form-select-sm" id="fCaseType"><option value="">All Case Types</option></select>
+        </div>
+        <div class="col-lg-2 col-md-3">
+          <label>Directorate</label>
+          <select class="form-select form-select-sm" id="fDirectorate"><option value="">All Directorates</option></select>
+        </div>
+        <div class="col-lg-2 col-md-3">
+          <label>Urgency</label>
+          <select class="form-select form-select-sm" id="fUrgency"><option value="">All</option></select>
+        </div>
+        <div class="col-lg-3 col-md-4 d-flex align-items-center">
+          <div class="form-check form-switch mb-0">
+            <input class="form-check-input" type="checkbox" id="fClassified">
+            <label class="form-check-label" for="fClassified" style="font-size:12.3px;">Classified cases only</label>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Classification tabs -->
+  <div class="tab-nav" id="ccClassTabs">
+    <button type="button" class="tab-btn active" data-code="LEG">Legislation (LEG)</button>
+    <button type="button" class="tab-btn" data-code="LAO">Legal Advice &amp; Opinion (LAO)</button>
+    <button type="button" class="tab-btn" data-code="TRN">Translation (TRN)</button>
+    <button type="button" class="tab-btn" data-code="GEN">General (GEN)</button>
+  </div>
+
   <!-- Table -->
-  <div class="table-card">
+  <div class="table-card" style="border-top-left-radius:0;border-top-right-radius:0;">
     <div class="table-scroll">
       <table class="table-modern mb-0" id="completedCasesTable">
         <thead>
           <tr>
-            <th>Case Ref. No.</th>
-            <th>Case Title</th>
-            <th>Work Type</th>
-            <th>Case Type</th>
-            <th>Requesting Entity</th>
-            <th>Lead Member</th>
-            <th>Current Workflow Stage</th>
-            <th>Urgency</th>
-            <th>Proposed Completion</th>
-            <th>Last Activity</th>
+            <th class="sortable" data-sort="ref">Case Ref. No.</th>
+            <th class="sortable" data-sort="title">Case Title</th>
+            <th class="sortable" data-sort="workType">Work Type</th>
+            <th class="sortable" data-sort="requestingEntity">Requesting Entity</th>
+            <th class="sortable" data-sort="lead">Lead Member</th>
+            <th class="sortable" data-sort="pcd">Proposed Completion</th>
+            <th class="sortable" data-sort="lastActivity">Last Activity</th>
             <th></th>
           </tr>
         </thead>

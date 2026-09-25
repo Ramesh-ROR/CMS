@@ -5,9 +5,9 @@
 
   /* Visual treatment for each of the 8 permission action columns */
   const ACTION_STYLE = {
-    "View": { icon: "bi-eye", color: "#0078D4" },
+    "View": { icon: "bi-eye", color: "#0033A0" },
     "Create": { icon: "bi-plus-circle", color: "#16A34A" },
-    "Edit": { icon: "bi-pencil", color: "#005A9E" },
+    "Edit": { icon: "bi-pencil", color: "#0033A0" },
     "Delete": { icon: "bi-trash", color: "#DC2626" },
     "Approve": { icon: "bi-check2-circle", color: "#7C3AED" },
     "Register": { icon: "bi-clipboard-check", color: "#C2410C" },
@@ -17,7 +17,7 @@
 
   const CASE_ROLE_STYLE = {
     LEAD: { icon: "bi-star-fill", color: "#B45309", bg: "#FEF3C7" },
-    TEAM: { icon: "bi-people-fill", color: "#005A9E", bg: "#D6EAF8" },
+    TEAM: { icon: "bi-people-fill", color: "#0033A0", bg: "#D6EAF8" },
     ASSOC: { icon: "bi-person-plus-fill", color: "#8764B8", bg: "#F1E9FE" },
     ADMIN: { icon: "bi-clipboard-data-fill", color: "#15803D", bg: "#DCFCE7" },
   };

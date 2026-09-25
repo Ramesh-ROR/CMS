@@ -23,7 +23,7 @@
     Chart.defaults.color = t.text;
     Chart.defaults.font.size = 11.5;
 
-    const palette = { blue: "#0078D4", darkBlue: "#005A9E", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626" };
+    const palette = { blue: "#0033A0", darkBlue: "#0033A0", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626" };
 
     /* --- Monthly Trend --- */
     charts.push(new Chart(document.getElementById("chartTrend"), {
@@ -115,11 +115,7 @@
       </a>`).join("");
 
     /* --- Pending approvals --- */
-    const approvals = [
-      { ref: "SLC-LEG-2026-00128", stage: "Pre-Closure Approval", submitted: "2026-09-18", by: "u1" },
-      { ref: "SLC-LAO-2026-00087", stage: "Registration Approval", submitted: "2026-09-17", by: "u7" },
-      { ref: "SLC-RP-2026-00033", stage: "Pre-Approval", submitted: "2026-09-16", by: "u9" },
-    ];
+    const approvals = D.PENDING_APPROVALS;
     document.querySelector("#approvalsTable tbody").innerHTML = approvals.map(a => {
       const c = D.caseByRef(a.ref);
       return `<tr>

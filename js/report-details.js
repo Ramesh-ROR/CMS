@@ -20,7 +20,7 @@
     });
   }
 
-  const palette = { blue: "#0078D4", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626", yellow: "#F5C242" };
+  const palette = { blue: "#0033A0", teal: "#0B7285", green: "#16A34A", purple: "#8764B8", orange: "#F08C1A", pink: "#C239B3", grey: "#9CA3AF", red: "#DC2626", yellow: "#F5C242" };
   const MONTHS12 = ["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"];
 
   function pct(v, total) { return total ? ((v / total) * 100).toFixed(1) + "%" : "—"; }

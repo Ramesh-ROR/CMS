@@ -3,6 +3,11 @@
   "use strict";
   const D = window.SLC, A = window.SLCApp;
 
+  const ACTIVITY_TYPE = { "Legal Review Started": "Review", "Translation Requested": "Translation", "Comment Added": "Comment", "Document Uploaded": "Document" };
+  function activityType(a) {
+    return ACTIVITY_TYPE[a.type] || (a.type.includes("Translation") ? "Translation" : a.type.includes("Document") ? "Document" : a.type.includes("Comment") ? "Comment" : a.type.includes("Review") ? "Review" : "General");
+  }
+
   function fieldRow(label, value) {
     return `<div class="col-md-4 col-sm-6 mb-3">
       <div style="font-size:10.8px;font-weight:700;color:var(--slc-muted);text-transform:uppercase;letter-spacing:.04em;">${label}</div>
@@ -97,19 +102,15 @@
     /* ---------------- Activities ---------------- */
     const activities = D.ACTIVITIES[c.ref] || [];
     document.getElementById("activityCount").textContent = activities.length + " logged";
-    document.getElementById("activityTimeline").innerHTML = activities.length ? activities.map(a => `
-      <div class="timeline-item">
-        <div class="timeline-dot"><i class="bi bi-dot"></i></div>
-        <div class="timeline-card">
-          <div class="d-flex justify-content-between flex-wrap">
-            <div class="timeline-type">${a.type}</div>
-            <div class="timeline-meta">${a.date} · ${D.userById(a.user).name}</div>
-          </div>
-          <div class="timeline-desc">${a.desc}</div>
-          ${a.attachments.length ? `<div class="timeline-attach">${a.attachments.map(f => `<a href="#" onclick="event.preventDefault();SLCApp.demoActionModal('Opening ${f} in prototype mode.')"><i class="bi bi-paperclip"></i>${f}</a>`).join("")}</div>` : ""}
-          <div class="mt-2"><span class="badge-status ${a.status === "Completed" ? "badge-success" : "badge-warning"}">${a.status}</span></div>
-        </div>
-      </div>`).join("") : `<div class="text-muted-soft text-center py-4">No activities logged yet for this case.</div>`;
+    document.getElementById("activityTbody").innerHTML = activities.length ? activities.map(a => `
+      <tr>
+        <td><span class="badge-status badge-muted">${activityType(a)}</span></td>
+        <td style="font-weight:600;">${a.type}</td>
+        <td style="max-width:320px;">${a.desc}</td>
+        <td>${D.userById(a.user).name}</td>
+        <td>${a.date}</td>
+        <td><button class="btn btn-sm btn-light border" title="View" onclick="SLCApp.demoActionModal('Opening activity details in prototype mode.')"><i class="bi bi-eye"></i></button></td>
+      </tr>`).join("") : `<tr><td colspan="6" class="text-center text-muted-soft py-4">No activities logged yet for this case.</td></tr>`;
 
     /* ---------------- Attachments ---------------- */
     const files = D.attachmentsFor(c.ref);
@@ -137,27 +138,13 @@
       </div>`).join("")
       + `<div class="mt-3"><button class="btn btn-sm btn-outline-primary" onclick="SLCApp.demoActionModal('Team updated successfully in prototype mode.')"><i class="bi bi-person-plus"></i>Manage Team</button></div>`;
 
-    /* ---------------- Related cases ---------------- */
-    const related = c.relatedCase ? [D.caseByRef(c.relatedCase)].filter(Boolean) : D.CASES.filter(x => x.relatedCase === c.ref);
-    document.getElementById("relatedBody").innerHTML = related.length ? related.map(r => `
-      <a href="case-workspace.html?ref=${r.ref}" class="d-flex align-items-center justify-content-between py-2 border-bottom text-decoration-none" style="border-color:var(--slc-border) !important;">
-        <div>
-          <div class="ref-link" style="font-size:12.8px;">${r.ref}</div>
-          <div style="font-size:12px;color:var(--slc-text);">${r.title}</div>
-        </div>
-        ${A.workflowBadge(r.milestone)}
-      </a>`).join("") : `<div class="text-muted-soft text-center py-3">No related cases linked.</div>`;
-
-    /* ---------------- Audit trail ---------------- */
-    const audit = [
-      { d: c.lastActivity + " 09:12", u: "u4", a: "Viewed case workspace" },
-      { d: c.rcd + " 10:00", u: "u4", a: "Completed case registration cycle" },
-      { d: c.csd + " 08:30", u: hod ? c.hod : "u4", a: "Opened new case" },
-    ];
-    document.getElementById("auditBody").innerHTML = `
-      <div class="table-scroll"><table class="table-modern mb-0">
-        <thead><tr><th>Date/Time</th><th>User</th><th>Action</th></tr></thead>
-        <tbody>${audit.map(x => `<tr><td>${x.d}</td><td>${D.userById(x.u).name}</td><td>${x.a}</td></tr>`).join("")}</tbody>
-      </table></div>`;
+    /* ---------------- Workflow progress collapse ---------------- */
+    const wsBody = new bootstrap.Collapse(document.getElementById("wsWorkflowBody"), { toggle: false });
+    const wsToggleLabel = document.getElementById("wsWorkflowToggleLabel");
+    document.getElementById("wsWorkflowToggle").addEventListener("click", () => {
+      const expanded = document.getElementById("wsWorkflowBody").classList.contains("show");
+      wsBody.toggle();
+      wsToggleLabel.innerHTML = expanded ? `Show Details<i class="bi bi-chevron-down ms-1"></i>` : `Hide Details<i class="bi bi-chevron-up ms-1"></i>`;
+    });
   });
 })();

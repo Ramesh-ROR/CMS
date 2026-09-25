@@ -14,6 +14,7 @@
     { key: "new-case", label: "Register Case", labelAr: "تسجيل قضية", href: "new-case.html" },
     { key: "live-cases", label: "Live Cases", labelAr: "القضايا النشطة", href: "live-cases.html" },
     { key: "completed-cases", label: "Completed Cases", labelAr: "القضايا المكتملة", href: "completed-cases.html" },
+    { key: "my-approvals", label: "My Approvals", labelAr: "الموافقات الخاصة بي", href: "my-approvals.html" },
     {
       key: "reports", label: "Reports", labelAr: "التقارير", href: "reports.html",
       matchKeys: ["reports"],
@@ -109,7 +110,7 @@
           <img src="assets/SLC_logo.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-light" width="160" height="40">
           <img src="assets/SLC_logo_white.png" alt="The Supreme Legislation Committee" class="app-brand-logo logo-on-dark" width="160" height="40">
         </div>
-        <img src="assets/Tadweenlogo.png" alt="Tadween Portal" class="app-brand-logo" width="140" height="60">
+        <img src="assets/Tadweenlogo1.png" alt="Tadween Portal" class="app-brand-logo" width="140" height="60">
       </div>
       <div class="app-brand-row app-brand-row-utility">
         <div class="app-brand-name" style="font-weight:700;font-size:14px;color:var(--slc-text);">Case Management System &ndash; Tadween Portal</div>

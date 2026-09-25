@@ -22,11 +22,14 @@
 
   <!-- Workflow stepper -->
   <div class="section-card">
-    <div class="sc-header">
+    <div class="sc-header" style="cursor:pointer;" id="wsWorkflowToggle">
       <span>Workflow Progress</span>
+      <span class="text-primary" style="font-size:12.3px;font-weight:600;" id="wsWorkflowToggleLabel">Show Details<i class="bi bi-chevron-down ms-1"></i></span>
     </div>
-    <div class="sc-body">
-      <div class="workflow-stepper" id="wsWorkflow"></div>
+    <div class="collapse" id="wsWorkflowBody">
+      <div class="sc-body">
+        <div class="workflow-stepper" id="wsWorkflow"></div>
+      </div>
     </div>
   </div>
 
@@ -36,8 +39,6 @@
     <button type="button" class="tab-btn" data-tab="tabActivities">Activities</button>
     <button type="button" class="tab-btn" data-tab="tabAttachments">Attachments</button>
     <button type="button" class="tab-btn" data-tab="tabCaseTeam">Case Team</button>
-    <button type="button" class="tab-btn" data-tab="tabRelated">Related Cases</button>
-    <button type="button" class="tab-btn" data-tab="tabAudit">Audit Trail</button>
   </div>
 
   <div class="tab-panels" id="cwPanels">
@@ -53,7 +54,21 @@
         <span class="ws-meta" id="activityCount" style="font-size:12px;color:var(--slc-muted);"></span>
         <button class="btn btn-sm btn-primary" onclick="SLCApp.demoActionModal('Activity added successfully in prototype mode.')"><i class="bi bi-plus-lg"></i>Add Activity</button>
       </div>
-      <div class="timeline" id="activityTimeline"></div>
+      <div class="table-scroll">
+        <table class="table-modern mb-0" id="activityTable">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Activity</th>
+              <th>Description</th>
+              <th>Entered By</th>
+              <th>Date &amp; Time</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="activityTbody"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Attachments -->
@@ -69,16 +84,6 @@
     <!-- Case Team -->
     <div class="tab-panel" id="tabCaseTeam">
       <div id="teamBody"></div>
-    </div>
-
-    <!-- Related Cases -->
-    <div class="tab-panel" id="tabRelated">
-      <div id="relatedBody"></div>
-    </div>
-
-    <!-- Audit Trail -->
-    <div class="tab-panel" id="tabAudit">
-      <div id="auditBody"></div>
     </div>
 
   </div>
