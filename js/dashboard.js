@@ -114,8 +114,8 @@
         <span class="badge-status badge-muted">${x.stage}</span>
       </a>`).join("");
 
-    /* --- Pending approvals --- */
-    const approvals = D.PENDING_APPROVALS;
+    /* --- Pending approvals (capped so this card matches the trend chart's height) --- */
+    const approvals = D.PENDING_APPROVALS.slice(0, 2);
     document.querySelector("#approvalsTable tbody").innerHTML = approvals.map(a => {
       const c = D.caseByRef(a.ref);
       return `<tr>
@@ -127,23 +127,6 @@
         <td>${A.userChip(a.by)}</td>
         <td><button class="btn btn-sm btn-outline-primary" onclick="SLCApp.demoActionModal('Approval recorded successfully in prototype mode.')">Review</button></td>
       </tr>`;
-    }).join("");
-
-    /* --- Recent activities --- */
-    const allActivities = [];
-    Object.keys(D.ACTIVITIES).forEach(ref => D.ACTIVITIES[ref].forEach(a => allActivities.push({ ...a, ref })));
-    allActivities.sort((a,b) => new Date(b.date) - new Date(a.date));
-    document.getElementById("recentActivitiesList").innerHTML = allActivities.slice(0, 6).map(a => {
-      const [datePart, timePart] = a.date.split(" ");
-      return `
-      <div class="d-flex gap-2 py-2 border-bottom" style="border-color:var(--slc-border) !important;">
-        <i class="bi bi-clock-history mt-1 text-muted-soft"></i>
-        <div>
-          <div style="font-size:11.2px;font-weight:700;color:var(--slc-muted);">${timePart || ""}</div>
-          <div style="font-size:12.2px;margin-top:1px;"><strong>${a.type}</strong> — ${a.ref}</div>
-          <div style="font-size:11.2px;color:var(--slc-muted);">${datePart} · ${D.userById(a.user).name}</div>
-        </div>
-      </div>`;
     }).join("");
   });
 })();

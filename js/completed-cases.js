@@ -94,50 +94,6 @@
       </tr>`;
   }
 
-  function renderKpis(rows) {
-    const total = rows.length;
-    const classified = rows.filter(c => c.classified).length;
-    const highUrgency = rows.filter(c => c.urgency === "High" || c.urgency === "Very High").length;
-    const avgDays = total ? Math.round(rows.reduce((s, c) => s + (c.csd && c.acd ? (new Date(c.acd) - new Date(c.csd)) / 86400000 : 0), 0) / total) : 0;
-    document.getElementById("ccKpiRow").innerHTML = `
-      <div class="col-6 col-md-3">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:var(--light-blue);color:var(--primary-blue);"><i class="bi bi-check2-circle"></i></div>
-          <div class="kpi-value">${total}</div>
-        </div>
-          <div class="kpi-label">Completed Cases</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:var(--grey-100);color:var(--grey-600);"><i class="bi bi-hourglass-bottom"></i></div>
-          <div class="kpi-value">${avgDays}</div>
-        </div>
-          <div class="kpi-label">Avg. Days to Complete</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:var(--light-blue);color:var(--dark-blue);"><i class="bi bi-flag"></i></div>
-          <div class="kpi-value">${highUrgency}</div>
-        </div>
-          <div class="kpi-label">High / Very High Urgency</div>
-        </div>
-      </div>
-      <div class="col-6 col-md-3">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:var(--light-blue);color:var(--dark-blue);"><i class="bi bi-shield-lock"></i></div>
-          <div class="kpi-value">${classified}</div>
-        </div>
-          <div class="kpi-label">Classified Cases</div>
-        </div>
-      </div>`;
-  }
-
   function renderPagination(totalRows) {
     const pageCount = Math.max(1, Math.ceil(totalRows / PAGE_SIZE));
     if (currentPage > pageCount) currentPage = pageCount;
@@ -187,8 +143,6 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("completed-cases", [{ label: "Completed Cases" }]);
-    const all = completedCases();
-    renderKpis(all);
     populateFilterOptions();
 
     document.querySelectorAll("#ccClassTabs .tab-btn").forEach(btn => {

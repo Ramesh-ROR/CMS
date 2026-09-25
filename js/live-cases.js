@@ -115,58 +115,6 @@
       </tr>`;
   }
 
-  function renderKpis(all) {
-    const total = all.length;
-    const highUrgency = all.filter(c => c.urgency === "High" || c.urgency === "Very High").length;
-    const classified = all.filter(c => c.classified).length;
-    const overdue = all.filter(c => c.overdue).length;
-    document.getElementById("lcKpiRow").innerHTML = `
-      <div class="col-6 col-md-3">
-        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('all')">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:var(--light-blue);color:var(--primary-blue);"><i class="bi bi-activity"></i></div>
-          <div class="kpi-value">${total}</div>
-        </div>
-          <div class="kpi-label">Live Cases</div>
-        </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3">
-        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('urgency')">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:#FFE8D1;color:#C2540A;"><i class="bi bi-flag"></i></div>
-          <div class="kpi-value">${highUrgency}</div>
-        </div>
-          <div class="kpi-label">High / Very High Urgency</div>
-        </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3">
-        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('classified')">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:var(--light-blue);color:var(--dark-blue);"><i class="bi bi-shield-lock"></i></div>
-          <div class="kpi-value">${classified}</div>
-        </div>
-          <div class="kpi-label">Classified Cases</div>
-        </div>
-        </a>
-      </div>
-      <div class="col-6 col-md-3">
-        <a href="javascript:void(0)" class="kpi-card-link" onclick="window.__lcKpiClick('overdue')">
-        <div class="kpi-card compact">
-          <div class="kpi-top">
-          <div class="kpi-icon" style="background:#FEE2E2;color:#B91C1C;"><i class="bi bi-exclamation-triangle"></i></div>
-          <div class="kpi-value">${overdue}</div>
-        </div>
-          <div class="kpi-label">Overdue Cases</div>
-        </div>
-        </a>
-      </div>`;
-  }
-
   function renderPagination(totalRows) {
     const pageCount = Math.max(1, Math.ceil(totalRows / PAGE_SIZE));
     if (currentPage > pageCount) currentPage = pageCount;
@@ -206,9 +154,9 @@
 
   function applyParamsFromUrl() {
     const params = new URLSearchParams(window.location.search);
-    if (params.has("overdue")) document.getElementById("fOverdue").checked = true;
-    if (params.has("classified")) document.getElementById("fClassified").checked = true;
-    if (params.has("urgency")) document.getElementById("fUrgency").value = params.get("urgency");
+    if (params.has("overdue")) { document.getElementById("fOverdue").checked = true; expandFilters(); }
+    if (params.has("classified")) { document.getElementById("fClassified").checked = true; expandFilters(); }
+    if (params.has("urgency")) { document.getElementById("fUrgency").value = params.get("urgency"); expandFilters(); }
   }
 
   function resetFilters() {
@@ -230,20 +178,8 @@
     if (!el.classList.contains("show")) bootstrap.Collapse.getOrCreateInstance(el).show();
   }
 
-  /* Clicking a KPI card jumps straight to the matching slice of this same table */
-  window.__lcKpiClick = function (type) {
-    resetFilters();
-    if (type === "urgency") { document.getElementById("fUrgency").value = "High,Very High"; expandFilters(); }
-    if (type === "classified") { document.getElementById("fClassified").checked = true; expandFilters(); }
-    if (type === "overdue") { document.getElementById("fOverdue").checked = true; expandFilters(); }
-    currentPage = 1;
-    render();
-    document.querySelector(".filter-bar, .table-card").scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   document.addEventListener("DOMContentLoaded", function () {
     A.renderShell("live-cases", [{ label: "Live Cases" }]);
-    renderKpis(liveCases());
     populateFilterOptions();
     applyParamsFromUrl();
 

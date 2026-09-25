@@ -11,10 +11,10 @@
   /* ------------------------------------------------------------------ */
   const NAV = [
     { key: "dashboard", label: "Dashboard", labelAr: "لوحة المعلومات", href: "dashboard.html" },
+    { key: "my-approvals", label: "My Approvals", labelAr: "الموافقات الخاصة بي", href: "my-approvals.html" },
     { key: "new-case", label: "Register Case", labelAr: "تسجيل قضية", href: "new-case.html" },
     { key: "live-cases", label: "Live Cases", labelAr: "القضايا النشطة", href: "live-cases.html" },
     { key: "completed-cases", label: "Completed Cases", labelAr: "القضايا المكتملة", href: "completed-cases.html" },
-    { key: "my-approvals", label: "My Approvals", labelAr: "الموافقات الخاصة بي", href: "my-approvals.html" },
     {
       key: "reports", label: "Reports", labelAr: "التقارير", href: "reports.html",
       matchKeys: ["reports"],

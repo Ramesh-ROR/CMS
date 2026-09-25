@@ -119,7 +119,7 @@
   /*  Users                                                                  */
   /* ---------------------------------------------------------------------- */
   const USERS = [
-    { id: "u1", name: "Ahmed Al Mansoori", nameAr: "أحمد المنصوري", role: "Head of Directorate", directorate: "LEG", email: "ahmed.almansoori@slc.gov.ae", initials: "AM", color: "#1565C0" },
+    { id: "u1", name: "Ahmed Al Mansoori", nameAr: "أحمد المنصوري", role: "Head of Directorate", directorate: "LEG", email: "ahmed.almansoori@slc.gov.ae", initials: "AM", color: "#0033A0" },
     { id: "u2", name: "Fatima Al Hashimi", nameAr: "فاطمة الهاشمي", role: "Directorate Legal Staff", directorate: "LEG", email: "fatima.alhashimi@slc.gov.ae", initials: "FH", color: "#107C10" },
     { id: "u3", name: "Mohammed Al Nuaimi", nameAr: "محمد النعيمي", role: "Directorate Legal Staff", directorate: "LAO", email: "mohammed.alnuaimi@slc.gov.ae", initials: "MN", color: "#8764B8" },
     { id: "u4", name: "Sara Al Mazrouei", nameAr: "سارة المزروعي", role: "Registration Team", directorate: "GEN", email: "sara.almazrouei@slc.gov.ae", initials: "SM", color: "#C239B3" },
